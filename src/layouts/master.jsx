@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Login from '../pages/login/login';
+import Login from '../pages/auth/login';
 import Home from './home';
 import { selectCurrentUser } from "../features/auth/authSelector";
 import { useSelector } from "react-redux";
@@ -21,7 +21,7 @@ export default function Dashboard(children) {
   // const { isAuthenticated, user } = useAuth();
   const currentUser = useSelector(selectCurrentUser);
   console.log(currentUser);
-  let page = <Login />;
+  let page = <Home />;
 
   if (currentUser.isAuthenticated) {
     page = <Home />
