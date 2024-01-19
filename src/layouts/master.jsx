@@ -2,8 +2,10 @@ import * as React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Login from '../pages/auth/login';
 import Home from './home';
+import Forgot from '../pages/auth/forgot.jsx';
 import { selectCurrentUser } from "../features/auth/authSelector";
 import { useSelector } from "react-redux";
+import { Logout } from '@mui/icons-material';
 // import { Outlet } from 'react-router-dom';
 // import { useSelector, useDispatch } from 'react-redux';
 

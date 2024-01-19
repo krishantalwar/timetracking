@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Copyright from '../../layouts/copyright';
 import Paper from '@mui/material/Paper';
+import graphic from '../../assets/Time-management-icons/graphic.png/'
+import logo from '../../assets/Time-management-icons/logo.png'
 
 import {
   useLoginEmailMutation,
@@ -151,9 +153,10 @@ export default function SignIn() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
+            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              
+            </Avatar> */}
+            <img src={logo} style = {{marginBottom:20}} />
             <Typography component="h2" variant="h5">
               Welcome to Time Tracking & shift Managment System
             </Typography>
@@ -236,14 +239,14 @@ export default function SignIn() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+            backgroundImage: `url(${graphic})`,
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
-        />
+        /> 
       </Grid>
     </React.Fragment>
   );

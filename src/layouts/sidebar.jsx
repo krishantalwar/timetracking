@@ -10,20 +10,48 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import Link from '@mui/material/Link';
+import { CgProfile } from "react-icons/cg";
+import { TbUser } from "react-icons/tb";
 
 const menue = [
   {
-    "icon": 'DashboardIcon',
+    "icon": 'TbUser',
     "name": 'Employee Master',
   },
   {
     "icon": 'DashboardIcon',
     "name": 'Shift Manstar',
+  },
+  {
+    "icon": 'DashboardIcon',
+    "name": 'Roles & Responsibilities',
+  },
+  {
+    "icon": 'DashboardIcon',
+    "name": 'Time Tracking Activities',
+  },
+  {
+    "icon": 'DashboardIcon',
+    "name": 'Data Upload Tool',
+  },
+  {
+    "icon": 'DashboardIcon',
+    "name": 'Department & Designation',
+  },
+  {
+    "icon": 'DashboardIcon',
+    "name": 'Reports',
+  },
+  {
+    "icon": 'DashboardIcon',
+    "name": 'Logout',
   }
+
 ];
 
 const iconMapping = {
   DashboardIcon: <DashboardIcon />,
+  CgProfile: <CgProfile   size='20' />,
   // DashboardTwoToneIcon: <DashboardTwoToneIcon />,
   // Add more icon mappings as needed
 };
@@ -36,9 +64,12 @@ export const mainListItems = (
 
       return (
         <React.Suspense key={index} fallback={<div>Loading...</div>}>
-          <ListItemButton sx={{ margin: "5px 7px", borderRadius: "7px", }}>
-            {IconComponent}
-            <ListItemText primary={item.name} />
+          <ListItemButton sx={{ margin: "5px 2px", borderRadius: "7px" }}>
+          <ListItemIcon sx={{color:"#364152", minWidth:'30px'}}>
+        <TbUser />
+      </ListItemIcon >
+            <ListItemText primaryTypographyProps={{fontSize: '12px'}} 
+    primary={item.name} />
           </ListItemButton>
         </React.Suspense>
       )

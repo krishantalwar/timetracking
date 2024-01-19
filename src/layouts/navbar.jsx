@@ -15,6 +15,12 @@ import { TbUser } from "react-icons/tb";
 import { TbLogout } from "react-icons/tb";
 import { TbLayoutGrid } from "react-icons/tb";
 import { TbSettings2 } from "react-icons/tb";
+import logo from '../assets/Time-management-icons/logo.png' 
+
+
+
+
+
 
 const settings = [{ icon: <TbUser />, label: 'Profile' }, { icon: <TbSettings2 />, label: 'Setting' }, { icon: <TbLayoutGrid />, label: 'Dashboard' }, { icon: <TbLogout />, label: 'Logout' }];
 
@@ -46,7 +52,7 @@ export default function Navbar(props) {
           noWrap
           sx={{ display: "inline-block", fontWeight: "bold", textTransform: "uppercase", fontSize: "22px", marginRight: "20px", letterSpacing: "1px" }}
         >
-          Brand Logo
+          <img src={logo} />
         </Typography>
 
         <IconButton

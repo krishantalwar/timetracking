@@ -6,44 +6,85 @@ import CardActions from '@mui/joy/CardActions';
 import CircularProgress from '@mui/joy/CircularProgress';
 import Typography from '@mui/joy/Typography';
 import SvgIcon from '@mui/joy/SvgIcon';
+import Box from '@mui/material/Box';
+import * as React from 'react';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import stat1 from '../../assets/Time-management-icons/stat-1.png'
+import stat2 from '../../assets/Time-management-icons/stat-2.png'
+import stat3 from '../../assets/Time-management-icons/stat-3.png'
+import stat4 from '../../assets/Time-management-icons/stat-4.png'
+import { Grid } from '@mui/material';
 
 function CardInvertedColors({ ...props }, ref) {
 
 
     return (
-        <Card variant="solid" color="primary" invertedColors ref={ref}>
-            <CardContent orientation="horizontal">
-                <CircularProgress size="lg" determinate value={20}>
-                    <SvgIcon>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
-                            />
-                        </svg>
-                    </SvgIcon>
-                </CircularProgress>
-                <CardContent>
-                    <Typography level="body-md">Gross profit</Typography>
-                    <Typography level="h2">$ 432.6M</Typography>
-                </CardContent>
-            </CardContent>
-            <CardActions>
-                <Button variant="soft" size="sm">
-                    Add to Watchlist
-                </Button>
-                <Button variant="solid" size="sm">
-                    See breakdown
-                </Button>
-            </CardActions>
+        <>
+        <h2>All Location</h2>
+        <div style={{margin: '0%', display:'flex'}}>
+          <Box sx={{flex:1, display:"flex"}}>
+        <Card sx={{ width: "100%",  backgroundColor:'lightgreen'}} >
+          <CardContent>
+            <Box sx={{display: "flex", color:"#fff"}}>
+            <img src={stat1} alt="Avatar" className="avatar" />
+            <Box>
+              <Typography marginLeft={1} marginTop={-2}>
+                <h3>Total Employee</h3>
+              </Typography>
+            </Box>
+            </Box>
+          </CardContent>
         </Card>
+        </Box>
+        <Box sx={{flex:1, display:'flex'}}>
+        <Card fullwidth sx={{ width: "100%",  backgroundColor:'orange', marginLeft:5}} >
+          <CardContent>
+            <Box  sx={{display: "flex", color:"#fff"}}>
+            <img src={stat2} alt="Avatar" className="avatar" />
+            <Box>
+              <Typography marginLeft={1} marginTop={-2}>
+                <h3>Present</h3>
+              </Typography>
+            </Box>
+            </Box>
+          </CardContent>
+        </Card>
+        </Box>
+        <Box sx={{flex:1, display:'flex'}}>
+        <Card fullwidth sx={{ width: "100%",  backgroundColor:'blue', marginLeft:5}} >
+          <CardContent>
+            <Box  sx={{display: "flex", color:"#fff"}}>
+            <img src={stat3} alt="Avatar" className="avatar" />
+            <Box>
+              <Typography marginLeft={1} marginTop={-2}>
+                <h3>Absent</h3>
+              </Typography>
+            </Box>
+            </Box>
+          </CardContent>
+        </Card>
+        </Box>
+        <Box sx={{flex:1, display:'flex'}}>
+        <Card fullwidth sx={{ width: "100%",  backgroundColor:'lightpink', marginLeft:5}} >
+          <CardContent>
+            <Box  sx={{display: "flex", color:"#fff"}}>
+            <img src={stat4} alt="Avatar" classNameName="avatar" />
+            <Box>
+              <Typography marginLeft={1} marginTop={-2}>
+                <h3>Late Comer</h3>
+              </Typography>
+            </Box>
+            </Box>
+          </CardContent>
+        </Card>
+        </Box>
+        </div>
+        </>
     );
 }
 export default React.forwardRef(CardInvertedColors)
