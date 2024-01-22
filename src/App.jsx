@@ -15,6 +15,7 @@ import Navigation from './routes/navigation/navigation.component';
 import Home from './pages/home/home';
 
 import Forget from './pages/auth/forgot';
+import ShiftMaster from './pages/shiftmaster/shiftmaster';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Navigation />}>
         <Route index element={<Home />} />
+        <Route path='/shiftmaster' element={<ShiftMaster />} />
       </Route>
       <Route path='forgot' element={<Forget />} />
 
