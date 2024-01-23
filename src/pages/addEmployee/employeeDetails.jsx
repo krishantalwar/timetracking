@@ -11,6 +11,9 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper'
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
+import Selects from '../../components/ui/forminputs/select'
+import FormPropsDatePickers from '../../components/ui/forminputs/datePicker'
+// import InputFileUpload from '../../components/ui/forminputs/'
 
 const steps = [
   'Employee Details',
@@ -102,8 +105,9 @@ export default function HorizontalLinearStepper() {
             mb: 3
             //   alignItems: 'center',
           }}>
-            ADD EMPLOYEE
+           
           </Typography>
+          
           <Stepper activeStep={activeStep}>
             {steps.map((label, index) => {
               const stepProps = {};
@@ -123,6 +127,7 @@ export default function HorizontalLinearStepper() {
               );
             })}
           </Stepper>
+          <br/>
           {activeStep === steps.length ? (
             <React.Fragment>
               <Typography sx={{ mt: 2, mb: 1 }}>
@@ -145,18 +150,18 @@ export default function HorizontalLinearStepper() {
 
                         <Grid item xs={4}>
                           <Controller
-                            name="password"
+                            name="Employe Code"
                             control={control}
-                            rules={{ required: 'Password is required', minLength: 8 }}
+                            rules={{ required: 'Employee code is required' }}
                             render={({ field }) => (
                               <Input
                                 {...field}
-                                margin="normal"
+                                margin="none"
                                 fullWidth
                                 label="Employe code"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                type="Input"
+                                id="Employeecode"
+                                // autoComplete="current-password"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",
@@ -175,7 +180,7 @@ export default function HorizontalLinearStepper() {
                             render={({ field }) => (
                               <Input
                                 {...field}
-                                margin="normal"
+                                margin="none"
                                 fullWidth
                                 label="Emplyee Name"
                                 type="password"
@@ -199,7 +204,7 @@ export default function HorizontalLinearStepper() {
                             render={({ field }) => (
                               <Input
                                 {...field}
-                                margin="normal"
+                                margin="none"
                                 fullWidth
                                 label="Last Name"
                                 type="password"
@@ -225,7 +230,7 @@ export default function HorizontalLinearStepper() {
                             render={({ field }) => (
                               <Input
                                 {...field}
-                                margin="normal"
+                                margin="none"
                                 fullWidth
                                 label="Location"
                                 type="password"
@@ -249,7 +254,7 @@ export default function HorizontalLinearStepper() {
                             render={({ field }) => (
                               <Input
                                 {...field}
-                                margin="normal"
+                                margin="none"
                                 fullWidth
                                 label="Sub Location"
                                 type="password"
@@ -267,18 +272,18 @@ export default function HorizontalLinearStepper() {
                         </Grid>
                         <Grid item xs={4}>
                           <Controller
-                            name="password"
+                            name="DOB"
                             control={control}
-                            rules={{ required: 'Password is required', minLength: 8 }}
+                            rules={{ required: 'Date of birth is required', minLength: 8 }}
                             render={({ field }) => (
-                              <Input
+                              <FormPropsDatePickers
                                 {...field}
-                                margin="normal"
+                                margin="none"
                                 fullWidth
-                                label="DOB"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                label="Date Of Birth"
+                                type="Date"
+                                // id="password"
+                                // autoComplete="current-password"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",
@@ -293,18 +298,18 @@ export default function HorizontalLinearStepper() {
 
                         <Grid item xs={4}>
                           <Controller
-                            name="password"
+                            name="Date of Joining"
                             control={control}
-                            rules={{ required: 'Password is required', minLength: 8 }}
+                            rules={{ required: 'Date of Joining is required', minLength: 8 }}
                             render={({ field }) => (
-                              <Input
+                              <FormPropsDatePickers
                                 {...field}
-                                margin="normal"
+                                margin="none"
                                 fullWidth
                                 label="Date of Joining"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                type="Date"
+                                // id="password"
+                                // autoComplete="current-password"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",
@@ -324,7 +329,7 @@ export default function HorizontalLinearStepper() {
                             render={({ field }) => (
                               <Input
                                 {...field}
-                                margin="normal"
+                                margin="none"
                                 fullWidth
                                 label="Department"
                                 type="password"
@@ -349,7 +354,7 @@ export default function HorizontalLinearStepper() {
                             render={({ field }) => (
                               <Input
                                 {...field}
-                                margin="normal"
+                                margin="none"
                                 fullWidth
                                 label="Designation"
                                 type="password"
@@ -374,7 +379,7 @@ export default function HorizontalLinearStepper() {
                             render={({ field }) => (
                               <Input
                                 {...field}
-                                margin="normal"
+                                margin="none"
                                 fullWidth
                                 label="Reporting Manger"
                                 type="password"
@@ -398,11 +403,268 @@ export default function HorizontalLinearStepper() {
                   )
                   : ("")
               }
+              {
+                activeStep == 1 ?                  (
+                    <React.Fragment>
+                      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
+                        <Grid item xs={5}>
+                          <Controller
+                            name="Employe Code"
+                            control={control}
+                            rules={{ required: 'Employee code is required' }}
+                            render={({ field }) => (
+                              <Input
+                                {...field}
+                                margin="none"
+                                fullWidth
+                                label="Employe code"
+                                type="Input"
+                                id="Employeecode"
+                                // autoComplete="current-password"
+                                formcontrolpops={{
+                                  "fullWidth": true,
+                                  "variant": "standard",
+                                }}
+                                error={Boolean(formState?.errors?.password)}
+                                helperText={formState?.errors?.password?.message}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={5}>
+                          <Controller
+                            name="Employee Name"
+                            control={control}
+                            rules={{ required: 'Employee Name is required' }}
+                            render={({ field }) => (
+                              <Input
+                                {...field}
+                                margin="none"
+                                fullWidth
+                                label="Emplyee Name"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                formcontrolpops={{
+                                  "fullWidth": true,
+                                  "variant": "standard",
+                                }}
+                                error={Boolean(formState?.errors?.password)}
+                                helperText={formState?.errors?.password?.message}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={5} mt={3}>
+                          <Controller
+                            name="Shift Allocation"
+                            control={control}
+                            rules={{ required: 'Employee Shift is required' }}
+                            render={({ field }) => (
+                              <Selects
+                                {...field}
+                                margin="none"
+                                // fullWidth
+                                label="Shift Allocation"
+                                options={[
+                                  'Morning',
+                                  'Afternoon',
+                                  'Evening',
+                                  'Night'
+                                ]}
+                                // type="password"
+                                // id="password"
+                                // autoComplete="current-password"
+                                formcontrolpops={{
+                                  "fullWidth": true,
+                                  "variant": "standard",
+                                }}
+                                error={Boolean(formState?.errors?.password)}
+                                helperText={formState?.errors?.password?.message}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        </Grid>  
+                    </React.Fragment>
+                  )
+                  : ("")
+              }
+              {
+                activeStep == 2 ?
+                  (
+                    <React.Fragment>
+                      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
 
+                        <Grid item xs={6}>
+                          <Controller
+                            name="Employe Code"
+                            control={control}
+                            rules={{ required: 'Employee code is required' }}
+                            render={({ field }) => (
+                              <Input
+                                {...field}
+                                margin="none"
+                                fullWidth
+                                label="Employe code"
+                                type="Input"
+                                id="Employeecode"
+                                // autoComplete="current-password"
+                                formcontrolpops={{
+                                  "fullWidth": true,
+                                  "variant": "standard",
+                                }}
+                                error={Boolean(formState?.errors?.password)}
+                                helperText={formState?.errors?.password?.message}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Controller
+                            name="password"
+                            control={control}
+                            rules={{ required: 'Employee Name is required' }}
+                            render={({ field }) => (
+                              <Input
+                                {...field}
+                                margin="none"
+                                fullWidth
+                                label="Employee Name"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                formcontrolpops={{
+                                  "fullWidth": true,
+                                  "variant": "standard",
+                                }}
+                                error={Boolean(formState?.errors?.password)}
+                                helperText={formState?.errors?.password?.message}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={6} mt={3}>
+                          {/* <h4>Role Assigned</h4> */}
+                          <Controller
+                            name="Role Assigned"
+                            control={control}
+                            rules={{ required: 'Role Assigned is required' }}
+                            render={({ field }) => (
+                              <Selects
+                                {...field}
+                                margin="none"
+                                fullWidth
+                                label="Role Assigned"
+                                options={[
+                                  'Manager',
+                                  'Employee',
 
+                                ]}
+                                // type="password"
+                                // id="password"
+                                // autoComplete="current-password"
+                                formcontrolpops={{
+                                  "fullWidth": true,
+                                  "variant": "standard",
+                                }}
+                                error={Boolean(formState?.errors?.password)}
+                                helperText={formState?.errors?.password?.message}
+                              />
+                            )}
+                          />
+                        </Grid>
+                      </Grid>
 
+                    </React.Fragment>
+                  )
+                  : ("")
+              }
 
+{
+                activeStep == 3 ?
+                  (
+                    <React.Fragment>
+                      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
 
+                        <Grid item xs={6}>
+                          <Controller
+                            name="Employe Code"
+                            control={control}
+                            rules={{ required: 'Employee code is required' }}
+                            render={({ field }) => (
+                              <Input
+                                {...field}
+                                margin="none"
+                                fullWidth
+                                label="Employe code"
+                                type="Input"
+                                id="Employeecode"
+                                // autoComplete="current-password"
+                                formcontrolpops={{
+                                  "fullWidth": true,
+                                  "variant": "standard",
+                                }}
+                                error={Boolean(formState?.errors?.password)}
+                                helperText={formState?.errors?.password?.message}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Controller
+                            name="Employee Name"
+                            control={control}
+                            rules={{ required: 'Employee Name is required', minLength: 8 }}
+                            render={({ field }) => (
+                              <Input
+                                {...field}
+                                margin="none"
+                                fullWidth
+                                label="Emplyee Name"
+                                type="Input"
+                                // id="password"
+                                // autoComplete="current-password"
+                                formcontrolpops={{
+                                  "fullWidth": true,
+                                  "variant": "standard",
+                                }}
+                                error={Boolean(formState?.errors?.password)}
+                                helperText={formState?.errors?.password?.message}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={4} mt={4}>
+                          <Box>Upload Document</Box>
+                          <Controller
+                            name="File upload"
+                            control={control}
+                            rules={{ required: 'File Upload is required'}}
+                            render={({ field }) => (
+                              <Input
+                                {...field}
+                                margin="none"
+                                fullWidth
+                                // label="Document Upload"
+                                type="file"
+                                // id="password"
+                                // autoComplete="current-password"
+                                formcontrolpops={{
+                                  "fullWidth": true,
+                                  "variant": "standard",
+                                }}
+                                error={Boolean(formState?.errors?.password)}
+                                helperText={formState?.errors?.password?.message}
+                              />
+                            )}
+                          />
+                        </Grid>
+                      </Grid>
+                    </React.Fragment>
+                  )
+                  : ("")
+              }
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 <Button
                   color="inherit"
@@ -410,7 +672,7 @@ export default function HorizontalLinearStepper() {
                   onClick={handleBack}
                   sx={{ mr: 1 }}
                 >
-                  Back
+                  <Box color='#4169E1' >Back</Box>
                 </Button>
                 <Box sx={{ flex: '1 1 auto' }} />
                 {/* {isStepOptional(activeStep) && (
@@ -420,7 +682,7 @@ export default function HorizontalLinearStepper() {
             )} */}
 
                 <Button onClick={handleNext}>
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Save Next'}
+                  {activeStep === steps.length - 1 ? 'Finish' : 'Save & Next'}
                 </Button>
               </Box>
             </React.Fragment>
