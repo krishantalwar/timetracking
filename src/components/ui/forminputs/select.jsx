@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 
 
-function Selects({ className = "", inputtype = "text", inputname = "", hanndlechange = "", label = "", options = [], empty, ...props }, ref) {
+function Selects({ className = "", onChange = "", label = "", options = [], empty, ...props }, ref) {
   const id = useId();
   // console.log(props);
   // console.log(...props);
@@ -23,9 +23,8 @@ function Selects({ className = "", inputtype = "text", inputname = "", hanndlech
       <Select
         labelId={id}
         id={id}
-        name={inputname}
         label={label}
-        onChange={hanndlechange}
+        onChange={onChange}
         className={className}
         {...props}
         ref={ref}

@@ -16,6 +16,9 @@ import Home from './pages/home/home';
 
 import Forget from './pages/auth/forgot';
 import ShiftMaster from './pages/shiftmaster/shiftmaster';
+import RolesandResponsibilities from './pages/roles & responsibilities/roles & responsibilities'
+import HorizontalLinearStepper from './pages/addEmployee/employeeDetails'
+import TimeTrackingActivities from './pages/addEmployee/timeTrackingActivities'
 
 function App() {
 
@@ -30,6 +33,9 @@ function App() {
       <Route path='/' element={<Navigation />}>
         <Route index element={<Home />} />
         <Route path='/shiftmaster' element={<ShiftMaster />} />
+        <Route path='/addEmployee' element={<HorizontalLinearStepper />} />
+        <Route path='/roles&responsibilities' element={<RolesandResponsibilities />} />
+        <Route path='/timetrackingactivities' element={<TimeTrackingActivities />} />
       </Route>
       <Route path='forgot' element={<Forget />} />
 
