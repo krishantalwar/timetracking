@@ -22,7 +22,7 @@ export default function Home(props = { mt: 8, mb: 4 }) {
 
   return (
     <>
-    {/* <h2>All Location</h2>
+    <h2>All Location</h2>
     <div style={{margin: '0%', display:'flex'}}>
       <Box sx={{flex:1, display:"flex"}}>
     <Card sx={{ width: "100%",  backgroundColor:'lightgreen'}} >
@@ -70,11 +70,11 @@ export default function Home(props = { mt: 8, mb: 4 }) {
         </Box>
         </Box>
       </CardContent>
-    </Card>
+    </Card> 
     </Box>
-    </div> */}
+    </div>
 
-    <EmployeeDetails/>
+
     </>
   );
 }

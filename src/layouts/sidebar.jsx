@@ -2,66 +2,66 @@ import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import Link from '@mui/material/Link';
-import { CgProfile } from "react-icons/cg";
-import { TbUser } from "react-icons/tb";
-// import logo from '../assets/Time-management-icons/logo.png'
+import Profile from '../../src/assets/Time-management-icons/Profile.png'
+import Profile2 from '../../src/assets/Time-management-icons/mingcute_user-5-line.png'
+import DoneSharpIcon from '@mui/icons-material/DoneSharp';
+import Time from '../../src/assets/Time-management-icons/carbon_time.png'
+import Dataimg from '../../src/assets/Time-management-icons/material-symbols-light_upload-sharp.png'
+import Dept_desigimg from '../../src/assets/Time-management-icons/tabler_building.png'
+import Reportsimg from '../../src/assets/Time-management-icons/mdi_report-box-outline.png'
+import Logoutimg from '../../src/assets/Time-management-icons/fluent_arrow-exit-20-regular.png'
 
-
-const menue = [
+const menu= [
   {
     "icon": 'Employee',
     "name": 'Employee Master',
   },
   {
-    "icon": 'DashboardIcon',
+    "icon": 'Shift',
     "name": 'Shift Manstar',
   },
   {
-    "icon": 'DashboardIcon',
+    "icon": 'Roles',
     "name": 'Roles & Responsibilities',
   },
   {
-    "icon": 'DashboardIcon',
+    "icon": 'TimeTracking',
     "name": 'Time Tracking Activities',
   },
   {
-    "icon": 'DashboardIcon',
+    "icon": 'DataUpload',
     "name": 'Data Upload Tool',
   },
   {
-    "icon": 'DashboardIcon',
+    "icon": 'Dept_Desig',
     "name": 'Department & Designation',
   },
   {
-    "icon": 'DashboardIcon',
+    "icon": 'Reports',
     "name": 'Reports',
   },
   {
-    "icon": 'DashboardIcon',
+    "icon": 'Logout',
     "name": 'Logout',
   }
 
 ];
 
 const iconMapping = {
-  Employee: <TbUser/>,
-
-  // CgProfile: <CgProfile   size='20' />,
-  // DashboardTwoToneIcon: <DashboardTwoToneIcon />,
-  // Add more icon mappings as needed
+  Employee:<img src={Profile} alt="" />,
+  Shift:<img src={Profile2} alt="" />,
+  Roles:<DoneSharpIcon/>,
+  TimeTracking:<img src={Time} alt="" />,
+  DataUpload:<img src={Dataimg} alt="" />,
+  Dept_Desig:<img src={Dept_desigimg} alt="" />,
+  Reports:<img src={Reportsimg} alt="" />,
+  Logout:<img src={Logoutimg} alt="" />,
 };
 
 export const mainListItems = (
   <React.Fragment>
-    {menue.map((item, index) => {
+    {menu.map((item, index) => {
 
       const IconComponent = iconMapping[item.icon];
 
@@ -82,15 +82,14 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <React.Fragment>
-    <ListSubheader component="div" inset>
+    {/* <ListSubheader component="div" inset>
       Saved reports
-    </ListSubheader>
+    </ListSubheader> */}
     <ListItemButton sx={{ margin: "5px 7px", borderRadius: "7px", }}>
       <ListItemIcon sx={{ color: "#364152" }}>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Current month" />
     </ListItemButton>
-
   </React.Fragment>
 );

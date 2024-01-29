@@ -150,7 +150,7 @@ export default function HorizontalLinearStepper() {
 
                         <Grid item xs={4}>
                           <Controller
-                            name="Employe Code"
+                            name="employe_code"
                             control={control}
                             rules={{ required: 'Employee code is required' }}
                             render={({ field }) => (
@@ -166,8 +166,8 @@ export default function HorizontalLinearStepper() {
                                   "fullWidth": true,
                                   "variant": "standard",
                                 }}
-                                error={Boolean(formState?.errors?.password)}
-                                helperText={formState?.errors?.password?.message}
+                                error={Boolean(formState?.errors?.employe_code)}
+                                helperText={formState?.errors?.employe_code?.message}
                               />
                             )}
                           />
