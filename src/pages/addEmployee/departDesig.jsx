@@ -17,7 +17,7 @@ import { TextField } from '@mui/material';
 
 import MenuItem from '@mui/material/MenuItem';
 
-export default function RolesandResponsibilities() {
+export default function DepartmentDesignation() {
 
     const { handleSubmit, control,
         formState
@@ -38,16 +38,16 @@ export default function RolesandResponsibilities() {
     return (
 
         <React.Fragment>
-            <Typography mt={2} >  Roles & Responsibilities</Typography>
+            <Typography mt={2} > Department & Designation</Typography>
             <Box  component={Paper}>
             <Box component="form"  onSubmit={handleSubmit(onSubmit)} method="post"  sx={{ mt: 1, ml:2 }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
                     <Grid item xs={6} >
 
                         <Controller
-                            name="role"
+                            name="department"
                             control={control}
-                            rules={{ required: 'Role is required' }}
+                            rules={{ required: 'Department is required' }}
                             defaultValue=""
                             render={({ field }) => (
                                 <TextField
@@ -55,7 +55,7 @@ export default function RolesandResponsibilities() {
                                     select
                                     margin="none"
                                     fullWidth
-                                    label="Role"
+                                    label="Department"
 
                                     SelectProps={{
                                         // native: true,
@@ -67,12 +67,12 @@ export default function RolesandResponsibilities() {
                                         "fullWidth": true,
                                         "variant": "standard",
                                     }}
-                                    error={Boolean(formState?.errors?.role)}
-                                    helperText={formState?.errors?.role?.message}
+                                    error={Boolean(formState?.errors?.department)}
+                                    helperText={formState?.errors?.department?.message}
                                 >
 
                                     <MenuItem key={1} value={1}>
-                                        asd
+                                        HR
                                     </MenuItem>
 
                                 </TextField>
@@ -83,9 +83,9 @@ export default function RolesandResponsibilities() {
 
                     <Grid item xs={6}>
                         <Controller
-                            name="screen_allocation"
+                            name="designation"
                             control={control}
-                            rules={{ required: 'Screen Allocation is required' }}
+                            rules={{ required: 'Designation is required' }}
                             defaultValue=""
                             render={({ field }) => (
                                 <TextField
@@ -93,7 +93,7 @@ export default function RolesandResponsibilities() {
                                     select
                                     margin="none"
                                     fullWidth
-                                    label="Screen Allocation"
+                                    label="Designation"
 
                                     SelectProps={{
                                         // native: true,
@@ -105,12 +105,12 @@ export default function RolesandResponsibilities() {
                                         "fullWidth": true,
                                         "variant": "standard",
                                     }}
-                                    error={Boolean(formState?.errors?.screen_allocation)}
-                                    helperText={formState?.errors?.screen_allocation?.message}
+                                    error={Boolean(formState?.errors?.designation)}
+                                    helperText={formState?.errors?.designation?.message}
                                 >
 
                                     <MenuItem key={1} value={1}>
-                                        asd
+                                        Manager
                                     </MenuItem>
 
                                 </TextField>

@@ -5,15 +5,15 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useFormContext } from 'react-hook-form';
 import Input from '../../components/ui/forminputs/input';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper'
+import { TextField } from '@mui/material';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Selects from '../../components/ui/forminputs/select'
 import FormPropsDatePickers from '../../components/ui/forminputs/datePicker'
-// import InputFileUpload from '../../components/ui/forminputs/'
 
 const steps = [
   'Employee Details',
@@ -85,6 +85,7 @@ export default function HorizontalLinearStepper() {
 
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
+     
       <CssBaseline />
       <Grid item xs={12} sm={12} md={12} component={Paper} elevation={6} square>
         <Box
@@ -96,7 +97,7 @@ export default function HorizontalLinearStepper() {
             //   alignItems: 'center',
           }}
         >
-
+        <Box>Add Employee</Box>
           <Typography sx={{
             my: 2,
             // mx: 4,
@@ -154,17 +155,17 @@ export default function HorizontalLinearStepper() {
                             control={control}
                             rules={{ required: 'Employee code is required' }}
                             render={({ field }) => (
-                              <Input
+                              <TextField
                                 {...field}
                                 margin="none"
+                                variant="outlined"
                                 fullWidth
                                 label="Employe code"
                                 type="Input"
                                 id="Employeecode"
-                                // autoComplete="current-password"
                                 formcontrolpops={{
                                   "fullWidth": true,
-                                  "variant": "standard",
+                                  // "variant": "standard",
                                 }}
                                 error={Boolean(formState?.errors?.employe_code)}
                                 helperText={formState?.errors?.employe_code?.message}
@@ -174,103 +175,103 @@ export default function HorizontalLinearStepper() {
                         </Grid>
                         <Grid item xs={4}>
                           <Controller
-                            name="password"
+                            name="employee_name"
                             control={control}
-                            rules={{ required: 'Password is required', minLength: 8 }}
+                            rules={{ required: 'Employee name is required', minLength: 8 }}
                             render={({ field }) => (
-                              <Input
+                              <TextField
                                 {...field}
                                 margin="none"
                                 fullWidth
-                                label="Emplyee Name"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                label="First Name"
+                                type="employee_name"
+                                id="employee_name"
+                                autoComplete="employee_name"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",
                                 }}
-                                error={Boolean(formState?.errors?.password)}
-                                helperText={formState?.errors?.password?.message}
+                                error={Boolean(formState?.errors?.employee_name)}
+                                helperText={formState?.errors?.employee_name?.message}
                               />
                             )}
                           />
                         </Grid>
                         <Grid item xs={4}>
                           <Controller
-                            name="password"
+                            name="last_name"
                             control={control}
-                            rules={{ required: 'Password is required', minLength: 8 }}
+                            rules={{ required: 'Last name is required', minLength: 8 }}
                             render={({ field }) => (
-                              <Input
+                              <TextField
                                 {...field}
                                 margin="none"
                                 fullWidth
                                 label="Last Name"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                type="last_name"
+                                id="last_name"
+                                autoComplete="last_name"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",
                                 }}
-                                error={Boolean(formState?.errors?.password)}
-                                helperText={formState?.errors?.password?.message}
+                                error={Boolean(formState?.errors?.last_name)}
+                                helperText={formState?.errors?.last_name?.message}
                               />
                             )}
                           />
                         </Grid>
 
 
-                        <Grid item xs={4}>
+                        <Grid item xs={4} mt={3}>
                           <Controller
-                            name="password"
+                            name="location"
                             control={control}
-                            rules={{ required: 'Password is required', minLength: 8 }}
+                            rules={{ required: 'Location is required', minLength: 8 }}
                             render={({ field }) => (
-                              <Input
+                              <TextField
                                 {...field}
                                 margin="none"
                                 fullWidth
                                 label="Location"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                type="location"
+                                id="location"
+                                autoComplete="location"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",
                                 }}
-                                error={Boolean(formState?.errors?.password)}
-                                helperText={formState?.errors?.password?.message}
+                                error={Boolean(formState?.errors?.location)}
+                                helperText={formState?.errors?.location?.message}
                               />
                             )}
                           />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={4} mt={3}>
                           <Controller
-                            name="password"
+                            name="sub_location"
                             control={control}
-                            rules={{ required: 'Password is required', minLength: 8 }}
+                            rules={{ required: 'Sub location is required', minLength: 8 }}
                             render={({ field }) => (
-                              <Input
+                              <TextField
                                 {...field}
                                 margin="none"
                                 fullWidth
                                 label="Sub Location"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                type="sub_location"
+                                id="sub_location"
+                                autoComplete="sub_location"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",
                                 }}
-                                error={Boolean(formState?.errors?.password)}
-                                helperText={formState?.errors?.password?.message}
+                                error={Boolean(formState?.errors?.sub_location)}
+                                helperText={formState?.errors?.sub_location?.message}
                               />
                             )}
                           />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={4} mt={2}>
                           <Controller
                             name="DOB"
                             control={control}
@@ -296,9 +297,9 @@ export default function HorizontalLinearStepper() {
                         </Grid>
 
 
-                        <Grid item xs={4}>
+                        <Grid item xs={4} mt={2}>
                           <Controller
-                            name="Date of Joining"
+                            name="date_of_joining"
                             control={control}
                             rules={{ required: 'Date of Joining is required', minLength: 8 }}
                             render={({ field }) => (
@@ -308,83 +309,83 @@ export default function HorizontalLinearStepper() {
                                 fullWidth
                                 label="Date of Joining"
                                 type="Date"
-                                // id="password"
-                                // autoComplete="current-password"
+                                id="date_of_joining"
+                                autoComplete="date_of_joining"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",
                                 }}
-                                error={Boolean(formState?.errors?.password)}
-                                helperText={formState?.errors?.password?.message}
+                                error={Boolean(formState?.errors?.date_of_joining)}
+                                helperText={formState?.errors?.date_of_joining?.message}
                               />
                             )}
                           />
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid item xs={4} mt={3}>
                           <Controller
-                            name="password"
+                            name="department"
                             control={control}
-                            rules={{ required: 'Password is required', minLength: 8 }}
+                            rules={{ required: 'Department is required', minLength: 8 }}
                             render={({ field }) => (
-                              <Input
+                              <TextField
                                 {...field}
                                 margin="none"
                                 fullWidth
                                 label="Department"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                type="Department"
+                                id="Department"
+                                autoComplete="Department"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",
                                 }}
-                                error={Boolean(formState?.errors?.password)}
-                                helperText={formState?.errors?.password?.message}
+                                error={Boolean(formState?.errors?.department)}
+                                helperText={formState?.errors?.department?.message}
                               />
                             )}
                           />
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid item xs={4} mt={3}>
                           <Controller
-                            name="password"
+                            name="designation"
                             control={control}
-                            rules={{ required: 'Password is required', minLength: 8 }}
+                            rules={{ required: 'Designation is required', minLength: 8 }}
                             render={({ field }) => (
-                              <Input
+                              <TextField
                                 {...field}
                                 margin="none"
                                 fullWidth
                                 label="Designation"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                type="designation"
+                                id="designation"
+                                autoComplete="designation"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",
                                 }}
-                                error={Boolean(formState?.errors?.password)}
-                                helperText={formState?.errors?.password?.message}
+                                error={Boolean(formState?.errors?.designation)}
+                                helperText={formState?.errors?.designation?.message}
                               />
                             )}
                           />
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid item xs={4} mt={3}>
                           <Controller
-                            name="password"
+                            name="reporting_manager"
                             control={control}
-                            rules={{ required: 'Password is required', minLength: 8 }}
+                            rules={{ required: 'Reportingmanager is required', minLength: 8 }}
                             render={({ field }) => (
                               <Input
                                 {...field}
                                 margin="none"
                                 fullWidth
                                 label="Reporting Manger"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
+                                type="reporting_manager"
+                                id="reporting_manager"
+                                autoComplete="reporting_manager"
                                 formcontrolpops={{
                                   "fullWidth": true,
                                   "variant": "standard",

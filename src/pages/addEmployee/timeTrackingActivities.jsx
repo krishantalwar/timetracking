@@ -39,7 +39,8 @@ export default function TimetracTingActivities() {
 
         <React.Fragment>
             <Typography mt={2}>  Time Tracking Acitivities </Typography>
-            <Box component="form" onSubmit={handleSubmit(onSubmit)} method="post" sx={{ mt: 1, ml: 2 }}>
+            <Box  component={Paper}>
+             <Box component="form" onSubmit={handleSubmit(onSubmit)} method="post" sx={{ mt: 1, ml: 2 }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
                     <Grid item xs={6} >
 
@@ -204,7 +205,7 @@ export default function TimetracTingActivities() {
                     </Grid>
                 </Grid>
                 <Button type="submit" style={{ marginLeft: 5, marginTop: 10 }} > Submit </Button>
-
+                </Box>
             </Box>
         </React.Fragment>
     )

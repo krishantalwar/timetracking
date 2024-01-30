@@ -116,7 +116,7 @@ export default function JobListing() {
   ];
   return (
     <React.Fragment>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container  component={Paper} sx={{ height: '100vh' }}>
         <CssBaseline />
 
         <Grid item xs={12} sm={12} md={12} component={Paper} elevation={6} square>
@@ -196,25 +196,25 @@ export default function JobListing() {
                 <Grid container rowSpacing={1} spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                   <Grid item xs={6}>
                     <Controller
-                      name="shift_code"
+                      name="job_id"
                       control={control}
-                      rules={{ required: 'shift code is required', }}
+                      rules={{ required: 'Job id is required', }}
                       render={({ field }) => (
                         <Input
                           {...field}
                           margin="normal"
                           fullWidth
-                          id="shift_code"
-                          label="Shift Code"
+                          id="job_id"
+                          label="Job ID"
                           type="text"
-                          autoComplete="email"
+                          autoComplete="job_id"
                           autoFocus
                           formcontrolpops={{
                             "fullWidth": true,
                             "variant": "standard",
                           }}
-                          error={Boolean(formState?.errors?.email)}
-                          helperText={formState?.errors?.email?.message}
+                          error={Boolean(formState?.errors?.job_id)}
+                          helperText={formState?.errors?.job_id?.message}
                         />
                       )}
                     />
@@ -222,24 +222,24 @@ export default function JobListing() {
 
                   <Grid item xs={6}>
                     <Controller
-                      name="shift_name"
+                      name="job_description"
                       control={control}
-                      rules={{ required: 'shift name is required', minLength: 8 }}
+                      rules={{ required: 'Job description is required', minLength: 8 }}
                       render={({ field }) => (
                         <Input
                           {...field}
                           margin="normal"
                           fullWidth
-                          label="Shift Name"
+                          label="Job Description"
                           type="text"
-                          id="shift_name"
-                          autoComplete="shift_name"
+                          id="job_description"
+                          autoComplete="job_description"
                           formcontrolpops={{
                             "fullWidth": true,
                             "variant": "standard",
                           }}
-                          error={Boolean(formState?.errors?.password)}
-                          helperText={formState?.errors?.password?.message}
+                          error={Boolean(formState?.errors?.job_description)}
+                          helperText={formState?.errors?.job_description?.message}
                         />
                       )}
                     />
@@ -247,24 +247,24 @@ export default function JobListing() {
 
                   <Grid item xs={6}>
                     <Controller
-                      name="start_time"
+                      name="location"
                       control={control}
-                      rules={{ required: 'Start Time is required', minLength: 8 }}
+                      rules={{ required: 'Location is required', minLength: 8 }}
                       render={({ field }) => (
                         <Input
                           {...field}
                           margin="normal"
                           fullWidth
-                          label="Shift Start Time"
+                          label="Location"
                           type="text"
-                          id="start_time"
-                          autoComplete="start_time"
+                          id="location"
+                          autoComplete="location"
                           formcontrolpops={{
                             "fullWidth": true,
                             "variant": "standard",
                           }}
-                          error={Boolean(formState?.errors?.password)}
-                          helperText={formState?.errors?.password?.message}
+                          error={Boolean(formState?.errors?.location)}
+                          helperText={formState?.errors?.location?.message}
                         />
                       )}
                     />
@@ -272,24 +272,24 @@ export default function JobListing() {
 
                   <Grid item xs={6}>
                     <Controller
-                      name="end_time"
+                      name="sub_location"
                       control={control}
-                      rules={{ required: 'Start End is required', minLength: 8 }}
+                      rules={{ required: 'Sub Location is required', minLength: 8 }}
                       render={({ field }) => (
                         <Input
                           {...field}
                           margin="normal"
                           fullWidth
-                          label="Shift End Time"
+                          label="Sub Location"
                           type="text"
-                          id="end_time"
-                          autoComplete="end_time"
+                          id="sub_location"
+                          autoComplete="sub_location"
                           formcontrolpops={{
                             "fullWidth": true,
                             "variant": "standard",
                           }}
-                          error={Boolean(formState?.errors?.password)}
-                          helperText={formState?.errors?.password?.message}
+                          error={Boolean(formState?.errors?.sub_location)}
+                          helperText={formState?.errors?.sub_location?.message}
                         />
                       )}
                     />
@@ -297,79 +297,28 @@ export default function JobListing() {
 
                   <Grid item xs={6}>
                     <Controller
-                      name="break_time"
+                      name="rating"
                       control={control}
-                      rules={{ required: 'Break End is required', minLength: 8 }}
+                      rules={{ required: 'Rating is required', minLength: 8 }}
                       render={({ field }) => (
                         <Input
                           {...field}
                           margin="normal"
                           fullWidth
-                          label="Break End Time"
+                          label="Rating"
                           type="text"
-                          id="break_time"
-                          autoComplete="break_time"
+                          id="rating"
+                          autoComplete="rating"
                           formcontrolpops={{
                             "fullWidth": true,
                             "variant": "standard",
                           }}
-                          error={Boolean(formState?.errors?.password)}
-                          helperText={formState?.errors?.password?.message}
+                          error={Boolean(formState?.errors?.rating)}
+                          helperText={formState?.errors?.rating?.message}
                         />
                       )}
                     />
                   </Grid>
-
-                  <Grid item xs={6}>
-                    <Controller
-                      name="overtime_start_time"
-                      control={control}
-                      rules={{ required: 'Overtime start Time is required', minLength: 8 }}
-                      render={({ field }) => (
-                        <Input
-                          {...field}
-                          margin="normal"
-                          fullWidth
-                          label="Overtime start Time"
-                          type="text"
-                          id="overtime_start_time"
-                          autoComplete="overtime_start_time"
-                          formcontrolpops={{
-                            "fullWidth": true,
-                            "variant": "standard",
-                          }}
-                          error={Boolean(formState?.errors?.password)}
-                          helperText={formState?.errors?.password?.message}
-                        />
-                      )}
-                    />
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Controller
-                      name="overtime_end_time"
-                      control={control}
-                      rules={{ required: 'Overtime End Time is required', minLength: 8 }}
-                      render={({ field }) => (
-                        <Input
-                          {...field}
-                          margin="normal"
-                          fullWidth
-                          label="Overtime End Time"
-                          type="text"
-                          id="overtime_end_time"
-                          autoComplete="overtime_end_time"
-                          formcontrolpops={{
-                            "fullWidth": true,
-                            "variant": "standard",
-                          }}
-                          error={Boolean(formState?.errors?.overtime_end_time)}
-                          helperText={formState?.errors?.overtime_end_time?.message}
-                        />
-                      )}
-                    />
-                  </Grid>
-
                 </Grid>
 
                 <Button
