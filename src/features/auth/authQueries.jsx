@@ -1,4 +1,4 @@
-import { useLoginMutation, useLogoutMutation, useMeQuery } from './authService';
+import { useLoginMutation, useLogoutMutation, useMeQuery } from "./authService";
 
 export const useLogin = () => {
   const [loginMutation] = useLoginMutation();

@@ -57,10 +57,6 @@ const menu= [
     "name": 'Time Tracking Activities',
     "path": 'timetrackingactivities',
   },
-  // {
-  //   "icon": 'DataUpload',
-  //   "name": 'Data Upload Tool',
-  // },
   {
     "icon": 'Dept_Desig',
     "name": 'Department & Designation',
@@ -69,10 +65,6 @@ const menu= [
   {
     "icon": 'Reports',
     "name": 'Reports',
-  },
-  {
-    "icon": 'Logout',
-    "name": 'Logout',
   }
 
 ];
@@ -98,9 +90,9 @@ export const mainListItems = (
         <React.Suspense key={index} fallback={<div>Loading...</div>}>
           <ListItemButton 
     component={NavLinks} 
-    activeclassname={({ isActive }) =>
-    isActive ? 'active': "ddd"
-  }
+  //   activeclassname={({ isActive }) =>
+  //   isActive ? 'active': "ddd"
+  // }
     to={item.path}
     sx={{ margin: "5px 7px", borderRadius: "7px", }}
     >

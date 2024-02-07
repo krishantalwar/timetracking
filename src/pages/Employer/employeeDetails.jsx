@@ -87,7 +87,7 @@ export default function HorizontalLinearStepper() {
     <Grid container component="main" sx={{ height: '100vh' }}>
      
       <CssBaseline />
-      <Grid item xs={12} sm={12} md={12} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={12} md={12}  component={Paper} elevation={6} square>
         <Box
           sx={{
             my: 2,
@@ -147,7 +147,7 @@ export default function HorizontalLinearStepper() {
                 activeStep == 0 ?
                   (
                     <React.Fragment>
-                      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
+                      <Grid container component="form" rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
 
                         <Grid item xs={4}>
                           <Controller
@@ -682,7 +682,9 @@ export default function HorizontalLinearStepper() {
               </Button>
             )} */}
 
-                <Button onClick={handleNext}>
+                <Button onClick={handleNext}
+                   type="submit"
+                >
                   {activeStep === steps.length - 1 ? 'Finish' : 'Save & Next'}
                 </Button>
               </Box>
