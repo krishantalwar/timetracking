@@ -1,6 +1,6 @@
 // import { compose, applyMiddleware } from 'redux';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 // import logger from 'redux-logger';
 
 // import createSagaMiddleware from 'redux-saga';
@@ -9,22 +9,19 @@ import storage from 'redux-persist/lib/storage';
 
 // import { rootReducer } from './root-reducer';
 
-
-import { configureStore } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/query/react';
-import { apiSlice } from '../features/api/api';
-import { combineReducers } from 'redux';
-import auth from '../features/auth/authSlice';
-
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query/react";
+import { apiSlice } from "../features/api/api";
+import { combineReducers } from "redux";
+import auth from "../features/auth/authSlice";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
   // whitelist: ['cart'],
 };
 
 // const sagaMiddleware = createSagaMiddleware();
-
 
 // const middleWares = [
 //   process.env.NODE_ENV !== 'production' && logger,
@@ -46,28 +43,28 @@ const persistConfig = {
 //   composedEnhancers
 // );
 
- const rootReducer = combineReducers({
-    auth: auth,
-    [apiSlice.reducerPath]: apiSlice.reducer
+const rootReducer = combineReducers({
+  auth: auth,
+  [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // console.log(apiSlice.reducerPath);
 // console.log(apiSlice.reducer);
- export const store = configureStore({
+export const store = configureStore({
   reducer: persistedReducer,
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     // getDefaultMiddleware().concat(sagaMiddleware, apiSlice.middleware),
-        getDefaultMiddleware().concat(apiSlice.middleware),
-      // getDefaultMiddleware().concat(composedEnhancers),
-  devTools: true
-})
+    getDefaultMiddleware().concat(apiSlice.middleware),
+  // getDefaultMiddleware().concat(composedEnhancers),
+  devTools: true,
+});
 
 setupListeners(store.dispatch);
 
 //  store;
-// 
+//
 // sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);
