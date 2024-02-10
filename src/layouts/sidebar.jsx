@@ -59,10 +59,6 @@ const menu = [
     "name": 'Time Tracking Activities',
     "path": 'timetrackingactivities',
   },
-  // {
-  //   "icon": 'DataUpload',
-  //   "name": 'Data Upload Tool',
-  // },
   {
     "icon": 'Dept_Desig',
     "name": 'Department & Designation',
@@ -71,10 +67,6 @@ const menu = [
   {
     "icon": 'Reports',
     "name": 'Reports',
-  },
-  {
-    "icon": 'Logout',
-    "name": 'Logout',
   }
 
 ];

@@ -10,23 +10,35 @@ import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
-
 import { TbUser } from "react-icons/tb";
 import { TbLogout } from "react-icons/tb";
 import { TbLayoutGrid } from "react-icons/tb";
 import { TbSettings2 } from "react-icons/tb";
 import logo from '../assets/Time-management-icons/logo.png'
-
-
-
-
+import { NavLink } from 'react-router-dom';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import LockResetIcon from '@mui/icons-material/LockReset';
 
 import {
   useLogoutsMutation,
   // useLoginGoogleMutation
 } from '../features/auth/authService';
 
-const settings = [{ icon: <TbUser />, label: 'Profile' }, { icon: <TbSettings2 />, label: 'Setting' }, { icon: <TbLayoutGrid />, label: 'Dashboard' }, { icon: <TbLogout />, label: 'Logout' }];
+const NavLinks = React.forwardRef((props, ref) => {
+  // console.log(props.activeclassname)
+  return (
+    <NavLink
+      ref={ref}
+      {...props}
+      className='MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-a16wff-MuiButtonBase-root-MuiListItemButton-root'
+    />
+  )
+});
+
+const settings = [{ icon: <TbUser />, label: 'Profile', Path: '/profile' }, { icon: <LockResetIcon />, label: 'Reset Password', Path: '/password' }, { icon: <TbLogout />, label: 'Logout' }];
+
 
 export default function Navbar(props) {
 
@@ -40,6 +52,8 @@ export default function Navbar(props) {
   const handleOpenUserMenu = props.handleOpenUserMenu
   const anchorElUser = props.anchorElUser
   const AppBar = props.AppBar
+
+
 
 
   const [Logout, {

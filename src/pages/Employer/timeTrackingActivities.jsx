@@ -184,6 +184,7 @@ export default function TimetracTingActivities() {
                             render={({ field }) => (
                                 <Input
                                     {...field}
+                                    InputLabelProps={{ shrink: true }}
                                     margin="none"
                                     fullWidth
                                     label="Date"

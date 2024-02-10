@@ -1,60 +1,56 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
 // import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Copyright from '../../layouts/copyright';
-import Paper from '@mui/material/Paper';
-import graphic from '../../assets/Time-management-icons/graphic.png/'
-import logo from '../../assets/Time-management-icons/logo.png'
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Copyright from "../../layouts/copyright";
+import Paper from "@mui/material/Paper";
+import graphic from "../../assets/Time-management-icons/graphic.png/";
+import logo from "../../assets/Time-management-icons/logo.png";
 
 import {
   useLoginEmailMutation,
   // useLoginGoogleMutation
-} from '../../features/auth/authService';
+} from "../../features/auth/authService";
 
 // import Input  from '../../components/ui/forminputs/input';
-import Input from '../../components/ui/forminputs/input';
+import Input from "../../components/ui/forminputs/input";
 
 // import { useDispatch } from 'react-redux';
 
 // import { setAuth } from '../../features/auth/authSlice';
 // import { GoogleLogin } from '@react-oauth/google';
 
-import { useForm, Controller } from 'react-hook-form';
-
-
-
+import { useForm, Controller } from "react-hook-form";
 
 // const defaultFormFields = {
 //   email: '',
 //   password: '',
 // };
 
-
 export default function SignIn() {
-  const { handleSubmit, control,
+  const {
+    handleSubmit,
+    control,
     // errors,
-    // getValues, getFieldState, 
-    formState
+    // getValues, getFieldState,
+    formState,
     // reset, watch,
-  } = useForm(
-    {
-      mode: 'onChange',
-      defaultValues: {
-        email: "",
-        password: "",
-      },
-    }
-  );
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
   // console.log(errors)
   // console.log(formState);
   // const [Login, { currentData,isUninitialized,isFetching,isLoading
@@ -62,14 +58,17 @@ export default function SignIn() {
   //       isSuccess,
   //       error}] = useLoginMutation()
 
-  const [LoginEmail, {
-    // currentData, 
-    // isFetching,
-    isLoading,
-    // isSuccess, isError,
-    // error,
-    // status
-  }] = useLoginEmailMutation();
+  const [
+    LoginEmail,
+    {
+      // currentData,
+      // isFetching,
+      isLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useLoginEmailMutation();
   // const [LoginGoogle, { isLoadings }] = useLoginGoogleMutation();
 
   // const [APIError, setAPIError] = React.useState('');
@@ -79,8 +78,6 @@ export default function SignIn() {
   const resetFormFields = () => {
     // setFormFields(defaultFormFields);
   };
-
-
 
   const onSubmit = async (data) => {
     // event.preventDefault();
@@ -97,8 +94,8 @@ export default function SignIn() {
       if (!isLoading) {
         await LoginEmail({
           email: data.email,
-          password: data.password
-        }).unwrap()
+          password: data.password,
+        }).unwrap();
       }
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
@@ -117,7 +114,7 @@ export default function SignIn() {
       // console.log(!isLoading);
       // Handle login error
       // setAPIError(error.data)
-      console.error('Login error:', error);
+      console.error("Login error:", error);
     }
   };
 
@@ -126,12 +123,9 @@ export default function SignIn() {
   //   setFormFields({ ...formFields, [name]: value });
   // };
 
-
   const responseMessage = async (response) => {
     // console.log(response);
-
     // console.log(response.clientId);
-
     // await LoginGoogle(response).unwrap()
   };
   const errorMessage = (error) => {
@@ -140,7 +134,7 @@ export default function SignIn() {
 
   return (
     <React.Fragment>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
 
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -148,9 +142,9 @@ export default function SignIn() {
             sx={{
               my: 8,
               mx: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -160,11 +154,16 @@ export default function SignIn() {
             <Typography component="h2" variant="h5">
               Welcome to Time Tracking & shift Managment System
             </Typography>
-            <Box component="form" onSubmit={handleSubmit(onSubmit)} method="post" sx={{ mt: 1 }}>
+            <Box
+              component="form"
+              onSubmit={handleSubmit(onSubmit)}
+              method="post"
+              sx={{ mt: 1 }}
+            >
               <Controller
                 name="email"
                 control={control}
-                rules={{ required: 'Email is required', pattern: /^\S+@\S+$/i }}
+                rules={{ required: "Email is required", pattern: /^\S+@\S+$/i }}
                 render={({ field }) => (
                   <Input
                     {...field}
@@ -176,8 +175,8 @@ export default function SignIn() {
                     autoComplete="email"
                     autoFocus
                     formcontrolpops={{
-                      "fullWidth": true,
-                      "variant": "standard",
+                      fullWidth: true,
+                      variant: "standard",
                     }}
                     error={Boolean(formState?.errors?.email)}
                     helperText={formState?.errors?.email?.message}
@@ -199,8 +198,8 @@ export default function SignIn() {
                     id="password"
                     autoComplete="current-password"
                     formcontrolpops={{
-                      "fullWidth": true,
-                      "variant": "standard",
+                      fullWidth: true,
+                      variant: "standard",
                     }}
                     error={Boolean(formState?.errors?.password)}
                     helperText={formState?.errors?.password?.message}
@@ -225,13 +224,11 @@ export default function SignIn() {
                     Forgot password?
                   </Link>
                 </Grid>
-
               </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>
-
 
         <Grid
           item
@@ -240,11 +237,13 @@ export default function SignIn() {
           md={7}
           sx={{
             backgroundImage: `url(${graphic})`,
-            backgroundRepeat: 'no-repeat',
+            backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
         />
       </Grid>

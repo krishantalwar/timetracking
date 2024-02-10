@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
     reducerPath: 'api', // optional
@@ -17,5 +17,5 @@ export const apiSlice = createApi({
         },
     }),
     tagTypes: ['auth'],
-    endpoints: builder => ({})
+    endpoints: (builder) => ({})
 })

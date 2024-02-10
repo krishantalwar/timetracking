@@ -38,8 +38,8 @@ export default function RolesandResponsibilities() {
     return (
 
         <React.Fragment>
-            <Typography mt={2} >  Roles & Responsibilities</Typography>
             <Box  component={Paper}>
+            <Typography mt={2}  ml={2}>  Roles & Responsibilities</Typography>
             <Box component="form"  onSubmit={handleSubmit(onSubmit)} method="post"  sx={{ mt: 1, ml:2 }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
                     <Grid item xs={6} >
