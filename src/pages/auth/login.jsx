@@ -156,7 +156,7 @@ export default function SignIn() {
             {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               
             </Avatar> */}
-            <img src={logo} style = {{marginBottom:20}} />
+            <img src={logo} style={{ marginBottom: 20 }} />
             <Typography component="h2" variant="h5">
               Welcome to Time Tracking & shift Managment System
             </Typography>
@@ -188,7 +188,7 @@ export default function SignIn() {
               <Controller
                 name="password"
                 control={control}
-                rules={{ required: 'Password is required', minLength: 8 }}
+                rules={{ required: 'Password is required', }}
                 render={({ field }) => (
                   <Input
                     {...field}
@@ -246,7 +246,7 @@ export default function SignIn() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
-        /> 
+        />
       </Grid>
     </React.Fragment>
   );

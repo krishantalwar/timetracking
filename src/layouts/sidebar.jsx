@@ -17,16 +17,18 @@ import BusinessCenterOutlinedIcon from '@mui/icons-material/BusinessCenterOutlin
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const NavLinks = React.forwardRef((props, ref) => {
-  console.log(props.activeclassname)
+  const elementClasses = "MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-a16wff-MuiButtonBase-root-MuiListItemButton-root";
   return (
-  <NavLink
-    ref={ref}
-    {...props}
-    className='MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-a16wff-MuiButtonBase-root-MuiListItemButton-root'
-  />
-)}); 
+    <NavLink
+      ref={ref}
+      {...props}
+      className={({ isActive }) => (isActive ? elementClasses + " activeLink" : elementClasses)}
+    // className='MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-a16wff-MuiButtonBase-root-MuiListItemButton-root' 
+    />
+  )
+});
 
-const menu= [
+const menu = [
   {
     "icon": 'Dashboard',
     "name": 'Dashboard',
@@ -78,16 +80,16 @@ const menu= [
 ];
 
 const iconMapping = {
-  Dashboard:<DashboardIcon/>,
-  Employee:<img src={Profile} alt="" />,
-  Shift:<img src={Profile2} alt="" />,
-  Roles:<DoneSharpIcon/>,
-  TimeTracking:<img src={Time} alt="" />,
-  DataUpload:<img src={Dataimg} alt="" />,
-  postjob:<BusinessCenterOutlinedIcon/>,
-  Dept_Desig:<img src={Dept_desigimg} alt="" />,
-  Reports:<img src={Reportsimg} alt="" />,
-  Logout:<img src={Logoutimg} alt="" />,
+  Dashboard: <DashboardIcon />,
+  Employee: <img src={Profile} alt="" />,
+  Shift: <img src={Profile2} alt="" />,
+  Roles: <DoneSharpIcon />,
+  TimeTracking: <img src={Time} alt="" />,
+  DataUpload: <img src={Dataimg} alt="" />,
+  postjob: <BusinessCenterOutlinedIcon />,
+  Dept_Desig: <img src={Dept_desigimg} alt="" />,
+  Reports: <img src={Reportsimg} alt="" />,
+  Logout: <img src={Logoutimg} alt="" />,
 };
 
 export const mainListItems = (
@@ -96,19 +98,18 @@ export const mainListItems = (
       const IconComponent = iconMapping[item.icon];
       return (
         <React.Suspense key={index} fallback={<div>Loading...</div>}>
-          <ListItemButton 
-    component={NavLinks} 
-    activeclassname={({ isActive }) =>
-    isActive ? 'active': "ddd"
-  }
-    to={item.path}
-    sx={{ margin: "5px 7px", borderRadius: "7px", }}
-    >
-          <ListItemIcon sx={{color:"#364152", minWidth:'30px'}}>
-            {IconComponent}
-      </ListItemIcon >
-            <ListItemText primaryTypographyProps={{fontSize: '12px'}} 
-             primary={item.name} />
+          <ListItemButton
+            component={NavLinks}
+            to={item.path}
+            sx={{
+              margin: "5px 7px", borderRadius: "7px",
+            }}
+          >
+            <ListItemIcon sx={{ color: "#364152", minWidth: '30px' }}>
+              {IconComponent}
+            </ListItemIcon >
+            <ListItemText primaryTypographyProps={{ fontSize: '12px' }}
+              primary={item.name} />
           </ListItemButton>
         </React.Suspense>
       )
@@ -121,15 +122,15 @@ export const secondaryListItems = (
     <ListSubheader component="div" inset>
       Saved reports
     </ListSubheader>
-    <ListItemButton 
-    
-    component={NavLinks} 
-    activeclassname={({ isActive }) =>
-    isActive ? 'active': 'ddd'
-  }
-    to="/"
-    
-    sx={{ margin: "5px 7px", borderRadius: "7px", }}>
+    <ListItemButton
+
+      component={NavLinks}
+      // activeclassname={({ isActive }) =>
+      //   isActive ? 'active' : 'ddd'
+      // }
+      to="/"
+
+      sx={{ margin: "5px 7px", borderRadius: "7px", }}>
       <ListItemIcon sx={{ color: "#364152" }}>
         <AssignmentIcon />
       </ListItemIcon>

@@ -20,23 +20,23 @@ function App() {
   return (
     <Routes>
       <Route element={<Navigation />}>
-        <Route   path='/'  element={<Master />} >
-        <Route index element={<Home />} />
-        <Route path='/shiftmaster' element={<ShiftMaster />} />
-        <Route path='/addEmployee' element={<HorizontalLinearStepper />} />
-        <Route path='/roles&responsibilities' element={<RolesandResponsibilities />} />
-        <Route path='/timetrackingactivities' element={<TimeTrackingActivities />} />
-        <Route path='/joblisting' element={<Joblisting />} />
-        <Route path='/department_designation' element={<DepartmentDesignation />} />
-        {/* <Route path='/wizard' element={<Wizard />} /> */}
-         </Route>
+        <Route path='/' element={<Master />} >
+          <Route index element={<Home />} />
+          <Route path='/shiftmaster' element={<ShiftMaster />} />
+          <Route path='/addEmployee' element={<HorizontalLinearStepper />} />
+          <Route path='/roles&responsibilities' element={<RolesandResponsibilities />} />
+          <Route path='/timetrackingactivities' element={<TimeTrackingActivities />} />
+          <Route path='/joblisting' element={<Joblisting />} />
+          <Route path='/department_designation' element={<DepartmentDesignation />} />
+          {/* <Route path='/wizard' element={<Wizard />} /> */}
+        </Route>
       </Route>
-      
-      <Route   element={<OldMaster/>}>
+
+      <Route element={<OldMaster />}>
         <Route path='login' element={<SignIn />} />
         <Route path='forgot' element={<Forget />} />
       </Route>
-  
+
 
     </Routes>
 

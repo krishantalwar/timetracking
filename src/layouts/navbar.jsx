@@ -15,12 +15,16 @@ import { TbUser } from "react-icons/tb";
 import { TbLogout } from "react-icons/tb";
 import { TbLayoutGrid } from "react-icons/tb";
 import { TbSettings2 } from "react-icons/tb";
-import logo from '../assets/Time-management-icons/logo.png' 
+import logo from '../assets/Time-management-icons/logo.png'
 
 
 
 
 
+import {
+  useLogoutsMutation,
+  // useLoginGoogleMutation
+} from '../features/auth/authService';
 
 const settings = [{ icon: <TbUser />, label: 'Profile' }, { icon: <TbSettings2 />, label: 'Setting' }, { icon: <TbLayoutGrid />, label: 'Dashboard' }, { icon: <TbLogout />, label: 'Logout' }];
 
@@ -38,6 +42,25 @@ export default function Navbar(props) {
   const AppBar = props.AppBar
 
 
+  const [Logout, {
+    // currentData, 
+    // isFetching,
+    isLoading,
+    // isSuccess, isError,
+    // error,
+    // status
+  }] = useLogoutsMutation();
+
+  const logout = async () => {
+    try {
+      console.log(!isLoading);
+      if (!isLoading) {
+        await Logout().unwrap()
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
+  }
   return (
     <AppBar position="absolute" open={open} sx={{ background: "#fff", color: "#000", width: "100%", boxShadow: "none", }}>
       <Toolbar
@@ -99,12 +122,25 @@ export default function Navbar(props) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((item, index) => (
-                <MenuItem key={index} onClick={handleCloseUserMenu} sx={{ display: 'flex', gap: '10px' }}>
-                  {item.icon}
-                  <Typography textAlign="center">{item.label}</Typography>
-                </MenuItem>
-              ))}
+              {settings.map((item, index) => {
+                if (item.label == "Logout") {
+                  return (
+                    <MenuItem key={index} onClick={logout} sx={{ display: 'flex', gap: '10px' }}>
+                      {item.icon}
+                      <Typography textAlign="center">{item.label}</Typography>
+                    </MenuItem>
+                  )
+                } else {
+                  return (
+                    <MenuItem key={index} onClick={handleCloseUserMenu} sx={{ display: 'flex', gap: '10px' }}>
+                      {item.icon}
+                      <Typography textAlign="center">{item.label}</Typography>
+                    </MenuItem>
+                  )
+                }
+
+              }
+              )}
             </Menu>
           </Box>
         </Box>
