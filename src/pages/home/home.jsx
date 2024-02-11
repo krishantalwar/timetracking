@@ -11,7 +11,7 @@ import stat2 from "../../assets/Time-management-icons/stat-2.png";
 import stat3 from "../../assets/Time-management-icons/stat-3.png";
 import stat4 from "../../assets/Time-management-icons/stat-4.png";
 import { Grid } from "@mui/material";
-import EmployeeDetails from "../Employer/employeeDetails.jsx";
+import EmployeeDetails from "../Employer/addEmployee.jsx";
 
 // import Chevrolet from '../Images/Chevrolet.jpg'
 // import Card from '../../components/ui/Card/card';

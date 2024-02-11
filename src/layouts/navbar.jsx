@@ -53,9 +53,6 @@ export default function Navbar(props) {
   const anchorElUser = props.anchorElUser
   const AppBar = props.AppBar
 
-
-
-
   const [Logout, {
     // currentData, 
     // isFetching,
@@ -67,7 +64,7 @@ export default function Navbar(props) {
 
   const logout = async () => {
     try {
-      console.log(!isLoading);
+      // console.log(!isLoading);
       if (!isLoading) {
         await Logout().unwrap()
       }
@@ -75,6 +72,7 @@ export default function Navbar(props) {
       console.error('Login error:', error);
     }
   }
+
   return (
     <AppBar position="absolute" open={open} sx={{ background: "#fff", color: "#000", width: "100%", boxShadow: "none", }}>
       <Toolbar

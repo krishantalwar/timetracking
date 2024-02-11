@@ -38,89 +38,89 @@ export default function RolesandResponsibilities() {
     return (
 
         <React.Fragment>
-            <Box  component={Paper}>
-            <Typography mt={2}  ml={2}>  Roles & Responsibilities</Typography>
-            <Box component="form"  onSubmit={handleSubmit(onSubmit)} method="post"  sx={{ mt: 1, ml:2 }}>
-                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
-                    <Grid item xs={6} >
+            <Box component={Paper}>
+                <Typography mt={2} ml={2}>  Roles & Responsibilities</Typography>
+                <Box component="form" onSubmit={handleSubmit(onSubmit)} method="post" sx={{ mt: 1, ml: 2 }}>
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
+                        <Grid item xs={6} >
 
-                        <Controller
-                            name="role"
-                            control={control}
-                            rules={{ required: 'Role is required' }}
-                            defaultValue=""
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    select
-                                    margin="none"
-                                    fullWidth
-                                    label="Role"
+                            <Controller
+                                name="role"
+                                control={control}
+                                rules={{ required: 'Role is required' }}
+                                defaultValue=""
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        select
+                                        margin="none"
+                                        fullWidth
+                                        label="Role"
 
-                                    SelectProps={{
-                                        // native: true,
-                                        // inputProps: {name: 'screen_allocation' }
-                                    }}
+                                        SelectProps={{
+                                            // native: true,
+                                            // inputProps: {name: 'screen_allocation' }
+                                        }}
 
-                                    defaultValue=""
-                                    formcontrolpops={{
-                                        "fullWidth": true,
-                                        "variant": "standard",
-                                    }}
-                                    error={Boolean(formState?.errors?.role)}
-                                    helperText={formState?.errors?.role?.message}
-                                >
+                                        defaultValue=""
+                                        formcontrolpops={{
+                                            "fullWidth": true,
+                                            "variant": "standard",
+                                        }}
+                                        error={Boolean(formState?.errors?.role)}
+                                        helperText={formState?.errors?.role?.message}
+                                    >
 
-                                    <MenuItem key={1} value={1}>
-                                        asd
-                                    </MenuItem>
+                                        <MenuItem key={1} value={1}>
+                                            asd
+                                        </MenuItem>
 
-                                </TextField>
-                            )}
-                        />
+                                    </TextField>
+                                )}
+                            />
+                        </Grid>
+
+
+                        <Grid item xs={6}>
+                            <Controller
+                                name="screen_allocation"
+                                control={control}
+                                rules={{ required: 'Screen Allocation is required' }}
+                                defaultValue=""
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        select
+                                        margin="none"
+                                        fullWidth
+                                        label="Screen Allocation"
+
+                                        SelectProps={{
+                                            // native: true,
+                                            // inputProps: {name: 'screen_allocation' }
+                                        }}
+
+                                        defaultValue=""
+                                        formcontrolpops={{
+                                            "fullWidth": true,
+                                            "variant": "standard",
+                                        }}
+                                        error={Boolean(formState?.errors?.screen_allocation)}
+                                        helperText={formState?.errors?.screen_allocation?.message}
+                                    >
+
+                                        <MenuItem key={1} value={1}>
+                                            asd
+                                        </MenuItem>
+
+                                    </TextField>
+                                )}
+                            />
+
+                        </Grid>
+
                     </Grid>
-
-
-                    <Grid item xs={6}>
-                        <Controller
-                            name="screen_allocation"
-                            control={control}
-                            rules={{ required: 'Screen Allocation is required' }}
-                            defaultValue=""
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    select
-                                    margin="none"
-                                    fullWidth
-                                    label="Screen Allocation"
-
-                                    SelectProps={{
-                                        // native: true,
-                                        // inputProps: {name: 'screen_allocation' }
-                                    }}
-
-                                    defaultValue=""
-                                    formcontrolpops={{
-                                        "fullWidth": true,
-                                        "variant": "standard",
-                                    }}
-                                    error={Boolean(formState?.errors?.screen_allocation)}
-                                    helperText={formState?.errors?.screen_allocation?.message}
-                                >
-
-                                    <MenuItem key={1} value={1}>
-                                        asd
-                                    </MenuItem>
-
-                                </TextField>
-                            )}
-                        />
-
-                    </Grid>
-                    
-                </Grid>
-                <Button type="submit" style={{marginLeft:5, marginTop:100}} > Submit </Button>
+                    <Button type="submit" style={{ marginLeft: 5, marginTop: 100 }} > Submit </Button>
                 </Box>
             </Box>
         </React.Fragment>

@@ -1,29 +1,26 @@
-import React, { useState } from "react";
-import { Paper } from "@mui/material";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import MenuItem from "@mui/material/MenuItem";
-import {
-  Typography,
-  TextField,
-  Button,
-  Stepper,
-  Step,
-  StepLabel,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+
+import Input from '../../components/ui/forminputs/input';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper'
+import { TextField } from '@mui/material';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import Selects from '../../components/ui/forminputs/select'
+import FormPropsDatePickers from '../../components/ui/forminputs/datePicker'
+
 import {
   useForm,
   Controller,
   FormProvider,
   useFormContext,
 } from "react-hook-form";
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    marginRight: theme.spacing(1),
-  },
-}));
 
 function getSteps() {
   return ["Employee Details", "Shift Allocation", "Role Assigned", "Documents"];
@@ -39,7 +36,9 @@ const EmployeDetails = () => {
     <>
       <Grid
         container
-        component={Paper}
+        sx={{
+          padding: "30px"
+        }}
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
@@ -50,11 +49,12 @@ const EmployeDetails = () => {
             rules={{ required: "Employe code is required." }}
             render={({ field }) => (
               <TextField
+                fullWidth
                 id="employe_code"
                 label="Employee Code"
                 variant="outlined"
                 placeholder="Enter employee code"
-                fullWidth
+
                 margin="normal"
                 {...field}
                 error={Boolean(errors?.employe_code)}
@@ -253,6 +253,7 @@ const EmployeDetails = () => {
     </>
   );
 };
+
 const ShiftAllocation = () => {
   const {
     control,
@@ -263,7 +264,9 @@ const ShiftAllocation = () => {
     <>
       <Grid
         container
-        component={Paper}
+        sx={{
+          padding: "30px"
+        }}
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
@@ -357,7 +360,9 @@ const RoleAssigned = () => {
     <>
       <Grid
         container
-        component={Paper}
+        sx={{
+          padding: "30px"
+        }}
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
@@ -451,7 +456,9 @@ const Documents = () => {
     <>
       <Grid
         container
-        component={Paper}
+        sx={{
+          padding: "30px"
+        }}
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
@@ -504,7 +511,7 @@ const Documents = () => {
             rules={{ required: "Document is required." }}
             render={({ field }) => (
               <TextField
-               InputLabelProps={{ shrink: true }}
+                InputLabelProps={{ shrink: true }}
                 type="file"
                 id="Document"
                 label="Upload Document"
@@ -524,134 +531,201 @@ const Documents = () => {
     </>
   );
 };
-
 function getStepContent(step) {
   switch (step) {
     case 0:
       return <EmployeDetails />;
 
-    case 1:
-      return <ShiftAllocation />;
-    case 2:
-      return <RoleAssigned />;
-    case 3:
-      return <Documents />;
+    // case 1:
+    //   return <ShiftAllocation />;
+    // case 2:
+    //   return <RoleAssigned />;
+    // case 3:
+    //   return <Documents />;
     default:
       return "unknown step";
   }
 }
 
-const Wizard = () => {
-  const classes = useStyles();
-  const methods = useForm({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      nickName: "",
-      emailAddress: "",
-      phoneNumber: "",
-      alternatePhone: "",
-      address1: "",
-      address2: "",
-      country: "",
-      cardNumber: "",
-      cardMonth: "",
-      cardYear: "",
-    },
-  });
-  const [activeStep, setActiveStep] = useState(0);
-  const [skippedSteps, setSkippedSteps] = useState([]);
+export default function HorizontalLinearStepper() {
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [skippedSteps, setSkipped] = React.useState([]);
   const steps = getSteps();
+  const methods = useForm(
+    {
+      mode: 'onChange',
+      defaultValues: {
+        firstName: "",
+        lastName: "",
+        nickName: "",
+        emailAddress: "",
+        phoneNumber: "",
+        alternatePhone: "",
+        address1: "",
+        address2: "",
+        country: "",
+        cardNumber: "",
+        cardMonth: "",
+        cardYear: "",
+      },
+    }
+  );
+
   const isStepOptional = (step) => {
-    return step === 1 || step === 2;
+    return step === 1;
   };
+
+
   const isStepFalied = () => {
     return Boolean(Object.keys(methods.formState.errors).length);
   };
+
   const isStepSkipped = (step) => {
     return skippedSteps.includes(step);
   };
 
+  // const handleNext = () => {
+  //   let newSkipped = skipped;
+  //   if (isStepSkipped(activeStep)) {
+  //     newSkipped = new Set(newSkipped.values());
+  //     newSkipped.delete(activeStep);
+  //   }
+
+  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  //   setSkipped(newSkipped);
+  // };
   const handleNext = (data) => {
     console.log(data);
+    console.log(activeStep);
+    console.log(steps);
     if (activeStep == steps.length - 1) {
-      fetch("https://jsonplaceholder.typicode.com/comments")
-        .then((data) => data.json())
-        .then((res) => {
-          console.log(res);
-          setActiveStep(activeStep + 1);
-        });
+      console.log("ds");
+      // fetch("https://jsonplaceholder.typicode.com/comments")
+      //   .then((data) => data.json())
+      //   .then((res) => {
+      //     console.log(res);
+      setActiveStep((pre) => pre + 1);
+      // });
     } else {
-      setActiveStep(activeStep + 1);
-      setSkippedSteps(
-        skippedSteps.filter((skipItem) => skipItem !== activeStep)
-      );
+      setActiveStep((pre) => pre + 1);
+      // setActiveStep(activeStep + 1);
+      // setSkippedSteps(
+      //   skippedSteps.filter((skipItem) => skipItem !== activeStep)
+      // );
     }
   };
 
   const handleBack = () => {
-    setActiveStep(activeStep - 1);
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleSkip = () => {
-    if (!isStepSkipped(activeStep)) {
-      setSkippedSteps([...skippedSteps, activeStep]);
+    if (!isStepOptional(activeStep)) {
+      // You probably want to guard against something like this,
+      // it should never occur unless someone's actively trying to break something.
+      throw new Error("You can't skip a step that isn't optional.");
     }
-    setActiveStep(activeStep + 1);
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
   };
 
-  // const onSubmit = (data) => {
-  //   console.log(data);
-  // };
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
+
+
   return (
-    <div>
-      <Stepper alternativeLabel activeStep={activeStep}>
-        {steps.map((step, index) => {
-          const labelProps = {};
-          const stepProps = {};
-          //   if (isStepOptional(index)) {
-          //     labelProps.optional = (
-          //       <Typography
-          //         variant="caption"
-          //         align="center"
-          //         style={{ display: "block" }}
-          //       >
-          //         optional
-          //       </Typography>
-          //     );
-          //   }
-          if (isStepFalied() && activeStep == index) {
-            labelProps.error = true;
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
-          return (
-            <Step {...stepProps} key={index}>
-              <StepLabel {...labelProps}>{step}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
+    <Grid container component="main" sx={{ height: '100vh' }}>
 
-      {activeStep === steps.length ? (
-        <Typography variant="h3" align="center">
-          Thank You
-        </Typography>
-      ) : (
-        <>
-          <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(handleNext)}>
-              {getStepContent(activeStep)}
+      <CssBaseline />
+      <Grid item xs={12} sm={12} md={12} component={Paper} elevation={6} square>
+        <Box
+          sx={{
+            my: 2,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            //   alignItems: 'center',
+          }}
+        >
+          <Box>Add Employee</Box>
+          <Typography sx={{
+            my: 2,
+            // mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            mb: 3
+            //   alignItems: 'center',
+          }}>
 
-              <Button
-                className={classes.button}
-                disabled={activeStep === 0}
-                onClick={handleBack}
-              >
-                back
-              </Button>
-              {/* {isStepOptional(activeStep) && (
+          </Typography>
+
+          <Stepper alternativeLabel activeStep={activeStep}>
+            {steps.map((step, index) => {
+              const labelProps = {};
+              const stepProps = {};
+              //   if (isStepOptional(index)) {
+              //     labelProps.optional = (
+              //       <Typography
+              //         variant="caption"
+              //         align="center"
+              //         style={{ display: "block" }}
+              //       >
+              //         optional
+              //       </Typography>
+              //     );
+              //   }
+              if (isStepFalied() && activeStep == index) {
+                labelProps.error = true;
+              }
+              if (isStepSkipped(index)) {
+                stepProps.completed = false;
+              }
+              return (
+                <Step {...stepProps} key={index}>
+                  <StepLabel {...labelProps}>{step}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+          <br />
+          {activeStep === steps.length ? (
+            <React.Fragment>
+              <Typography sx={{ mt: 2, mb: 1 }}>
+                All steps completed - you&apos;re finished
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                <Box sx={{ flex: '1 1 auto' }} />
+                {/* <Button onClick={handleReset}>Reset</Button> */}
+              </Box>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+
+              <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(handleNext)}>
+                  {getStepContent(activeStep)}
+
+                  <Box
+                    align="right"
+                    sx={{
+                      padding: "10px"
+                    }}
+                  >
+                    <Button
+                      // className={classes.button}
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                    >
+                      back
+                    </Button>
+                    {/* {isStepOptional(activeStep) && (
                 <Button
                   className={classes.button}
                   variant="contained"
@@ -661,21 +735,24 @@ const Wizard = () => {
                   skip
                 </Button>
               )} */}
-              <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
-                // onClick={handleNext}
-                type="submit"
-              >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </form>
-          </FormProvider>
-        </>
-      )}
-    </div>
-  );
-};
+                    <Button
+                      // className={classes.button}
+                      variant="contained"
+                      color="primary"
+                      // onClick={handleNext}
+                      type="submit"
+                    >
+                      {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                    </Button>
+                  </Box>
 
-export default Wizard;
+                </form>
+              </FormProvider>
+
+            </React.Fragment>
+          )}
+        </Box>
+      </Grid>
+    </Grid>
+  );
+}
