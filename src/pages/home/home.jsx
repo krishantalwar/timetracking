@@ -11,7 +11,7 @@ import stat2 from "../../assets/Time-management-icons/stat-2.png";
 import stat3 from "../../assets/Time-management-icons/stat-3.png";
 import stat4 from "../../assets/Time-management-icons/stat-4.png";
 import { Grid, Paper } from "@mui/material";
-import EmployeeDetails from "../Employer/employeeDetails.jsx";
+import EmployeeDetails from "../Employer/addEmployee.jsx";
 import Shimmer from "../../components/ui/shimmer/shimmer.jsx";
 import { useState ,useEffect } from "react";
 

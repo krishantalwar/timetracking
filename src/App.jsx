@@ -4,7 +4,7 @@ import Home from "./pages/home/home";
 import Forget from "./pages/auth/forgot";
 import ShiftMaster from "./pages/Employer/shiftmaster";
 import RolesandResponsibilities from "./pages/Employer/roles & responsibilities";
-import HorizontalLinearStepper from "./pages/Employer/employeeDetails";
+import AddEmployee from "./pages/Employer/addEmployee";
 import TimeTrackingActivities from "./pages/Employer/timeTrackingActivities";
 import JobListing from "./pages/Employer/JobListing";
 import JobPost from "./pages/Employer/JobPost";
@@ -13,7 +13,7 @@ import Master from "./layouts/master";
 import OldMaster from "./layouts/oldmaster";
 import SignIn from "./pages/auth/login";
 import DepartmentDesignation from "./pages/Employer/departDesig";
-import Wizard from "./pages/Employer/Wizard";
+import AddEmployeeold from "./pages/Employer/addEmployeeold";
 import Profile from "./pages/Employer/profile";
 import Password from "./pages/Employer/changePassword";
 import TimeTracking from "./pages/Employee/timeTracking";
@@ -24,7 +24,7 @@ function App() {
       <Route element={<Navigation />}>
         <Route path="/" element={<Master />}>
           <Route index element={<Home />} />
-          <Route path="/addEmployee" element={<HorizontalLinearStepper />} />
+          <Route path="/addEmployee" element={<AddEmployee />} />
           <Route path="/shiftmaster" element={<ShiftMaster />} />
           <Route
             path="/roles&responsibilities"
@@ -39,7 +39,7 @@ function App() {
             path="/department_designation"
             element={<DepartmentDesignation />}
           />
-          <Route path="/wizard" element={<Wizard />} />
+          <Route path="/wizzard" element={<AddEmployeeold />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/password" element={<Password />} />
           <Route path="/timetracking" element={<TimeTracking />} />
@@ -47,9 +47,11 @@ function App() {
       </Route>
 
       <Route element={<OldMaster />}>
-        <Route path="login" element={<SignIn />} />
-        <Route path="forgot" element={<Forget />} />
+        <Route path='login' element={<SignIn />} />
+        <Route path='forgot' element={<Forget />} />
       </Route>
+
+
     </Routes>
   );
 }

@@ -8,26 +8,27 @@ import { Navigate } from "react-router-dom";
 const defaultTheme = createTheme();
 
 export default function OldMaster(children) {
- 
+
   const currentUser = useSelector(selectCurrentUser);
   console.log(currentUser);
-  
 
-  return false? (
+
+  return currentUser.isAuthenticated ? (
+
+    <Navigate to="/" />
+  ) : (
     <ThemeProvider theme={defaultTheme}>
       <Outlet />
     </ThemeProvider>
-  ) : (
-    <Navigate to="/" />
   );
   // return (
   //   <Fragment>
-      
+
   //     <ThemeProvider theme={defaultTheme}>
   //       <Outlet/>
   //     </ThemeProvider>
   //   </Fragment>
-  
-    
+
+
   // );
 }

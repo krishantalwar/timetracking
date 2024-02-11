@@ -7,8 +7,8 @@ const defaultTheme = createTheme();
 
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
-  console.log(currentUser);
-  return true ? (
+  // console.log(currentUser);
+  return currentUser.isAuthenticated ? (
     <ThemeProvider theme={defaultTheme}>
       <Outlet />
     </ThemeProvider>

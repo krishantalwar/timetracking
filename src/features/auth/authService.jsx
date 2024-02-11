@@ -7,7 +7,7 @@ import {
 } from "../api/api";
 
 
-import { setAuth } from './authSlice';
+import { setAuth, logout } from './authSlice';
 
 
 // const authAdapter = createEntityAdapter();
@@ -19,7 +19,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         loginEmail: builder.mutation({
             query: (credentials) => ({
-                url: 'api/login',
+                url: 'authentication/login',
                 method: 'POST',
                 body: credentials
             }),
@@ -66,12 +66,15 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 try {
                     const { data } = await queryFulfilled;
                     console.log(data);
+                    // cookie('ssstoken', "sss", { httpOnly: true, secure: true, path: "/" });
+                    document.cookie = 'authToken=asssadas; path=/; secure; HttpOnly';
 
                     dispatch(setAuth(data));
                 } catch (error) {
                     console.log("error", error)
                 }
             },
+
         }),
         loginGoogle: builder.mutation({
             query: (credentials) => {
@@ -132,14 +135,26 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
             },
         }),
-        logout: builder.mutation({
+        logouts: builder.mutation({
             query: () => ({
-                url: '/auth/logout',
+                url: 'authentication/logout',
                 method: 'POST',
             }),
-            onSuccess: (_, __, api, store) => {
-                // Update the React Query cache directly
-                api.updateQueryData('api.me', () => null);
+            async onQueryStarted(args, { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }) {
+                console.log(args);
+                // console.log(await getState());
+                // console.log(await requestId);
+                // console.log(await extra);
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log(data);
+                    // cookie('ssstoken', "sss", { httpOnly: true, secure: true, path: "/" });
+                    // document.cookie = 'authToken=asssadas; path=/; secure; HttpOnly';
+
+                    dispatch(logout());
+                } catch (error) {
+                    console.log("error", error)
+                }
             },
         }),
         me: builder.query({
@@ -147,13 +162,12 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
     }),
     overrideExisting: false,
-
 })
 
 export const {
     useLoginEmailMutation,
     useLoginGoogleMutation,
-    useLogoutMutation,
+    useLogoutsMutation,
     useMeQuery
 } = extendedApiSlice
 

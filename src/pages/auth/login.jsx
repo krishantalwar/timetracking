@@ -187,7 +187,7 @@ export default function SignIn() {
               <Controller
                 name="password"
                 control={control}
-                rules={{ required: "Password is required", minLength: 8 }}
+                rules={{ required: 'Password is required', }}
                 render={({ field }) => (
                   <Input
                     {...field}
