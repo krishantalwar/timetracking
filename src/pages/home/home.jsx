@@ -10,18 +10,32 @@ import stat1 from "../../assets/Time-management-icons/stat-1.png";
 import stat2 from "../../assets/Time-management-icons/stat-2.png";
 import stat3 from "../../assets/Time-management-icons/stat-3.png";
 import stat4 from "../../assets/Time-management-icons/stat-4.png";
-import { Grid } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import EmployeeDetails from "../Employer/employeeDetails.jsx";
-
-// import Chevrolet from '../Images/Chevrolet.jpg'
-// import Card from '../../components/ui/Card/card';
+import Shimmer from "../../components/ui/shimmer/shimmer.jsx";
+import { useState ,useEffect } from "react";
 
 export default function Home(props = { mt: 8, mb: 4 }) {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000); 
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
-      <h2>All Location</h2>
-      <div style={{ margin: "0%", display: "flex" }}>
-        <Box sx={{ flex: 1, display: "flex" }}>
+       {isLoading ? (
+      <Shimmer/> ): (
+        <Grid component={Paper} minHeight={'100vh'}>
+          <h2>All Location</h2>
+      <div  style={{ margin: "0%", display: "flex" }}>
+        <Box  
+        component={Paper}
+        sx={{ flex: 1, display: "flex" }}>
           <Card sx={{ width: "100%", backgroundColor: "lightgreen" }}>
             <CardContent>
               <Box sx={{ display: "flex", color: "#fff" }}>
@@ -34,7 +48,7 @@ export default function Home(props = { mt: 8, mb: 4 }) {
           </Card>
         </Box>
         <Box sx={{ flex: 1, display: "flex" }}>
-          <Card
+          <Card 
             sx={{ width: "100%", backgroundColor: "orange", marginLeft: 5 }}
           >
             <CardContent>
@@ -74,6 +88,12 @@ export default function Home(props = { mt: 8, mb: 4 }) {
           </Card>
         </Box>
       </div>
+        </Grid>
+      
+      )
+    }
     </>
+   
+      
   );
 }
