@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 
 import {
   useCreateShiftMasterMutation,
-  useGetShiftQuery
+  useGetShiftQuery,
 } from "../../features/shiftmaster/shiftService";
 
 import Input from "../../components/ui/forminputs/input";
@@ -18,9 +18,7 @@ import BasicModal from "../../components/ui/modal/modal";
 
 import Table from "../../components/ui/table/table";
 
-
 import { useForm, Controller } from "react-hook-form";
-
 
 import { Add } from "@mui/icons-material";
 
@@ -32,9 +30,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 
 import { TextField } from "@mui/material";
-
-
-
 
 export default function ShiftMaster() {
   const {
@@ -58,7 +53,6 @@ export default function ShiftMaster() {
     },
   });
 
-
   const [
     CreateShiftMaster,
     {
@@ -71,16 +65,14 @@ export default function ShiftMaster() {
     },
   ] = useCreateShiftMasterMutation();
 
-
   const {
     data: shiftmasterDate,
     isLoading: shiftmasterisLoading,
     isFetching: shiftmasterisFetching,
     isSuccess: shiftmasterisSuccess,
     isError: shiftmasterisError,
-    error: shiftmastererror
-  } = useGetShiftQuery('getShift')
-
+    error: shiftmastererror,
+  } = useGetShiftQuery("getShift");
 
   let content = "";
   if (shiftmasterisLoading) {
@@ -88,13 +80,11 @@ export default function ShiftMaster() {
   } else if (shiftmasterisSuccess) {
     // console.log(shiftmasterDate)
     content = shiftmasterDate.map((datas) => {
-
       return (
         <TableRow
           key={datas.shiftid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-
           <TableCell align="right">{datas?.shift_code}</TableCell>
           <TableCell component="th" scope="row">
             {datas?.name}
@@ -108,7 +98,6 @@ export default function ShiftMaster() {
           </TableCell>
         </TableRow>
       );
-
     });
   } else if (shiftmasterisError) {
     content = <p>{shiftmastererror}</p>;
@@ -118,8 +107,6 @@ export default function ShiftMaster() {
   // console.log(shiftmasterisFetching)
   // console.log(shiftmasterisError)
   // console.log(shiftmastererror)
-
-
 
   const onSubmit = async (data) => {
     // event.preventDefault();
@@ -138,7 +125,6 @@ export default function ShiftMaster() {
         handleClose();
         reset();
       }
-
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
 
@@ -164,7 +150,6 @@ export default function ShiftMaster() {
   //   const { name, value } = event.target;
   //   setFormFields({ ...formFields, [name]: value });
   // };
-
 
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -207,7 +192,6 @@ export default function ShiftMaster() {
             >
               <Grid item xs={10}>
                 <Typography>Shift Master</Typography>
-
               </Grid>
 
               <Grid item xs={2}>
@@ -230,22 +214,25 @@ export default function ShiftMaster() {
                   <TableCell align="right">Action</TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {content}
-
-              </TableBody>
+              <TableBody>{content}</TableBody>
             </Table>
 
             <BasicModal isOpen={isOpen} onClose={handleClose}>
-              <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
+              <Grid
+                container
+                rowSpacing={1}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              >
                 <Grid item xs={10}>
-                  <Typography>
-                    Add Shift
-                  </Typography>
+                  <Typography>Add Shift</Typography>
                 </Grid>
 
                 <Grid item xs={2}>
-                  <Button onClick={handleClose} variant="outlined" startIcon={<Add />}>
+                  <Button
+                    onClick={handleClose}
+                    variant="outlined"
+                    startIcon={<Add />}
+                  >
                     Close
                   </Button>
                 </Grid>
@@ -295,7 +282,7 @@ export default function ShiftMaster() {
                       name="name"
                       control={control}
                       rules={{
-                        required: "shift name is required"
+                        required: "shift name is required",
                       }}
                       render={({ field }) => (
                         <Input
@@ -317,31 +304,29 @@ export default function ShiftMaster() {
                     />
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid item xs={6} mt={2}>
                     <Controller
                       name="start_time"
                       control={control}
                       rules={{
-                        required: "Start Time is required"
+                        required: "Start Time is required",
                       }}
                       defaultValue={null}
                       render={({ field }) => (
                         <TextField
+                        InputLabelProps={{ shrink: true }}
                           {...field}
                           fullWidth
-
                           id="start_time"
                           label="Shift Start Time"
                           formcontrolpops={{
-                            "fullWidth": true,
-                            "variant": "standard",
+                            fullWidth: true,
+                            variant: "standard",
                           }}
                           type="time"
                           error={Boolean(formState?.errors?.start_time)}
                           helperText={formState?.errors?.start_time?.message}
-                        >
-                        </TextField>
-
+                        ></TextField>
                       )}
                     />
                   </Grid>
@@ -351,12 +336,11 @@ export default function ShiftMaster() {
                       name="end_time"
                       control={control}
                       rules={{
-                        required: "Start End is required"
+                        required: "Start End is required",
                       }}
                       render={({ field }) => (
-
-
                         <TextField
+                        InputLabelProps={{ shrink: true }}
                           {...field}
                           margin="normal"
                           fullWidth
@@ -370,10 +354,7 @@ export default function ShiftMaster() {
                           }}
                           error={Boolean(formState?.errors?.end_time)}
                           helperText={formState?.errors?.end_time?.message}
-
-                        >
-
-                        </TextField>
+                        ></TextField>
                       )}
                     />
                   </Grid>
@@ -382,28 +363,26 @@ export default function ShiftMaster() {
                       name="break_start_time"
                       control={control}
                       rules={{
-                        required: "Break start is required"
+                        required: "Break start is required",
                       }}
                       render={({ field }) => (
-
-
                         <TextField
+                        InputLabelProps={{ shrink: true }}
                           {...field}
                           margin="normal"
                           fullWidth
                           label="Break Start Time"
                           type="time"
                           id="break_start_time"
-
                           formcontrolpops={{
                             fullWidth: true,
                             variant: "standard",
                           }}
                           error={Boolean(formState?.errors?.break_start_time)}
-                          helperText={formState?.errors?.break_start_time?.message}
-
-                        >
-                        </TextField>
+                          helperText={
+                            formState?.errors?.break_start_time?.message
+                          }
+                        ></TextField>
                       )}
                     />
                   </Grid>
@@ -413,47 +392,40 @@ export default function ShiftMaster() {
                       name="break_end_time"
                       control={control}
                       rules={{
-                        required: "Break End is required"
+                        required: "Break End is required",
                       }}
                       render={({ field }) => (
-
-
                         <TextField
+                        InputLabelProps={{ shrink: true }}
                           {...field}
                           margin="normal"
                           fullWidth
                           label="Break End Time"
                           type="time"
                           id="break_end_time"
-
                           formcontrolpops={{
                             fullWidth: true,
                             variant: "standard",
                           }}
                           error={Boolean(formState?.errors?.break_end_time)}
-                          helperText={formState?.errors?.break_end_time?.message}
-
-                        >
-
-                        </TextField>
+                          helperText={
+                            formState?.errors?.break_end_time?.message
+                          }
+                        ></TextField>
                       )}
                     />
                   </Grid>
-
 
                   <Grid item xs={6}>
                     <Controller
                       name="overtime_start_time"
                       control={control}
                       rules={{
-                        required: "Overtime start Time is required"
+                        required: "Overtime start Time is required",
                       }}
                       render={({ field }) => (
-
-
-
                         <TextField
-
+                          InputLabelProps={{ shrink: true }}
                           {...field}
                           margin="normal"
                           fullWidth
@@ -465,12 +437,13 @@ export default function ShiftMaster() {
                             fullWidth: true,
                             variant: "standard",
                           }}
-                          error={Boolean(formState?.errors?.overtime_start_time)}
-                          helperText={formState?.errors?.overtime_start_time?.message}
-
-                        >
-
-                        </TextField>
+                          error={Boolean(
+                            formState?.errors?.overtime_start_time
+                          )}
+                          helperText={
+                            formState?.errors?.overtime_start_time?.message
+                          }
+                        ></TextField>
                       )}
                     />
                   </Grid>
@@ -481,11 +454,10 @@ export default function ShiftMaster() {
                       control={control}
                       rules={{
                         required: "Overtime End Time is required",
-
                       }}
                       render={({ field }) => (
-
                         <TextField
+                        InputLabelProps={{ shrink: true }}
                           {...field}
                           margin="normal"
                           fullWidth
@@ -501,8 +473,7 @@ export default function ShiftMaster() {
                           helperText={
                             formState?.errors?.overtime_end_time?.message
                           }
-                        >
-                        </TextField>
+                        ></TextField>
                       )}
                     />
                   </Grid>
@@ -522,7 +493,7 @@ export default function ShiftMaster() {
             <Copyright sx={{ mt: 5 }} />
           </Box>
         </Grid>
-      </Grid >
-    </React.Fragment >
+      </Grid>
+    </React.Fragment>
   );
 }

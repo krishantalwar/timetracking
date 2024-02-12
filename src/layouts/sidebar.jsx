@@ -45,6 +45,16 @@ const menu = [
     "path": 'shiftmaster',
   },
   {
+    "icon": 'designation',
+    "name": 'Designation',
+    "path": '/designation',
+  },
+  {
+    "icon": 'department',
+    "name": 'Department',
+    "path": '/department',
+  },
+  {
     "icon": 'Roles',
     "name": 'Roles & Responsibilities',
     "path": 'roles&responsibilities',

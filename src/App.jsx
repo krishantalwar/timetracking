@@ -6,8 +6,6 @@ import ShiftMaster from "./pages/Employer/shiftmaster";
 import RolesandResponsibilities from "./pages/Employer/roles & responsibilities";
 import AddEmployee from "./pages/Employer/addEmployee";
 import TimeTrackingActivities from "./pages/Employer/timeTrackingActivities";
-import JobListing from "./pages/Employer/JobListing";
-import JobPost from "./pages/Employer/JobPost";
 import Joblisting from "./pages/Employer/JobListing";
 import Master from "./layouts/master";
 import OldMaster from "./layouts/oldmaster";
@@ -17,6 +15,8 @@ import AddEmployeeold from "./pages/Employer/addEmployeeold";
 import Profile from "./pages/Employer/profile";
 import Password from "./pages/Employer/changePassword";
 import TimeTracking from "./pages/Employee/timeTracking";
+import Designation from './pages/Employer/designation'
+import Department from './pages/Employer/department'
 
 function App() {
   return (
@@ -43,6 +43,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/password" element={<Password />} />
           <Route path="/timetracking" element={<TimeTracking />} />
+          <Route path="/designation" element={<Designation />} />
+          <Route path="/department" element={<Department />} />
         </Route>
       </Route>
 

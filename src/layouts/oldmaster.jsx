@@ -14,6 +14,7 @@ export default function OldMaster(children) {
 
 
   return currentUser.isAuthenticated ? (
+    // return false ? (
 
     <Navigate to="/" />
   ) : (
