@@ -84,7 +84,12 @@ export default function ShiftMaster() {
 
   let content = "";
   if (shiftmasterisLoading) {
-    content = <p>Loading...</p>;
+    content = <TableRow
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell align="right">Loading...</TableCell>
+    </TableRow>
+      ;
   } else if (shiftmasterisSuccess) {
     // console.log(shiftmasterDate)
     content = shiftmasterDate.map((datas) => {
@@ -111,7 +116,7 @@ export default function ShiftMaster() {
 
     });
   } else if (shiftmasterisError) {
-    content = <p>{shiftmastererror}</p>;
+    content = <Typography>{shiftmastererror}</Typography>;
   }
   // console.log(content)
   // console.log(shiftmasterisLoading)
