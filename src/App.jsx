@@ -4,6 +4,7 @@ import Home from "./pages/home/home";
 import Forget from "./pages/auth/forgot";
 import ShiftMaster from "./pages/Employer/shiftmaster";
 import RolesandResponsibilities from "./pages/Employer/roles & responsibilities";
+// import RolesandResponsibilities from "./pages/Employer/rolesresponsibilities";
 import AddEmployee from "./pages/Employer/addEmployee";
 import TimeTrackingActivities from "./pages/Employer/timeTrackingActivities";
 import Joblisting from "./pages/Employer/JobListing";

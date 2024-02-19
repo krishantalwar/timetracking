@@ -26,13 +26,13 @@ export default function RolesandResponsibilities() {
             mode: 'onChange',
             defaultValues: {
                 role: "",
-                screen_allocation: "",
+                screen_allocation: [],
             },
         }
     );
     console.log(formState?.errors?.role?.message)
     const onSubmit = async (data) => {
-
+        console.log(data)
     }
 
     return (
@@ -86,7 +86,7 @@ export default function RolesandResponsibilities() {
                                 name="screen_allocation"
                                 control={control}
                                 rules={{ required: 'Screen Allocation is required' }}
-                                defaultValue=""
+
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
@@ -94,13 +94,14 @@ export default function RolesandResponsibilities() {
                                         margin="none"
                                         fullWidth
                                         label="Screen Allocation"
-
+                                        multiple
                                         SelectProps={{
+                                            multiple: true,
+
                                             // native: true,
                                             // inputProps: {name: 'screen_allocation' }
                                         }}
 
-                                        defaultValue=""
                                         formcontrolpops={{
                                             "fullWidth": true,
                                             "variant": "standard",
@@ -111,6 +112,9 @@ export default function RolesandResponsibilities() {
 
                                         <MenuItem key={1} value={1}>
                                             asd
+                                        </MenuItem>
+                                        <MenuItem key={2} value={2}>
+                                            asddd
                                         </MenuItem>
 
                                     </TextField>
@@ -123,7 +127,7 @@ export default function RolesandResponsibilities() {
                     <Button type="submit" style={{ marginLeft: 5, marginTop: 100 }} > Submit </Button>
                 </Box>
             </Box>
-        </React.Fragment>
+        </React.Fragment >
     )
 };
 

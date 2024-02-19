@@ -8,9 +8,10 @@ import Copyright from "../../layouts/copyright";
 import Paper from "@mui/material/Paper";
 
 import {
-  useCreateShiftMasterMutation,
-  useGetShiftQuery,
-} from "../../features/shiftmaster/shiftService";
+  useCreateDesignationMasterMutation,
+  useGetDesignationQuery,
+} from "../../features/designation/designationService";
+
 import Input from "../../components/ui/forminputs/input";
 import BasicModal from "../../components/ui/modal/modal";
 import Table from "../../components/ui/table/table";
@@ -34,14 +35,14 @@ export default function Designation() {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-        designation_code:"",
-        designation_name:"",
+      designation_code: "",
+      designation_name: "",
 
     },
   });
 
   const [
-    CreateShiftMaster,
+    CreateDesignationMaster,
     {
       // currentData,
       // isFetching,
@@ -50,44 +51,58 @@ export default function Designation() {
       // error,
       // status
     },
-  ] = useCreateShiftMasterMutation();
+  ] = useCreateDesignationMasterMutation();
 
   const {
-    data: shiftmasterDate,
-    isLoading: shiftmasterisLoading,
-    isFetching: shiftmasterisFetching,
-    isSuccess: shiftmasterisSuccess,
-    isError: shiftmasterisError,
-    error: shiftmastererror,
-  } = useGetShiftQuery("getShift");
+    data: designationmasterDate,
+    isLoading: designationmasterisLoading,
+    isFetching: designationmasterisFetching,
+    isSuccess: designationmasterisSuccess,
+    isError: designationmasterisError,
+    error: designationmastererror,
+  } = useGetDesignationQuery("getDesignation");
 
   let content = "";
-  if (shiftmasterisLoading) {
-    content = <p>Loading...</p>;
-  } else if (shiftmasterisSuccess) {
-    // console.log(shiftmasterDate)
-    content = shiftmasterDate.map((datas) => {
+  console.log(designationmasterisLoading)
+  console.log(designationmasterisError)
+  console.log(designationmastererror)
+  console.log(designationmasterDate)
+  console.log(designationmasterisSuccess)
+  if (designationmasterisLoading) {
+    content = <TableRow
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell align="right">Loading...</TableCell>
+    </TableRow>
+      ;
+  } else if (designationmasterisSuccess) {
+    console.log(designationmasterDate)
+
+    content = designationmasterDate.map((datas, index) => {
       return (
         <TableRow
-          key={datas.shiftid}
+          key={datas.designationid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="right">{datas?.shift_code}</TableCell>
+          <TableCell align="right">{datas?.designation_code}</TableCell>
           <TableCell component="th" scope="row">
             {datas?.name}
           </TableCell>
-          <TableCell align="right">{datas?.start_time}</TableCell>
-          <TableCell align="right">{datas?.end_time}</TableCell>
 
           <TableCell align="right">
-            <Edit key={datas.shiftid} />
-            <Delete key={datas.shiftid} />
+            <Edit key={datas.designationid + index.toString()} />
+            <Delete key={datas.designationid + index.toString() + index.toString()} />
           </TableCell>
         </TableRow>
       );
     });
-  } else if (shiftmasterisError) {
-    content = <p>{shiftmastererror}</p>;
+  } else if (designationmasterisError) {
+    content = <TableRow
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell align="right">{designationmastererror}</TableCell>
+    </TableRow>
+      ;
   }
 
   const onSubmit = async (data) => {
@@ -95,7 +110,10 @@ export default function Designation() {
       console.log(isLoading);
       console.log(!isLoading);
       if (!isLoading) {
-        await CreateShiftMaster(data).unwrap();
+        await CreateDesignationMaster({
+          // code: data.designation_code,
+          name: data.designation_name,
+        }).unwrap();
         handleClose();
         reset();
       }
@@ -214,7 +232,7 @@ export default function Designation() {
                           id="designation_code"
                           label="Designation Code"
                           type="text"
-                          readonly
+                          readOnly
                           disabled
                           formcontrolpops={{
                             fullWidth: true,

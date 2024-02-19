@@ -84,7 +84,7 @@ export default function ShiftMaster() {
       ;
   } else if (shiftmasterisSuccess) {
     // console.log(shiftmasterDate)
-    content = shiftmasterDate.map((datas) => {
+    content = shiftmasterDate.map((datas, index) => {
       return (
         <TableRow
           key={datas.shiftid}
@@ -98,14 +98,19 @@ export default function ShiftMaster() {
           <TableCell align="right">{datas?.end_time}</TableCell>
 
           <TableCell align="right">
-            <Edit key={datas.shiftid} />
-            <Delete key={datas.shiftid} />
+            <Edit key={datas.shiftid + index.toString()} />
+            <Delete key={datas.shiftid + index.toString() + index.toString()} />
           </TableCell>
         </TableRow>
       );
     });
   } else if (shiftmasterisError) {
-    content = <Typography>{shiftmastererror}</Typography>;
+    content = <TableRow
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell align="right">{shiftmastererror}</TableCell>
+    </TableRow>
+      ;
   }
   // console.log(content)
   // console.log(shiftmasterisLoading)
@@ -269,7 +274,7 @@ export default function ShiftMaster() {
                           id="shift_code"
                           label="Shift Code"
                           type="text"
-                          readonly
+                          readOnly
                           disabled
                           formcontrolpops={{
                             fullWidth: true,
@@ -319,7 +324,7 @@ export default function ShiftMaster() {
                       defaultValue={null}
                       render={({ field }) => (
                         <TextField
-                        InputLabelProps={{ shrink: true }}
+                          InputLabelProps={{ shrink: true }}
                           {...field}
                           fullWidth
                           id="start_time"
@@ -345,7 +350,7 @@ export default function ShiftMaster() {
                       }}
                       render={({ field }) => (
                         <TextField
-                        InputLabelProps={{ shrink: true }}
+                          InputLabelProps={{ shrink: true }}
                           {...field}
                           margin="normal"
                           fullWidth
@@ -372,7 +377,7 @@ export default function ShiftMaster() {
                       }}
                       render={({ field }) => (
                         <TextField
-                        InputLabelProps={{ shrink: true }}
+                          InputLabelProps={{ shrink: true }}
                           {...field}
                           margin="normal"
                           fullWidth
@@ -401,7 +406,7 @@ export default function ShiftMaster() {
                       }}
                       render={({ field }) => (
                         <TextField
-                        InputLabelProps={{ shrink: true }}
+                          InputLabelProps={{ shrink: true }}
                           {...field}
                           margin="normal"
                           fullWidth
@@ -462,7 +467,7 @@ export default function ShiftMaster() {
                       }}
                       render={({ field }) => (
                         <TextField
-                        InputLabelProps={{ shrink: true }}
+                          InputLabelProps={{ shrink: true }}
                           {...field}
                           margin="normal"
                           fullWidth

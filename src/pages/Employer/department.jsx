@@ -8,9 +8,9 @@ import Copyright from "../../layouts/copyright";
 import Paper from "@mui/material/Paper";
 
 import {
-  useCreateShiftMasterMutation,
-  useGetShiftQuery,
-} from "../../features/shiftmaster/shiftService";
+  useCreateDepartmentnMasterMutation,
+  useGetDepartmentQuery,
+} from "../../features/department/departmentService";
 import Input from "../../components/ui/forminputs/input";
 import BasicModal from "../../components/ui/modal/modal";
 import Table from "../../components/ui/table/table";
@@ -34,14 +34,14 @@ export default function Designation() {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-        department_code:"",
-        department_name:"",
+      department_code: "",
+      department_name: "",
 
     },
   });
 
   const [
-    CreateShiftMaster,
+    CreateDepartmentMaster,
     {
       // currentData,
       // isFetching,
@@ -50,52 +50,79 @@ export default function Designation() {
       // error,
       // status
     },
-  ] = useCreateShiftMasterMutation();
+  ] = useCreateDepartmentnMasterMutation();
 
   const {
-    data: shiftmasterDate,
-    isLoading: shiftmasterisLoading,
-    isFetching: shiftmasterisFetching,
-    isSuccess: shiftmasterisSuccess,
-    isError: shiftmasterisError,
-    error: shiftmastererror,
-  } = useGetShiftQuery("getShift");
+    data: DepartmentmasterDate,
+    isLoading: DepartmentmasterisLoading,
+    isFetching: DepartmentmasterisFetching,
+    isSuccess: DepartmentmasterisSuccess,
+    isError: DepartmentmasterisError,
+    error: Departmentmastererror,
+  } = useGetDepartmentQuery("getDepartment");
 
   let content = "";
-  if (shiftmasterisLoading) {
-    content = <p>Loading...</p>;
-  } else if (shiftmasterisSuccess) {
-    // console.log(shiftmasterDate)
-    content = shiftmasterDate.map((datas) => {
+  if (DepartmentmasterisLoading) {
+    content = <TableRow
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell align="right">Loading...</TableCell>
+    </TableRow>
+      ;
+    console.log(DepartmentmasterisFetching)
+    console.log(!DepartmentmasterisFetching)
+
+  } else if (DepartmentmasterisSuccess) {
+    // console.log(DepartmentmasterDate)
+    console.log(DepartmentmasterisFetching)
+    console.log(!DepartmentmasterisFetching)
+
+    content = DepartmentmasterDate.map((datas, index) => {
       return (
         <TableRow
-          key={datas.shiftid}
+          key={datas.departmentid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="right">{datas?.shift_code}</TableCell>
+          <TableCell align="right">{datas?.department_code}</TableCell>
           <TableCell component="th" scope="row">
             {datas?.name}
           </TableCell>
-          <TableCell align="right">{datas?.start_time}</TableCell>
-          <TableCell align="right">{datas?.end_time}</TableCell>
 
           <TableCell align="right">
-            <Edit key={datas.shiftid} />
-            <Delete key={datas.shiftid} />
+            <Edit key={datas.departmentid + index.toString()} />
+            <Delete key={datas.departmentid + index.toString() + index.toString()} />
           </TableCell>
         </TableRow>
       );
     });
-  } else if (shiftmasterisError) {
-    content = <p>{shiftmastererror}</p>;
+
+    content = DepartmentmasterDate.length > 0 ? content : <TableRow
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell align="right">no data</TableCell>
+    </TableRow>
+      ;
+  } else if (DepartmentmasterisError) {
+
+    content = <TableRow
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell align="right">{Departmentmastererror}</TableCell>
+    </TableRow>
+      ;
   }
+
+  console.log(DepartmentmasterisFetching)
+  console.log(!DepartmentmasterisFetching)
 
   const onSubmit = async (data) => {
     try {
       console.log(isLoading);
       console.log(!isLoading);
       if (!isLoading) {
-        await CreateShiftMaster(data).unwrap();
+        await CreateDepartmentMaster({
+          name: data.department_name,
+        }).unwrap();
         handleClose();
         reset();
       }

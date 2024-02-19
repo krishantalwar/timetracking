@@ -4,6 +4,7 @@ export const apiSlice = createApi({
     reducerPath: 'api', // optional
     baseQuery: fetchBaseQuery({
         baseUrl: 'http://localhost:3001/',
+        credentials: "include",
         prepareHeaders: (headers, { getState }) => {
             const user = getState()?.auth
 
@@ -15,6 +16,7 @@ export const apiSlice = createApi({
 
             return headers
         },
+
     }),
     tagTypes: ['auth', 'shiftmaster'],
     endpoints: (builder) => ({})

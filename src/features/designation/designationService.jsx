@@ -17,10 +17,10 @@ import {
 // cityslicka
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        getShift: builder.query({
+        getDesignation: builder.query({
             // query: () => '/shiftmaster/',
             query: () => ({
-                url: 'shiftmaster',
+                url: 'designation',
                 method: 'GET',
                 // body: detail
             }),
@@ -32,7 +32,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
             providesTags: (result, error, arg) => [
                 ...result.map(() => (
-                    { type: 'shiftmaster', id: "shiftmasterLIST" }
+                    { type: 'designation', id: "designationLIST" }
                 ))
 
             ],
@@ -57,9 +57,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
 
         }),
-        createShiftMaster: builder.mutation({
+        createDesignationMaster: builder.mutation({
             query: (detail) => ({
-                url: 'shiftmaster/add',
+                url: 'designation/add',
                 method: 'POST',
                 body: detail
             }),
@@ -76,7 +76,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             // onSettled: (result, error, variables) => {
             //     console.log('Mutation Settled:', result, error, variables);
             // },
-            async onQueryStarted(args, { queryFulfilled }) {
+            async onQueryStarted(args, { id }, { queryFulfilled, }) {
                 console.log(args);
                 try {
                     const { data } = await queryFulfilled;
@@ -87,7 +87,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
 
             invalidatesTags: [
-                { type: 'shiftmaster', id: "shiftmasterLIST" }
+                { type: 'designation', id: "designationLIST" }
             ],
         }),
     }),
@@ -95,8 +95,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    useCreateShiftMasterMutation,
-    useGetShiftQuery
+    useCreateDesignationMasterMutation,
+    useGetDesignationQuery
 } = extendedApiSlice
 
 
