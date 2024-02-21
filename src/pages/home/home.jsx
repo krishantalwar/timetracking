@@ -21,7 +21,7 @@ export default function Home(props = { mt: 8, mb: 4 }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 100); 
+    }, 1000); 
 
     return () => clearTimeout(timer);
   }, []);

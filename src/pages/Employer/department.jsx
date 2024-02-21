@@ -36,7 +36,6 @@ export default function Designation() {
     defaultValues: {
       department_code: "",
       department_name: "",
-
     },
   });
 
@@ -63,19 +62,17 @@ export default function Designation() {
 
   let content = "";
   if (DepartmentmasterisLoading) {
-    content = <TableRow
-      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    >
-      <TableCell align="right">Loading...</TableCell>
-    </TableRow>
-      ;
-    console.log(DepartmentmasterisFetching)
-    console.log(!DepartmentmasterisFetching)
-
+    content = (
+      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <TableCell align="right">Loading...</TableCell>
+      </TableRow>
+    );
+    console.log(DepartmentmasterisFetching);
+    console.log(!DepartmentmasterisFetching);
   } else if (DepartmentmasterisSuccess) {
     // console.log(DepartmentmasterDate)
-    console.log(DepartmentmasterisFetching)
-    console.log(!DepartmentmasterisFetching)
+    console.log(DepartmentmasterisFetching);
+    console.log(!DepartmentmasterisFetching);
 
     content = DepartmentmasterDate.map((datas, index) => {
       return (
@@ -90,30 +87,32 @@ export default function Designation() {
 
           <TableCell align="right">
             <Edit key={datas.departmentid + index.toString()} />
-            <Delete key={datas.departmentid + index.toString() + index.toString()} />
+            <Delete
+              key={datas.departmentid + index.toString() + index.toString()}
+            />
           </TableCell>
         </TableRow>
       );
     });
 
-    content = DepartmentmasterDate.length > 0 ? content : <TableRow
-      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    >
-      <TableCell align="right">no data</TableCell>
-    </TableRow>
-      ;
+    content =
+      DepartmentmasterDate.length > 0 ? (
+        content
+      ) : (
+        <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+          <TableCell align="right">no data</TableCell>
+        </TableRow>
+      );
   } else if (DepartmentmasterisError) {
-
-    content = <TableRow
-      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    >
-      <TableCell align="right">{Departmentmastererror}</TableCell>
-    </TableRow>
-      ;
+    content = (
+      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <TableCell align="right">{Departmentmastererror}</TableCell>
+      </TableRow>
+    );
   }
 
-  console.log(DepartmentmasterisFetching)
-  console.log(!DepartmentmasterisFetching)
+  console.log(DepartmentmasterisFetching);
+  console.log(!DepartmentmasterisFetching);
 
   const onSubmit = async (data) => {
     try {
@@ -184,7 +183,7 @@ export default function Designation() {
               </Grid>
             </Grid>
             <Table sx={{ mt: 5 }}>
-              <TableHead  >
+              <TableHead>
                 <TableRow>
                   <TableCell>Department Code</TableCell>
                   <TableCell align="right">Department Name</TableCell>
