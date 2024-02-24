@@ -10,7 +10,9 @@ import Paper from "@mui/material/Paper";
 import {
   useCreateShiftMasterMutation,
   useGetShiftQuery,
+  // useLazyGetCodeQuery
 } from "../../features/shiftmaster/shiftService";
+import shiftServiceApis from "../../features/shiftmaster/shiftService";
 
 import Input from "../../components/ui/forminputs/input";
 
@@ -52,6 +54,20 @@ export default function ShiftMaster() {
       name: "",
     },
   });
+
+
+  // const { trigger, queryStateResults, info } = shiftServiceApis.useLazyGetCodeQuery('getCode');
+
+  // const { data: codedata, error, isError, isLoading: codeisLoading, isFetching } = result;
+  // console.log(queryStateResults);
+  // console.log(info);
+  // console.log(useLazyGetCodeQuery);
+
+  // console.log(codedata);
+  // console.log(error);
+  // console.log(isError);
+  // console.log(codeisLoading);
+  const [getCode, { data: codedata, isLoading: getcodeisLoading, }] = shiftServiceApis.endpoints.getCode.useLazyQuery()
 
   const [
     CreateShiftMaster,
@@ -163,14 +179,34 @@ export default function ShiftMaster() {
 
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const handleOpen = () => {
+  const handleOpen = async () => {
     console.log("asdas");
-    setIsOpen(true);
+    try {
+
+      const { data: codedata, isLoading: getcodeisLoading,
+        isFetching: codeisFetching,
+        isSuccess: codeisSuccess,
+      } = await getCode();
+
+      console.log(codedata)
+      console.log(getcodeisLoading)
+      console.log(getcodeisLoading)
+      console.log(codeisSuccess)
+      if (codeisSuccess) {
+        console.log(codedata)
+      }
+      // console.log(queryStateResults);
+      // console.log(info);
+    } catch (error) {
+      console.log(error)
+    }
+    setIsOpen(prev => !prev);
   };
 
   const handleClose = () => {
-    setIsOpen(false);
+    setIsOpen(prev => !prev);
   };
+
 
   return (
     <React.Fragment>

@@ -90,13 +90,42 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 { type: 'shiftmaster', id: "shiftmasterLIST" }
             ],
         }),
+        getCode: builder.query({
+            // query: () => '/shiftmaster/',
+            query: () => ({
+                url: 'shiftmaster/code',
+                method: 'GET',
+                // body: detail
+            }),
+            transformResponse: responseData => {
+                console.log(responseData)
+                // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
+                // return authAdapter.setAll(initialState, responseData)
+                return responseData;
+            },
+            async onQueryStarted(args, { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }) {
+                // console.log(await getState());
+                // console.log(await requestId);
+                // console.log(await extra);
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log(data);
+                    return data
+                    // dispatch(setAuth(data));
+                } catch (error) {
+                    console.log("error", error)
+                }
+            },
+
+        }),
     }),
     overrideExisting: false,
 })
 
 export const {
     useCreateShiftMasterMutation,
-    useGetShiftQuery
+    useGetShiftQuery,
+    useLazyGetCodeQuery
 } = extendedApiSlice
 
 

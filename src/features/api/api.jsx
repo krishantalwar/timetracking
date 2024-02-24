@@ -18,6 +18,10 @@ export const apiSlice = createApi({
         },
 
     }),
-    tagTypes: ['auth', 'shiftmaster'],
+    tagTypes: ['auth', 'shiftmaster', 'shiftmastercode'],
+    refetchOnReconnect: true,
+    keepUnusedDataFor: 30,
     endpoints: (builder) => ({})
 })
+
+// https://egghead.io/lessons/redux-manually-refetch-data-after-an-rtk-query-mutation-with-unwrap-and-refetch
