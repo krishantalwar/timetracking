@@ -1,43 +1,36 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+import * as React from 'react';;
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-// import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import Copyright from '../../layouts/copyright';
 import Paper from '@mui/material/Paper';
-import graphic from '../../assets/Time-management-icons/graphic.png/'
-import logo from '../../assets/Time-management-icons/logo.png'
 import Input from '../../components/ui/forminputs/input';
 import BasicModal from '../../components/ui/modal/modal';
 import Table from '../../components/ui/table/table';
 import { useForm, Controller } from 'react-hook-form';
 import { Add } from '@mui/icons-material';
-
-
 import { Delete, Edit } from '@mui/icons-material';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
+import DeleteIcon from '../../components/ui/Delete/deletePopUp';
 
 export default function JobListing() {
+
   const { handleSubmit, control,
     formState
   } = useForm(
     {
       mode: 'onChange',
       defaultValues: {
-        email: "",
-        password: "",
+        job_id: "",
+        job_description: "",
+        location:"",
+        sub_location:"",
+        rating:"",
       },
     }
   );
@@ -64,8 +57,6 @@ export default function JobListing() {
     }
   };
 
-
-
   const responseMessage = async (response) => {
   };
   const errorMessage = (error) => {
@@ -73,6 +64,10 @@ export default function JobListing() {
   };
 
   const [isOpen, setIsOpen] = React.useState(false);
+
+const handleDelete = (row) => {
+  console.log('aaaa');
+};
 
   const handleOpen = () => {
     console.log("asdas");
@@ -83,35 +78,47 @@ export default function JobListing() {
     setIsOpen(false);
   };
 
+
+
   function createData(name, calories, fat, carbs,rating, protein) {
     return { name, calories, fat, carbs,rating,  protein };
   }
 
   const rows = [
     createData("Frozen yoghurt", "yoghurt", 6.0, 24,5,[
-      <Button variant="outlined">Assigned</Button>,
-      <Edit />,
-      <Delete />,
+      <Box display={'flex'} marginLeft={5} >
+        <Button variant="outlined">Assigned</Button>
+      <Button><Edit /></Button>
+       <DeleteIcon onDelete={handleDelete} />
+      </Box> 
     ]),
     createData("Ice cream sandwich", "yoghurt", 9.0, 37,5, [
-      <Button variant="outlined">Assigned</Button>,
-      <Edit />,
-      <Delete />,
+      <Box display={'flex'} marginLeft={5} >
+        <Button variant="outlined">Assigned</Button>
+      <Button><Edit /></Button>
+       <DeleteIcon onDelete={handleDelete} />
+      </Box> 
     ]),
     createData("Eclair", "yoghurt", 16.0, 24,5, [
-      <Button variant="outlined">Assigned</Button>,
-      <Edit />,
-      <Delete />,
+      <Box display={'flex'} marginLeft={5} >
+        <Button variant="outlined">Assigned</Button>
+      <Button><Edit /></Button>
+       <DeleteIcon onDelete={handleDelete} />
+      </Box> 
     ]),
     createData("Cupcake", "yoghurt", 3.7, 67, 5,[
-      <Button variant="outlined">Assigned</Button>,
-      <Edit />,
-      <Delete />,
+      <Box display={'flex'}  marginLeft={5} >
+        <Button variant="outlined">Assigned</Button>
+      <Button><Edit /></Button>
+       <DeleteIcon onDelete={handleDelete} />
+      </Box> 
     ]),
     createData("Gingerbread", "yoghurt", 16.0, 49,5, [
-      <Button variant="outlined">Assigned</Button>,
-      <Edit />,
-      <Delete />,
+      <Box display={'flex'}  marginLeft={5} >
+        <Button variant="outlined">Assigned</Button>
+      <Button><Edit /></Button>
+       <DeleteIcon onDelete={handleDelete} />
+      </Box> 
     ]),
   ];
   return (
@@ -151,7 +158,7 @@ export default function JobListing() {
                   <TableCell align="right">Location</TableCell>
                   <TableCell align="right">Sub Location</TableCell>
                   <TableCell align="right">Rating</TableCell>
-                  <TableCell align="right">Action</TableCell>
+                  <TableCell align='center' >Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

@@ -12,15 +12,9 @@ import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import { TbUser } from "react-icons/tb";
 import { TbLogout } from "react-icons/tb";
-import { TbLayoutGrid } from "react-icons/tb";
-import { TbSettings2 } from "react-icons/tb";
 import logo from "../assets/Time-management-icons/logo.png";
 import { NavLink } from "react-router-dom";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import LockResetIcon from "@mui/icons-material/LockReset";
-
 import {
   useLogoutsMutation,
   // useLoginGoogleMutation
@@ -38,8 +32,8 @@ const NavLinks = React.forwardRef((props, ref) => {
 });
 
 const settings = [
-  { icon: <TbUser />, label: "Profile", Path: "/profile" },
-  { icon: <LockResetIcon />, label: "Reset Password", Path: "/password" },
+  { icon: <TbUser />, label: "Profile", path:"/profile" },
+  { icon: <LockResetIcon />, label: "Reset Password", path: "/password" },
   { icon: <TbLogout />, label: "Logout" },
 ];
 
@@ -122,7 +116,6 @@ export default function Navbar(props) {
         >
           <MenuIcon />
         </IconButton>
-
         <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}>
           <IconButton
             color="inherit"
@@ -149,7 +142,6 @@ export default function Navbar(props) {
               <NotificationsIcon sx={{ width: "20px", height: "20px" }} />
             </Badge>
           </IconButton>
-
           <Box sx={{ flexGrow: 0, marginLeft: "15px" }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -189,6 +181,8 @@ export default function Navbar(props) {
                   return (
                     <MenuItem
                       key={index}
+                      component={NavLink}
+                      to={item.path}
                       onClick={handleCloseUserMenu}
                       sx={{ display: "flex", gap: "10px" }}
                     >
