@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import {
   useCreateShiftMasterMutation,
   useGetShiftQuery,
+  useDeleteShiftMasterMutation
   // useLazyGetCodeQuery
 } from "../../features/shiftmaster/shiftService";
 import shiftServiceApis from "../../features/shiftmaster/shiftService";
@@ -32,6 +33,9 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 
 import { TextField } from "@mui/material";
+
+import DeleteIcon from '../../components/ui/Delete/deletePopUp';
+
 
 export default function ShiftMaster() {
   const {
@@ -90,6 +94,34 @@ export default function ShiftMaster() {
     error: shiftmastererror,
   } = useGetShiftQuery("getShift");
 
+
+  const [
+    DeleteShiftMaster,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DeleteShiftMasterisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useDeleteShiftMasterMutation();
+
+  const handleDelete = async (row) => {
+    console.log(row);
+    console.log('aaaa');
+    try {
+      console.log(!DeleteShiftMasterisLoading);
+      // if (!DeleteShiftMasterisLoading) {
+      const asd = await DeleteShiftMaster(row).unwrap();
+      console.log(asd);
+      // }
+
+    } catch (error) {
+      console.error("delete error:", error);
+    }
+  };
+
   let content = "";
   if (shiftmasterisLoading) {
     content = <TableRow
@@ -106,7 +138,7 @@ export default function ShiftMaster() {
           key={datas.shiftid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="right">{datas?.shift_code}</TableCell>
+          <TableCell align="right">{datas?.shiftid}</TableCell>
           <TableCell component="th" scope="row">
             {datas?.name}
           </TableCell>
@@ -115,7 +147,9 @@ export default function ShiftMaster() {
 
           <TableCell align="right">
             <Edit key={datas.shiftid + index.toString()} />
-            <Delete key={datas.shiftid + index.toString() + index.toString()} />
+            <DeleteIcon
+              key={datas.shiftid + index.toString() + index.toString()}
+              onDelete={() => handleDelete(datas?.shiftid)} />
           </TableCell>
         </TableRow>
       );

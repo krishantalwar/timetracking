@@ -152,6 +152,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     // document.cookie = 'authToken=asssadas; path=/; secure; HttpOnly';
 
                     dispatch(logout());
+                    dispatch(apiSlice.util.resetApiState());
                 } catch (error) {
                     console.log("error", error)
                 }

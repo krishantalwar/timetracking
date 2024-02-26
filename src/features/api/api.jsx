@@ -25,3 +25,9 @@ export const apiSlice = createApi({
 })
 
 // https://egghead.io/lessons/redux-manually-refetch-data-after-an-rtk-query-mutation-with-unwrap-and-refetch
+
+// https://codesandbox.io/p/sandbox/redux-toolkit-query-uselazyquery-25t2cj?file=%2Fsrc%2FApp.js
+// https://redux-toolkit.js.org/rtk-query/usage/cache-behavior#re-fetching-on-demand-with-refetchinitiate
+// https://redux-toolkit.js.org/rtk-query/usage/queries
+// https://redux-toolkit.js.org/rtk-query/api/created-api/hooks#uselazyquery
+// https://stackoverflow.com/questions/71231118/refetching-upon-a-button-click-in-rtk-query-does-not-trigger-component-update

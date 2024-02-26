@@ -118,6 +118,41 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
 
         }),
+        deleteShiftMaster: builder.mutation({
+            // query: () => '/shiftmaster/',
+            query: (data) => {
+                console.log(data)
+                return ({
+                    url: 'shiftmaster/delete/' + data,
+                    method: 'GET',
+                    // body: detail
+                });
+            },
+            transformResponse: responseData => {
+                console.log(responseData)
+                // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
+                // return authAdapter.setAll(initialState, responseData)
+                return responseData;
+            },
+            async onQueryStarted(args, { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }) {
+                // console.log(await getState());
+                // console.log(await requestId);
+                // console.log(await extra);
+                console.log(args)
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log(data);
+                    return data
+                    // dispatch(setAuth(data));
+                } catch (error) {
+                    console.log("error", error)
+                }
+            },
+            invalidatesTags: [
+                { type: 'shiftmaster', id: "shiftmasterLIST" }
+            ],
+
+        }),
     }),
     overrideExisting: false,
 })
@@ -125,7 +160,8 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 export const {
     useCreateShiftMasterMutation,
     useGetShiftQuery,
-    useLazyGetCodeQuery
+    useLazyGetCodeQuery,
+    useDeleteShiftMasterMutation,
 } = extendedApiSlice
 
 
