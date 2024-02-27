@@ -120,11 +120,46 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         invalidatesTags: [{ type: "designation", id: "designationLIST" }],
       }),
 
+      editDesignation: builder.mutation({
+        query: (detail) => ({
+            url: 'designation/edit/' + detail.DesigCode,
+            method: 'POST',
+            body: detail
+        }),
+        transformResponse: responseData => {
+            console.log(responseData)
+            // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
+            // return authAdapter.setAll(initialState, responseData)
+            return responseData;
+        },
+
+        // onError: (error, _, api) => {
+        //     console.error('Login Error:', error);
+        // },
+        // onSettled: (result, error, variables) => {
+        //     console.log('Mutation Settled:', result, error, variables);
+        // },
+        async onQueryStarted(args, { queryFulfilled }) {
+            // console.log(args);
+            try {
+                const { data } = await queryFulfilled;
+                console.log(data);
+            } catch (error) {
+                console.log("error", error)
+            }
+        },
+
+        invalidatesTags: [
+            { type: 'designation', id: "designationLIST" }
+        ],
+    }),
+
   }),
   overrideExisting: false,
 });
 
-export const { useCreateDesignationMasterMutation, useGetDesignationQuery, useDeleteDesignationMutation } =
+export const { useCreateDesignationMasterMutation, useGetDesignationQuery, useDeleteDesignationMutation,
+useEditDesignationMutation } =
   extendedApiSlice;
 
 export default extendedApiSlice;

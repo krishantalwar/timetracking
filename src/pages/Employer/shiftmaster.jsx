@@ -252,6 +252,8 @@ export default function ShiftMaster() {
     console.log(row);
     console.log('aaaa');
     try {
+
+      
       console.log(!DeleteShiftMasterisLoading);
       // if (!DeleteShiftMasterisLoading) {
       const ShiftMasterDetail = await getShiftMasterDetail(row).unwrap();

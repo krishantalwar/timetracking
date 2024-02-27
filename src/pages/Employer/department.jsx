@@ -11,6 +11,7 @@ import {
   useCreateDepartmentnMasterMutation,
   useGetDepartmentQuery,
   useDeleteDepartmentMutation
+  ,useEditDepartmentMutation
 } from "../../features/department/departmentService";
 import Input from "../../components/ui/forminputs/input";
 import BasicModal from "../../components/ui/modal/modal";
@@ -52,6 +53,45 @@ export default function Designation() {
       // status
     },
   ] = useCreateDepartmentnMasterMutation();
+
+  const [
+    getDepartmentDetails,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DetailDepartmentnisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useEditDepartmentMutation();
+
+  const handleDetail = async (row) => {
+    console.log(row);
+    console.log('aaaa');
+    try {
+      console.log(!DeleteDepartmentisLoading);
+      // if (!DeleteDepartmentisLoading) {
+      const DapartmentDetail = await getDepartmentDetails(row).unwrap();
+      // console.log(asd);
+      // }
+      console.log(formState)
+      // formState.defaultValues.name = "asda";
+      // console.log(formState)
+      // useForm({
+      const defaultValues = {
+        //field name need to change as per backend
+        "break_end_time": DapartmentDetail?.desg_code,
+        "break_start_time": DapartmentDetail?.desg_name
+      }
+      // });
+      reset({ ...defaultValues })
+
+      setIsOpen(prev => !prev);
+    } catch (error) {
+      console.error("delete error:", error);
+    }
+  };
 
   const {
     data: DepartmentmasterDate,

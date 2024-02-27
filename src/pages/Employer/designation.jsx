@@ -11,6 +11,7 @@ import {
   useCreateDesignationMasterMutation,
   useGetDesignationQuery,
   useDeleteDesignationMutation,
+  useEditDesignationMutation
 } from "../../features/designation/designationService";
 
 import Input from "../../components/ui/forminputs/input";
@@ -44,6 +45,18 @@ export default function Designation() {
   });
 
   const [
+    getDesignationDetails,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DetailDesignationisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useEditDesignationMutation();
+
+  const [
     CreateDesignationMaster,
     {
       // currentData,
@@ -64,6 +77,8 @@ export default function Designation() {
     error: designationmastererror,
   } = useGetDesignationQuery("getDesignation");
 
+
+
   const [
     DeleteDesignation,
     {
@@ -75,6 +90,34 @@ export default function Designation() {
       // status
     },
   ] = useDeleteDesignationMutation();
+
+  const handleDetail = async (row) => {
+    console.log(row);
+    console.log('aaaa');
+    try {
+      console.log(!DeleteDesignationisLoading);
+      // if (!DeleteDesignationisLoading) {
+      const DesignationDetail = await getDesignationDetails(row).unwrap();
+      // console.log(asd);
+      // }
+      console.log(formState)
+      // formState.defaultValues.name = "asda";
+      // console.log(formState)
+      // useForm({
+      const defaultValues = {
+
+        //field name need to change as per backend
+        "break_end_time": DesignationDetail?.desg_code,
+        "break_start_time": DesignationDetail?.desg_name
+      }
+      // });
+      reset({ ...defaultValues })
+
+      setIsOpen(prev => !prev);
+    } catch (error) {
+      console.error("delete error:", error);
+    }
+  };
 
   const handleDelete = async (row) => {
     console.log(row);
@@ -119,7 +162,8 @@ export default function Designation() {
           </TableCell>
 
           <TableCell align="right">
-            <Edit key={datas.designationid + index.toString()} />
+            {/* shiftid need to change */}
+            <Edit key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
             <DeleteIcon
               key={datas.shiftid + index.toString() + index.toString()}
               onDelete={() => handleDelete(datas?.shiftid)}
