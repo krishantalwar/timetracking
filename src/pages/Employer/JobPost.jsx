@@ -1,21 +1,12 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useForm, Controller } from 'react-hook-form';
-import Input from '../../components/ui/forminputs/input';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper'
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Selects from '../../components/ui/forminputs/select'
-
 import { TextField } from '@mui/material';
-
 import MenuItem from '@mui/material/MenuItem';
+import Input from '../../components/ui/forminputs/input';
 
 export default function JobPost() {
 
@@ -44,26 +35,21 @@ export default function JobPost() {
             <Typography mt={2}> Post a Job</Typography>
             <Box component="form" onSubmit={handleSubmit(onSubmit)} method="post"  sx={{ mt: 1, ml:2 }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
+                    
                     <Grid item xs={6} >
 
                         <Controller
                             name="job_id"
                             control={control}
-                            rules={{ required: 'Job id is required' }}
-                            defaultValue=""
+                            // rules={{ required: 'Job id is required' }}
                             render={({ field }) => (
-                                <TextField
+                                <Input
                                     {...field}
+                                    disabled
                                     margin="none"
                                     fullWidth
                                     label="Job ID"
                                     type='text'
-                                    SelectProps={{
-                                        // native: true,
-                                        // inputProps: {name: 'screen_allocation' }
-                                    }}
-
-                                    defaultValue=""
                                     formcontrolpops={{
                                         "fullWidth": true,
                                         "variant": "standard",
@@ -72,7 +58,7 @@ export default function JobPost() {
                                     helperText={formState?.errors?.job_id?.message}
                                 >
 
-                                </TextField>
+                                </Input>
                             )}
                         />
                     </Grid>

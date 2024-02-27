@@ -155,7 +155,7 @@ export default function Designation() {
           </TableCell>
 
           <TableCell align="right">
-            <Edit key={datas.departmentid + index.toString()} />
+          <Edit key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
             <DeleteIcon
               key={datas.shiftid + index.toString() + index.toString()}
               onDelete={() => handleDelete(datas?.shiftid)}
