@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import {
   useCreateDepartmentnMasterMutation,
   useGetDepartmentQuery,
+  useDeleteDepartmentMutation
 } from "../../features/department/departmentService";
 import Input from "../../components/ui/forminputs/input";
 import BasicModal from "../../components/ui/modal/modal";
@@ -21,6 +22,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
+import DeleteIcon from "../../components/ui/Delete/deletePopUp";
 
 export default function Designation() {
   const {
@@ -60,6 +62,33 @@ export default function Designation() {
     error: Departmentmastererror,
   } = useGetDepartmentQuery("getDepartment");
 
+  const [
+    DeleteDepartment,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DeleteDepartmentisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useDeleteDepartmentMutation
+  ();
+
+  const handleDelete = async (row) => {
+    console.log(row);
+    console.log("aaaa");
+    try {
+      console.log(!DeleteDesignationisLoading);
+      // if (!DeleteDesignationisLoading) {
+      const asd = await DeleteDepartment(row).unwrap();
+      console.log(asd);
+      // }
+    } catch (error) {
+      console.error("delete error:", error);
+    }
+  };
+
   let content = "";
   if (DepartmentmasterisLoading) {
     content = (
@@ -87,8 +116,9 @@ export default function Designation() {
 
           <TableCell align="right">
             <Edit key={datas.departmentid + index.toString()} />
-            <Delete
-              key={datas.departmentid + index.toString() + index.toString()}
+            <DeleteIcon
+              key={datas.shiftid + index.toString() + index.toString()}
+              onDelete={() => handleDelete(datas?.shiftid)}
             />
           </TableCell>
         </TableRow>

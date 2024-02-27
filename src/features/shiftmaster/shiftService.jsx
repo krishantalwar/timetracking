@@ -2,13 +2,9 @@
 //     createEntityAdapter
 // } from "@reduxjs/toolkit";
 
-import {
-    apiSlice
-} from "../api/api";
-
+import { apiSlice } from "../api/api";
 
 // import { setAuth, logout } from './authSlice';
-
 
 // const authAdapter = createEntityAdapter();
 
@@ -16,30 +12,30 @@ import {
 // eve.holt@reqres.in
 // cityslicka
 export const extendedApiSlice = apiSlice.injectEndpoints({
-    endpoints: builder => ({
+    endpoints: (builder) => ({
         getShift: builder.query({
             // query: () => '/shiftmaster/',
             query: () => ({
-                url: 'shiftmaster',
-                method: 'GET',
+                url: "shiftmaster",
+                method: "GET",
                 // body: detail
             }),
-            transformResponse: responseData => {
-                console.log(responseData)
+            transformResponse: (responseData) => {
+                console.log(responseData);
                 // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
                 // return authAdapter.setAll(initialState, responseData)
                 return responseData;
             },
             providesTags: (result, error, arg) => [
-                ...result.map(() => (
-                    { type: 'shiftmaster', id: "shiftmasterLIST" }
-                ))
-
+                ...result.map(() => ({ type: "shiftmaster", id: "shiftmasterLIST" })),
             ],
             // invalidatesTags: [
             //     { type: 'shiftmaster', id: "LIST" }
             // ],
-            async onQueryStarted(args, { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }) {
+            async onQueryStarted(
+                args,
+                { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+            ) {
                 console.log(args);
                 // console.log(await getState());
                 // console.log(await requestId);
@@ -52,19 +48,18 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
                     // dispatch(setAuth(data));
                 } catch (error) {
-                    console.log("error", error)
+                    console.log("error", error);
                 }
             },
-
         }),
         createShiftMaster: builder.mutation({
             query: (detail) => ({
-                url: 'shiftmaster/add',
-                method: 'POST',
-                body: detail
+                url: "shiftmaster/add",
+                method: "POST",
+                body: detail,
             }),
-            transformResponse: responseData => {
-                console.log(responseData)
+            transformResponse: (responseData) => {
+                console.log(responseData);
                 // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
                 // return authAdapter.setAll(initialState, responseData)
                 return responseData;
@@ -82,7 +77,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     const { data } = await queryFulfilled;
                     console.log(data);
                 } catch (error) {
-                    console.log("error", error)
+                    console.log("error", error);
                 }
             },
 
@@ -233,9 +228,6 @@ export const {
     useGetShiftMasterDetailMutation,
     useEditShiftMasterMutation,
 
-} = extendedApiSlice
-
+} = extendedApiSlice;
 
 export default extendedApiSlice;
-
-

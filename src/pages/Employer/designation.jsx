@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import {
   useCreateDesignationMasterMutation,
   useGetDesignationQuery,
+  useDeleteDesignationMutation,
 } from "../../features/designation/designationService";
 
 import Input from "../../components/ui/forminputs/input";
@@ -22,6 +23,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
+import DeleteIcon from "../../components/ui/Delete/deletePopUp";
 
 export default function Designation() {
   const {
@@ -62,12 +64,39 @@ export default function Designation() {
     error: designationmastererror,
   } = useGetDesignationQuery("getDesignation");
 
+  const [
+    DeleteDesignation,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DeleteDesignationisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useDeleteDesignationMutation();
+
+  const handleDelete = async (row) => {
+    console.log(row);
+    console.log("aaaa");
+    try {
+      console.log(!DeleteDesignationisLoading);
+      // if (!DeleteDesignationisLoading) {
+      const asd = await DeleteDesignation(row).unwrap();
+      console.log(asd);
+      // }
+    } catch (error) {
+      console.error("delete error:", error);
+    }
+  };
+
   let content = "";
   console.log(designationmasterisLoading)
   console.log(designationmasterisError)
   console.log(designationmastererror)
   console.log(designationmasterDate)
   console.log(designationmasterisSuccess)
+  
   if (designationmasterisLoading) {
     content = <TableRow
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -91,7 +120,10 @@ export default function Designation() {
 
           <TableCell align="right">
             <Edit key={datas.designationid + index.toString()} />
-            <Delete key={datas.designationid + index.toString() + index.toString()} />
+            <DeleteIcon
+              key={datas.shiftid + index.toString() + index.toString()}
+              onDelete={() => handleDelete(datas?.shiftid)}
+            />
           </TableCell>
         </TableRow>
       );
