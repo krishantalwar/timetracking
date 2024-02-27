@@ -10,7 +10,9 @@ import Paper from "@mui/material/Paper";
 import {
   useCreateShiftMasterMutation,
   useGetShiftQuery,
-  useDeleteShiftMasterMutation
+  useDeleteShiftMasterMutation,
+  useGetShiftMasterDetailMutation,
+  useEditShiftMasterMutation
   // useLazyGetCodeQuery
 } from "../../features/shiftmaster/shiftService";
 import shiftServiceApis from "../../features/shiftmaster/shiftService";
@@ -56,6 +58,7 @@ export default function ShiftMaster() {
       overtime_end_time: "",
       overtime_start_time: "",
       name: "",
+      shiftid: ""
     },
   });
 
@@ -107,6 +110,32 @@ export default function ShiftMaster() {
     },
   ] = useDeleteShiftMasterMutation();
 
+  const [
+    getShiftMasterDetail,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DetailShiftMasterisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useGetShiftMasterDetailMutation();
+
+  const [
+    EditShiftMaster,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: EditShiftMasterisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useEditShiftMasterMutation();
+
+
+
   const handleDelete = async (row) => {
     console.log(row);
     console.log('aaaa');
@@ -146,7 +175,7 @@ export default function ShiftMaster() {
           <TableCell align="right">{datas?.end_time}</TableCell>
 
           <TableCell align="right">
-            <Edit key={datas.shiftid + index.toString()} />
+            <Edit key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
             <DeleteIcon
               key={datas.shiftid + index.toString() + index.toString()}
               onDelete={() => handleDelete(datas?.shiftid)} />
@@ -170,20 +199,30 @@ export default function ShiftMaster() {
 
   const onSubmit = async (data) => {
     // event.preventDefault();
-    // console.log(data)
+    console.log(data)
     // const data = new FormData(event.currentTarget);
     try {
       // console.log(isFetching);
       // console.log(status);
-      console.log(isLoading);
+      // console.log(isLoading);
       // console.log(isSuccess);
       // console.log(isError);
       // console.log(error);
-      console.log(!isLoading);
-      if (!isLoading) {
-        await CreateShiftMaster(data).unwrap();
-        handleClose();
-        reset();
+      // console.log(!isLoading);
+      if (data?.shiftid) {
+
+        if (!EditShiftMasterisLoading) {
+          await EditShiftMaster(data).unwrap();
+          handleClose();
+          reset();
+        }
+      } else {
+
+        if (!isLoading) {
+          await CreateShiftMaster(data).unwrap();
+          handleClose();
+          reset();
+        }
       }
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
@@ -212,6 +251,39 @@ export default function ShiftMaster() {
   // };
 
   const [isOpen, setIsOpen] = React.useState(false);
+
+  const handleDetail = async (row) => {
+    console.log(row);
+    console.log('aaaa');
+    try {
+      console.log(!DeleteShiftMasterisLoading);
+      // if (!DeleteShiftMasterisLoading) {
+      const ShiftMasterDetail = await getShiftMasterDetail(row).unwrap();
+      // console.log(asd);
+      // }
+      console.log(formState)
+      // formState.defaultValues.name = "asda";
+      // console.log(formState)
+      // useForm({
+      const defaultValues = {
+        "break_end_time": ShiftMasterDetail?.break_end_time,
+        "break_start_time": ShiftMasterDetail?.break_start_time,
+        "end_time": ShiftMasterDetail?.end_time,
+        "start_time": ShiftMasterDetail?.start_time,
+        "overtime_end_time": ShiftMasterDetail?.overtime_end_time,
+        "overtime_start_time": ShiftMasterDetail?.overtime_start_time,
+        "name": ShiftMasterDetail?.name,
+        "shiftid": ShiftMasterDetail?.shiftid,
+      }
+      // });
+      reset({ ...defaultValues })
+
+      setIsOpen(prev => !prev);
+    } catch (error) {
+      console.error("delete error:", error);
+    }
+  };
+
 
   const handleOpen = async () => {
     console.log("asdas");
