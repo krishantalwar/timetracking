@@ -90,13 +90,50 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 { type: 'department', id: "departmentLIST" }
             ],
         }),
+
+        deleteDepartment: builder.mutation({
+            // query: () => '/department/',
+            query: (data) => {
+              console.log(data);
+              return {
+                url: "department/delete/" + data,
+                method: "GET",
+                // body: detail
+              };
+            },
+            transformResponse: (responseData) => {
+              console.log(responseData);
+              // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
+              // return authAdapter.setAll(initialState, responseData)
+              return responseData;
+            },
+            async onQueryStarted(
+              args,
+              { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+            ) {
+              // console.log(await getState());
+              // console.log(await requestId);
+              // console.log(await extra);
+              console.log(args);
+              try {
+                const { data } = await queryFulfilled;
+                console.log(data);
+                return data;
+                // dispatch(setAuth(data));
+              } catch (error) {
+                console.log("error", error);
+              }
+            },
+            invalidatesTags: [{ type: "department", id: "departmentLIST" }],
+          }),
     }),
     overrideExisting: false,
 })
 
 export const {
     useCreateDepartmentnMasterMutation,
-    useGetDepartmentQuery
+    useGetDepartmentQuery,
+    useDeleteDepartmentMutation
 } = extendedApiSlice
 
 
