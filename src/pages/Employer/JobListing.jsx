@@ -51,7 +51,7 @@ export default function JobListing() {
     isSuccess: postjobisSuccess,
     isError: postjobisError,
     error: postjoberror,
-  } = useGetPostjobQuery("getShift");
+  } = useGetPostjobQuery("getPostjob");
 
   const [
     DeletePostjob,
@@ -64,6 +64,80 @@ export default function JobListing() {
       // status
     },
   ] = useDeletePostjobMutation();
+
+  const [
+    EditPostjob,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: EditpostjobisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useEditPostjobMutation();
+
+  const [
+    CreatePostjob,
+    {
+      // currentData,
+      // isFetching,
+      isLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useCreatePostjobMutation();
+
+  const [
+    getPostjobDetail,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DetailShiftMasterisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useGetPostjobDetailMutation();
+
+  const handleDetail = async (row) => {
+    console.log(row);
+    console.log('aaaa');
+    try {
+
+      
+      console.log(!DeletePostjobisLoading);
+      // if (!DeletePostjobisLoading) {
+      const PostjobDetail = await getPostjobDetail(row).unwrap();
+      // console.log(asd);
+      // }
+      console.log(formState)
+      // formState.defaultValues.name = "asda";
+      // console.log(formState)
+      // useForm({
+
+
+      //below values need to change as per backend
+      const defaultValues = {
+        // "break_end_time": ShiftMasterDetail?.break_end_time,
+        // "break_start_time": ShiftMasterDetail?.break_start_time,
+        // "end_time": ShiftMasterDetail?.end_time,
+        // "start_time": ShiftMasterDetail?.start_time,
+        // "overtime_end_time": ShiftMasterDetail?.overtime_end_time,
+        // "overtime_start_time": ShiftMasterDetail?.overtime_start_time,
+        // "name": ShiftMasterDetail?.name,
+        // "shiftid": ShiftMasterDetail?.shiftid,
+      }
+      // });
+      reset({ ...defaultValues })
+
+      setIsOpen(prev => !prev);
+    } catch (error) {
+      console.error("delete error:", error);
+    }
+  };
+
 
   const handleDelete = async (row) => {
     console.log(row);
@@ -134,17 +208,19 @@ export default function JobListing() {
       // console.log(isError);
       // console.log(error);
       // console.log(!isLoading);
-      if (data?.shiftid) {
 
-        if (!EditShiftMasterisLoading) {
-          await EditShiftMaster(data).unwrap();
+      //shiftid  to change
+      if (data?.shiftid) { 
+
+        if (!EditpostjobisLoading) {
+          await EditPostjob(data).unwrap();
           handleClose();
           reset();
         }
       } else {
 
         if (!isLoading) {
-          await CreateShiftMaster(data).unwrap();
+          await CreatePostjob(data).unwrap();
           handleClose();
           reset();
         }

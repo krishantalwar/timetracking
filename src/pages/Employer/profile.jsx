@@ -6,8 +6,10 @@ import { useForm, Controller } from "react-hook-form";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
 import { Tab } from "@mui/icons-material";
+import {
+  useGetProfileDetailMutation,
+  useEditProfileMutation} from '../../features/profile/profileService'
 
 export default function Profile() {
   const { handleSubmit, control, formState } = useForm({
@@ -17,8 +19,83 @@ export default function Profile() {
       screen_allocation: "",
     },
   });
-  console.log(formState?.errors?.role?.message);
-  const onSubmit = async (data) => {};
+   
+
+
+  const [
+    EditProfile,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: EditProfileisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useEditProfileMutation();
+
+  const [
+    getProfileDetail,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DetailShiftMasterisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useGetProfileDetailMutation();
+
+  const handleDetail = async (row) => {
+    console.log(row);
+    console.log('aaaa');
+    try {
+
+      
+      console.log(!DetailShiftMasterisLoading);
+      // if (!DeleteShiftMasterisLoading) {
+      const ProfileDetail = await getProfileDetail(row).unwrap();
+      // console.log(asd);
+      // }
+      console.log(formState)
+      // formState.defaultValues.name = "asda";
+      // console.log(formState)
+      // useForm({
+      const defaultValues = {
+        // "break_end_time": ShiftMasterDetail?.break_end_time,
+        // "break_start_time": ShiftMasterDetail?.break_start_time,
+        // "end_time": ShiftMasterDetail?.end_time,
+        // "start_time": ShiftMasterDetail?.start_time,
+        // "overtime_end_time": ShiftMasterDetail?.overtime_end_time,
+        // "overtime_start_time": ShiftMasterDetail?.overtime_start_time,
+        // "name": ShiftMasterDetail?.name,
+        // "shiftid": ShiftMasterDetail?.shiftid,
+      }
+      // });
+      reset({ ...defaultValues })
+
+      setIsOpen(prev => !prev);
+    } catch (error) {
+      console.error("delete error:", error);
+    }
+  };
+
+
+  const onSubmit = async (data) => {
+    console.log(data)
+    try {
+      if (data?.shiftid) {
+
+        if (!EditProfileisLoading) {
+          await EditProfile(data).unwrap();
+          handleClose();
+          reset();
+        }
+      } 
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  };
 
   return (
     <React.Fragment>
