@@ -9,21 +9,55 @@ import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Tab } from "@mui/icons-material";
 
+import {
+  useUpdatpasswordMutation,
+} from "../../features/auth/authService";
+
 export default function Profile() {
-  const { handleSubmit, control, formState } = useForm({
+  const { handleSubmit, control, watch, formState } = useForm({
     mode: "onChange",
     defaultValues: {
-      role: "",
-      screen_allocation: "",
+      current_password: "",
+      new_password: "",
+      confirm_password: ""
     },
   });
-  console.log(formState?.errors?.role?.message);
-  const onSubmit = async (data) => {};
+  const password = watch("new_password", "");
+
+  const [
+    updatepassword,
+    {
+      // currentData,
+      // isFetching,
+      isLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useUpdatpasswordMutation();
+
+  const onSubmit = async (data) => {
+
+    try {
+      console.log(!isLoading);
+      if (!isLoading) {
+        await updatepassword({
+          current_password: data.current_password,
+          new_password: data.new_password,
+          confirm_password: data.confirm_password,
+          user_id: ""
+        }).unwrap();
+      }
+    } catch (error) {
+
+      console.error("Login error:", error);
+    }
+  };
 
   return (
     <React.Fragment>
       <Box component={Paper} type={Tab}>
-      <Typography ml={3}><b>Change Password</b></Typography>
+        <Typography ml={3}><b>Change Password</b></Typography>
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
@@ -41,7 +75,7 @@ export default function Profile() {
                 name="current_password"
                 control={control}
                 rules={{ required: "Existing password is required" }}
-                defaultValue=""
+
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -49,7 +83,7 @@ export default function Profile() {
                     margin="none"
                     fullWidth
                     label="Existing Password"
-                    defaultValue=""
+
                     formcontrolpops={{
                       fullWidth: true,
                       variant: "standard",
@@ -67,7 +101,7 @@ export default function Profile() {
                 name="new_password"
                 control={control}
                 rules={{ required: "New password is required" }}
-                defaultValue=""
+
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -75,7 +109,7 @@ export default function Profile() {
                     margin="none"
                     fullWidth
                     label=" New Password"
-                    defaultValue=""
+
                     formcontrolpops={{
                       fullWidth: true,
                       variant: "standard",
@@ -91,8 +125,13 @@ export default function Profile() {
               <Controller
                 name="confirm_password"
                 control={control}
-                rules={{ required: "Confirm Password is required" }}
-                defaultValue=""
+                rules={{
+                  required: "Confirm Password is required",
+
+                  validate: (value) =>
+                    value === password || "The passwords do not match"
+                }}
+
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -100,7 +139,7 @@ export default function Profile() {
                     margin="none"
                     fullWidth
                     label="Confirm Password"
-                    defaultValue=""
+
                     formcontrolpops={{
                       fullWidth: true,
                       variant: "standard",
@@ -112,7 +151,7 @@ export default function Profile() {
                 )}
               />
             </Grid>
-            
+
           </Grid>
           <Button type="submit" style={{ marginLeft: 5, marginTop: 20 }}>
             {""}

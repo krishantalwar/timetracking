@@ -50,6 +50,7 @@ export default function ShiftMaster() {
   } = useForm({
     mode: "onChange",
     defaultValues: {
+      shift_code: "",
       break_end_time: "",
       break_start_time: "",
       end_time: "",
@@ -72,7 +73,7 @@ export default function ShiftMaster() {
   // console.log(error);
   // console.log(isError);
   // console.log(codeisLoading);
-  const [getCode, { data: codedata, isLoading: getcodeisLoading }] =
+  const [getCode, { data: codedata, isLoading: getcodeisLoading, refetch: getCoderefetch }] =
     shiftServiceApis.endpoints.getCode.useLazyQuery();
 
   const [
@@ -135,14 +136,14 @@ export default function ShiftMaster() {
 
 
   const handleDelete = async (row) => {
-    console.log(row);
-    console.log("aaaa");
+    // console.log(row);
+    // console.log("aaaa");
     try {
-      console.log(!DeleteShiftMasterisLoading);
-      // if (!DeleteShiftMasterisLoading) {
-      const asd = await DeleteShiftMaster(row).unwrap();
-      console.log(asd);
-      // }
+
+      if (!DeleteShiftMasterisLoading) {
+        const asd = await DeleteShiftMaster(row).unwrap();
+        // console.log(asd);
+      }
     } catch (error) {
       console.error("delete error:", error);
     }
@@ -195,7 +196,7 @@ export default function ShiftMaster() {
 
   const onSubmit = async (data) => {
     // event.preventDefault();
-    console.log(data)
+    // console.log(data)
     // const data = new FormData(event.currentTarget);
     try {
       // console.log(isFetching);
@@ -215,7 +216,18 @@ export default function ShiftMaster() {
       } else {
 
         if (!isLoading) {
-          await CreateShiftMaster(data).unwrap();
+          const defaultValues = {
+            "break_end_time": data?.break_end_time,
+            "break_start_time": data?.break_start_time,
+            "end_time": data?.end_time,
+            "start_time": data?.start_time,
+            "overtime_end_time": data?.overtime_end_time,
+            "overtime_start_time": data?.overtime_start_time,
+            "name": data?.name,
+            // "shiftid": ShiftMasterDetail?.shiftid,
+            "shift_code": data.shift_code,
+          }
+          await CreateShiftMaster(defaultValues).unwrap();
           handleClose();
           reset();
         }
@@ -252,31 +264,30 @@ export default function ShiftMaster() {
     console.log(row);
     console.log('aaaa');
     try {
+      if (!DetailShiftMasterisLoading) {
+        const ShiftMasterDetail = await getShiftMasterDetail(row).unwrap();
+        // console.log(asd);
+        // formState.defaultValues.name = "asda";
+        // console.log(formState)
+        // useForm({
+        const defaultValues = {
+          "break_end_time": ShiftMasterDetail?.break_end_time,
+          "break_start_time": ShiftMasterDetail?.break_start_time,
+          "end_time": ShiftMasterDetail?.end_time,
+          "start_time": ShiftMasterDetail?.start_time,
+          "overtime_end_time": ShiftMasterDetail?.overtime_end_time,
+          "overtime_start_time": ShiftMasterDetail?.overtime_start_time,
+          "name": ShiftMasterDetail?.name,
+          "shiftid": ShiftMasterDetail?.shiftid,
+          "shift_code": ShiftMasterDetail.shift_code,
+        }
+        // });
+        reset({ ...defaultValues })
 
-      
-      console.log(!DeleteShiftMasterisLoading);
-      // if (!DeleteShiftMasterisLoading) {
-      const ShiftMasterDetail = await getShiftMasterDetail(row).unwrap();
-      // console.log(asd);
-      // }
-      console.log(formState)
-      // formState.defaultValues.name = "asda";
-      // console.log(formState)
-      // useForm({
-      const defaultValues = {
-        "break_end_time": ShiftMasterDetail?.break_end_time,
-        "break_start_time": ShiftMasterDetail?.break_start_time,
-        "end_time": ShiftMasterDetail?.end_time,
-        "start_time": ShiftMasterDetail?.start_time,
-        "overtime_end_time": ShiftMasterDetail?.overtime_end_time,
-        "overtime_start_time": ShiftMasterDetail?.overtime_start_time,
-        "name": ShiftMasterDetail?.name,
-        "shiftid": ShiftMasterDetail?.shiftid,
+        setIsOpen(prev => !prev);
+
       }
-      // });
-      reset({ ...defaultValues })
-
-      setIsOpen(prev => !prev);
+      console.log(formState)
     } catch (error) {
       console.error("delete error:", error);
     }
@@ -284,7 +295,7 @@ export default function ShiftMaster() {
 
 
   const handleOpen = async () => {
-    console.log("asdas");
+    // console.log("asdas");
     try {
       const {
         data: codedata,
@@ -293,19 +304,32 @@ export default function ShiftMaster() {
         isSuccess: codeisSuccess,
       } = await getCode();
 
-      console.log(codedata);
-      console.log(getcodeisLoading);
-      console.log(getcodeisLoading);
-      console.log(codeisSuccess);
+      // console.log(codedata);
+      // console.log(getcodeisLoading);
+      // console.log(getcodeisLoading);
+      // console.log(codeisSuccess);
       if (codeisSuccess) {
-        console.log(codedata);
+        // console.log(codedata);
+        const defaultValues = {
+          "break_end_time": "",
+          "break_start_time": "",
+          "end_time": "",
+          "start_time": "",
+          "overtime_end_time": "",
+          "overtime_start_time": "",
+          "name": "",
+          "shift_code": codedata.code,
+        }
+        // });
+        reset({ ...defaultValues })
+        setIsOpen((prev) => !prev);
       }
       // console.log(queryStateResults);
       // console.log(info);
     } catch (error) {
       console.log(error);
     }
-    setIsOpen((prev) => !prev);
+
   };
 
   const handleClose = () => {

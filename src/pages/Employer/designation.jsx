@@ -11,9 +11,12 @@ import {
   useCreateDesignationMasterMutation,
   useGetDesignationQuery,
   useDeleteDesignationMutation,
-  useEditDesignationMutation
+  useEditDesignationMutation,
+  useGetDesignationDetailMutation,
+  useLazyGetCodesdesignationQuery
 } from "../../features/designation/designationService";
 
+import designationServiceApis from "../../features/designation/designationService";
 import Input from "../../components/ui/forminputs/input";
 import BasicModal from "../../components/ui/modal/modal";
 import Table from "../../components/ui/table/table";
@@ -40,16 +43,17 @@ export default function Designation() {
     defaultValues: {
       designation_code: "",
       designation_name: "",
+      designation_id: "",
 
     },
   });
 
   const [
-    getDesignationDetails,
+    updateDesignationDetails,
     {
       // currentData,
       // isFetching,
-      isLoading: DetailDesignationisLoading,
+      isLoading: updateDesignationisLoading,
       // isSuccess, isError,
       // error,
       // status
@@ -91,29 +95,41 @@ export default function Designation() {
     },
   ] = useDeleteDesignationMutation();
 
+  const [
+    getDesignationDetails,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DetailDesignationisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useGetDesignationDetailMutation();
+
   const handleDetail = async (row) => {
     console.log(row);
-    console.log('aaaa');
+    // console.log('aaaa');
     try {
-      console.log(!DeleteDesignationisLoading);
-      // if (!DeleteDesignationisLoading) {
-      const DesignationDetail = await getDesignationDetails(row).unwrap();
-      // console.log(asd);
-      // }
-      console.log(formState)
-      // formState.defaultValues.name = "asda";
-      // console.log(formState)
-      // useForm({
-      const defaultValues = {
+      // console.log(!DeleteDesignationisLoading);
+      if (!DetailDesignationisLoading) {
 
-        //field name need to change as per backend
-        "break_end_time": DesignationDetail?.desg_code,
-        "break_start_time": DesignationDetail?.desg_name
+        const DesignationDetail = await getDesignationDetails(row).unwrap();
+        // console.log(DesignationDetail);
+        const defaultValues = {
+          //field name need to change as per backend
+          "designation_code": DesignationDetail?.designation_code,
+          "designation_name": DesignationDetail?.name,
+          "designation_id": DesignationDetail?.designationid,
+        }
+
+        reset({ ...defaultValues })
+
+        setIsOpen(prev => !prev);
       }
-      // });
-      reset({ ...defaultValues })
+      // console.log(formState)
 
-      setIsOpen(prev => !prev);
+
     } catch (error) {
       console.error("delete error:", error);
     }
@@ -134,12 +150,7 @@ export default function Designation() {
   };
 
   let content = "";
-  console.log(designationmasterisLoading)
-  console.log(designationmasterisError)
-  console.log(designationmastererror)
-  console.log(designationmasterDate)
-  console.log(designationmasterisSuccess)
-  
+
   if (designationmasterisLoading) {
     content = <TableRow
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -163,10 +174,10 @@ export default function Designation() {
 
           <TableCell align="right">
             {/* shiftid need to change */}
-            <Edit key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
+            <Edit key={datas.designationid + index.toString()} onClick={() => handleDetail(datas?.designationid)} />
             <DeleteIcon
-              key={datas.shiftid + index.toString() + index.toString()}
-              onDelete={() => handleDelete(datas?.shiftid)}
+              key={datas.designationid + index.toString() + index.toString()}
+              onDelete={() => handleDelete(datas?.designationid)}
             />
           </TableCell>
         </TableRow>
@@ -176,22 +187,44 @@ export default function Designation() {
     content = <TableRow
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell align="right">{designationmastererror}</TableCell>
-    </TableRow>
-      ;
+      <TableCell align="right">{designationmastererror}</TableCell></TableRow>;
   }
 
   const onSubmit = async (data) => {
     try {
-      console.log(isLoading);
-      console.log(!isLoading);
-      if (!isLoading) {
-        await CreateDesignationMaster({
-          // code: data.designation_code,
-          name: data.designation_name,
-        }).unwrap();
-        handleClose();
-        reset();
+      // console.log(isLoading);
+      // console.log(!isLoading);
+      // if (!isLoading) {
+      //   await CreateDesignationMaster({
+      //     // code: data.designation_code,
+      //     name: data.designation_name,
+      //   }).unwrap();
+      //   handleClose();
+      //   reset();
+      // }
+      console.log(data);
+
+      if (data?.designation_id) {
+
+        if (!updateDesignationisLoading) {
+          await updateDesignationDetails({
+            "designation_code": data.designation_code,
+            "name": data.designation_name,
+            "designationid": data.designation_id,
+          }).unwrap();
+          handleClose();
+          reset();
+        }
+      } else {
+
+        if (!isLoading) {
+          await CreateDesignationMaster({
+            designation_code: data.designation_code,
+            name: data.designation_name,
+          }).unwrap();
+          handleClose();
+          reset();
+        }
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -200,12 +233,46 @@ export default function Designation() {
 
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const handleOpen = () => {
-    setIsOpen(true);
+  const [getCodess, { data: codedata, isLoading: getcodeisLoading, refetch }] =
+    designationServiceApis.endpoints.getCodesdesignation.useLazyQuery();
+
+
+  const handleOpen = async () => {
+    // setIsOpen(true);
+    console.log("s");
+    try {
+      const {
+        data: codedata,
+        isLoading: getcodeisLoading,
+        isFetching: codeisFetching,
+        isSuccess: codeisSuccess,
+      } = await getCodess();
+
+
+      if (codeisSuccess) {
+        // console.log(codedata);
+        const defaultValues = {
+          // department_code: codedata.code,
+          // department_name: "",
+
+          designation_code: codedata.code,
+          designation_name: "",
+          designation_id: "",
+        }
+
+        reset({ ...defaultValues });
+        setIsOpen((prev) => !prev);
+      }
+      // console.log(queryStateResults);
+      // console.log(info);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleClose = () => {
-    setIsOpen(false);
+    // setIsOpen(false);
+    setIsOpen((prev) => !prev);
   };
 
   return (

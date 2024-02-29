@@ -29,7 +29,7 @@ const NavLinks = React.forwardRef((props, ref) => {
       className={({ isActive }) =>
         isActive ? elementClasses + " activeLink" : elementClasses
       }
-      // className='MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-a16wff-MuiButtonBase-root-MuiListItemButton-root'
+    // className='MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-a16wff-MuiButtonBase-root-MuiListItemButton-root'
     />
   );
 });
@@ -63,7 +63,7 @@ const menu = [
   {
     icon: "Roles",
     name: "Roles & Responsibilities",
-    path: "roles&responsibilities",
+    path: "rolesresponsibilities",
   },
   {
     icon: "postjob",
@@ -91,8 +91,8 @@ const iconMapping = {
   Employee: <img src={Profile} alt="" />,
   Shift: <img src={Profile2} alt="" />,
   Roles: <DoneSharpIcon />,
-  department:<AccountTreeIcon/>,
-  designation:<BadgeIcon/>,
+  department: <AccountTreeIcon />,
+  designation: <BadgeIcon />,
   TimeTracking: <img src={Time} alt="" />,
   DataUpload: <img src={Dataimg} alt="" />,
   postjob: <BusinessCenterOutlinedIcon />,

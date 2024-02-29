@@ -3,8 +3,8 @@ import Navigation from "./privateroutes/navigation.component";
 import Home from "./pages/home/home";
 import Forget from "./pages/auth/forgot";
 import ShiftMaster from "./pages/Employer/shiftmaster";
-import RolesandResponsibilities from "./pages/Employer/roles & responsibilities";
-// import RolesandResponsibilities from "./pages/Employer/rolesresponsibilities";
+// import RolesandResponsibilities from "./pages/Employer/roles & responsibilities";
+import RolesandResponsibilities from "./pages/Employer/rolesresponsibilities";
 import AddEmployee from "./pages/Employer/addEmployee";
 import TimeTrackingActivities from "./pages/Employer/timeTrackingActivities";
 import Joblisting from "./pages/Employer/JobListing";
@@ -28,7 +28,7 @@ function App() {
           <Route path="/addEmployee" element={<AddEmployee />} />
           <Route path="/shiftmaster" element={<ShiftMaster />} />
           <Route
-            path="/roles&responsibilities"
+            path="/rolesresponsibilities"
             element={<RolesandResponsibilities />}
           />
           <Route

@@ -161,6 +161,26 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         me: builder.query({
             query: () => '/api/me',
         }),
+
+        updatpassword: builder.mutation({
+            query: (data) => ({
+                url: 'authentication/change-password',
+                method: 'POST',
+                body: data
+            }),
+            async onQueryStarted(args, { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }) {
+                console.log(args);
+                // console.log(await getState());
+                // console.log(await requestId);
+                // console.log(await extra);
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log(data);
+                } catch (error) {
+                    console.log("error", error)
+                }
+            },
+        }),
     }),
     overrideExisting: false,
 })
@@ -169,7 +189,8 @@ export const {
     useLoginEmailMutation,
     useLoginGoogleMutation,
     useLogoutsMutation,
-    useMeQuery
+    useMeQuery,
+    useUpdatpasswordMutation,
 } = extendedApiSlice
 
 

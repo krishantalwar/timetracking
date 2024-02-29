@@ -10,9 +10,12 @@ import Paper from "@mui/material/Paper";
 import {
   useCreateDepartmentnMasterMutation,
   useGetDepartmentQuery,
-  useDeleteDepartmentMutation
-  ,useEditDepartmentMutation
+  useDeleteDepartmentMutation,
+  useEditDepartmentMutation,
+  useGetDepartmentDetailMutation,
+  useLazyGetCodesQuery
 } from "../../features/department/departmentService";
+import departmentServiceApis from "../../features/department/departmentService";
 import Input from "../../components/ui/forminputs/input";
 import BasicModal from "../../components/ui/modal/modal";
 import Table from "../../components/ui/table/table";
@@ -55,39 +58,46 @@ export default function Designation() {
   ] = useCreateDepartmentnMasterMutation();
 
   const [
-    getDepartmentDetails,
+    updateDepartmentDetails,
     {
       // currentData,
       // isFetching,
-      isLoading: DetailDepartmentnisLoading,
+      isLoading: updateDepartmentnisLoading,
       // isSuccess, isError,
       // error,
       // status
     },
   ] = useEditDepartmentMutation();
+  const [
+    getDepartmentDetails,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: detailDepartmentnisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useGetDepartmentDetailMutation();
 
   const handleDetail = async (row) => {
-    console.log(row);
-    console.log('aaaa');
+    // console.log(row);
+    // console.log('aaaa');
     try {
-      console.log(!DeleteDepartmentisLoading);
-      // if (!DeleteDepartmentisLoading) {
-      const DapartmentDetail = await getDepartmentDetails(row).unwrap();
-      // console.log(asd);
-      // }
-      console.log(formState)
-      // formState.defaultValues.name = "asda";
-      // console.log(formState)
-      // useForm({
-      const defaultValues = {
-        //field name need to change as per backend
-        "break_end_time": DapartmentDetail?.desg_code,
-        "break_start_time": DapartmentDetail?.desg_name
-      }
-      // });
-      reset({ ...defaultValues })
+      if (!detailDepartmentnisLoading) {
+        const DapartmentDetail = await getDepartmentDetails(row).unwrap();
+        // console.log(asd);
+        const defaultValues = {
+          //field name need to change as per backend
+          "department_code": DapartmentDetail?.department_code,
+          "department_name": DapartmentDetail?.name,
+          "departmentid": DapartmentDetail?.departmentid
+        }
+        reset({ ...defaultValues })
 
-      setIsOpen(prev => !prev);
+        setIsOpen(prev => !prev);
+      }
+
     } catch (error) {
       console.error("delete error:", error);
     }
@@ -112,18 +122,17 @@ export default function Designation() {
       // error,
       // status
     },
-  ] = useDeleteDepartmentMutation
-  ();
+  ] = useDeleteDepartmentMutation();
 
   const handleDelete = async (row) => {
-    console.log(row);
-    console.log("aaaa");
+    // console.log(row);
+    // console.log("aaaa");
     try {
-      console.log(!DeleteDesignationisLoading);
-      // if (!DeleteDesignationisLoading) {
-      const asd = await DeleteDepartment(row).unwrap();
-      console.log(asd);
-      // }
+      // console.log(!DeleteDepartmentisLoading);
+      if (!DeleteDepartmentisLoading) {
+        const asd = await DeleteDepartment(row).unwrap();
+        console.log(asd);
+      }
     } catch (error) {
       console.error("delete error:", error);
     }
@@ -136,12 +145,12 @@ export default function Designation() {
         <TableCell align="right">Loading...</TableCell>
       </TableRow>
     );
-    console.log(DepartmentmasterisFetching);
-    console.log(!DepartmentmasterisFetching);
+    // console.log(DepartmentmasterisFetching);
+    // console.log(!DepartmentmasterisFetching);
   } else if (DepartmentmasterisSuccess) {
     // console.log(DepartmentmasterDate)
-    console.log(DepartmentmasterisFetching);
-    console.log(!DepartmentmasterisFetching);
+    // console.log(DepartmentmasterisFetching);
+    // console.log(!DepartmentmasterisFetching);
 
     content = DepartmentmasterDate.map((datas, index) => {
       return (
@@ -155,10 +164,10 @@ export default function Designation() {
           </TableCell>
 
           <TableCell align="right">
-          <Edit key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
+            <Edit key={datas.departmentid + index.toString()} onClick={() => handleDetail(datas?.departmentid)} />
             <DeleteIcon
-              key={datas.shiftid + index.toString() + index.toString()}
-              onDelete={() => handleDelete(datas?.shiftid)}
+              key={datas.departmentid + index.toString() + index.toString()}
+              onDelete={() => handleDelete(datas?.departmentid)}
             />
           </TableCell>
         </TableRow>
@@ -181,19 +190,42 @@ export default function Designation() {
     );
   }
 
-  console.log(DepartmentmasterisFetching);
-  console.log(!DepartmentmasterisFetching);
+  // console.log(DepartmentmasterisFetching);
+  // console.log(!DepartmentmasterisFetching);
 
   const onSubmit = async (data) => {
     try {
-      console.log(isLoading);
-      console.log(!isLoading);
-      if (!isLoading) {
-        await CreateDepartmentMaster({
-          name: data.department_name,
-        }).unwrap();
-        handleClose();
-        reset();
+      // console.log(isLoading);
+      // console.log(!isLoading);
+      // if (!isLoading) {
+      //   await CreateDepartmentMaster({
+      //     name: data.department_name,
+      //   }).unwrap();
+      //   handleClose();
+      //   reset();
+      // }
+
+      if (data?.departmentid) {
+
+        if (!updateDepartmentnisLoading) {
+          await updateDepartmentDetails({
+            department_code: data.department_code,
+            name: data.department_name,
+            departmentid: data.departmentid,
+          }).unwrap();
+          handleClose();
+          reset();
+        }
+      } else {
+
+        if (!isLoading) {
+          await CreateDepartmentMaster({
+            department_code: data.department_code,
+            name: data.department_name,
+          }).unwrap();
+          handleClose();
+          reset();
+        }
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -201,13 +233,41 @@ export default function Designation() {
   };
 
   const [isOpen, setIsOpen] = React.useState(false);
+  const [getCodess, { data: codedata, isLoading: getcodeisLoading, refetch }] =
+    departmentServiceApis.endpoints.getCodes.useLazyQuery();
 
-  const handleOpen = () => {
-    setIsOpen(true);
+  const handleOpen = async () => {
+    // setIsOpen(true);
+    console.log("s");
+    try {
+      const {
+        data: codedata,
+        isLoading: getcodeisLoading,
+        isFetching: codeisFetching,
+        isSuccess: codeisSuccess,
+      } = await getCodess();
+
+
+      if (codeisSuccess) {
+        // console.log(codedata);
+        const defaultValues = {
+          department_code: codedata.code,
+          department_name: "",
+        }
+
+        reset({ ...defaultValues });
+        setIsOpen((prev) => !prev);
+      }
+      // console.log(queryStateResults);
+      // console.log(info);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleClose = () => {
-    setIsOpen(false);
+    // setIsOpen(false);
+    setIsOpen((prev) => !prev);
   };
 
   return (
