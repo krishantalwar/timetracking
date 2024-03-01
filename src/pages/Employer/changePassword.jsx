@@ -12,9 +12,11 @@ import { Tab } from "@mui/icons-material";
 import {
   useUpdatpasswordMutation,
 } from "../../features/auth/authService";
+import { selectCurrentUser } from "../../features/auth/authSelector";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Profile() {
-  const { handleSubmit, control, watch, formState } = useForm({
+  const { handleSubmit, control, watch, formState, reset } = useForm({
     mode: "onChange",
     defaultValues: {
       current_password: "",
@@ -22,6 +24,7 @@ export default function Profile() {
       confirm_password: ""
     },
   });
+  const currentUser = useSelector(selectCurrentUser);
   const password = watch("new_password", "");
 
   const [
@@ -39,14 +42,15 @@ export default function Profile() {
   const onSubmit = async (data) => {
 
     try {
-      console.log(!isLoading);
+      // console.log(!isLoading);
       if (!isLoading) {
         await updatepassword({
           current_password: data.current_password,
           new_password: data.new_password,
           confirm_password: data.confirm_password,
-          user_id: ""
+          user_id: currentUser.user
         }).unwrap();
+        reset()
       }
     } catch (error) {
 
