@@ -167,19 +167,16 @@ export default function Designation() {
           key={datas.designationid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="right">{datas?.designation_code}</TableCell>
+          <TableCell align="left">{datas?.designation_code}</TableCell>
           <TableCell component="th" scope="row">
             {datas?.name}
           </TableCell>
+          
+          <TableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
+  <Edit  style={{ marginRight: '8px' }} key={datas.designationid + index.toString()} onClick={() => handleDetail(datas?.designationid)} />
+  <DeleteIcon   key={datas.designationid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.designationid)} />
+</TableCell>
 
-          <TableCell align="right">
-            {/* shiftid need to change */}
-            <Edit key={datas.designationid + index.toString()} onClick={() => handleDetail(datas?.designationid)} />
-            <DeleteIcon
-              key={datas.designationid + index.toString() + index.toString()}
-              onDelete={() => handleDelete(datas?.designationid)}
-            />
-          </TableCell>
         </TableRow>
       );
     });
@@ -320,9 +317,9 @@ export default function Designation() {
             <Table sx={{ mt: 5 }}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Designation Code</TableCell>
-                  <TableCell align="right">Designation Name</TableCell>
-                  <TableCell align="right">Action</TableCell>
+                  <TableCell><b>Designation Code</b></TableCell>
+                  <TableCell align="left"><b>Designation Name</b></TableCell>
+                  <TableCell align="center"><b>Action</b></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>{content}</TableBody>
@@ -375,7 +372,7 @@ export default function Designation() {
                           id="designation_code"
                           label="Designation Code"
                           type="text"
-                          readOnly
+                          // readOnly
                           disabled
                           formcontrolpops={{
                             fullWidth: true,

@@ -21,6 +21,7 @@ import BasicModal from "../../components/ui/modal/modal";
 import Table from "../../components/ui/table/table";
 import { useForm, Controller } from "react-hook-form";
 import { Add } from "@mui/icons-material";
+import CloseIcon from '@mui/icons-material/Close';
 import { Delete, Edit } from "@mui/icons-material";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -110,6 +111,7 @@ export default function Designation() {
     isSuccess: DepartmentmasterisSuccess,
     isError: DepartmentmasterisError,
     error: Departmentmastererror,
+    refetch:getDepartmentRefetch
   } = useGetDepartmentQuery("getDepartment");
 
   const [
@@ -158,18 +160,15 @@ export default function Designation() {
           key={datas.departmentid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="right">{datas?.department_code}</TableCell>
+          <TableCell align="left">{datas?.department_code}</TableCell>
           <TableCell component="th" scope="row">
             {datas?.name}
           </TableCell>
 
-          <TableCell align="right">
-            <Edit key={datas.departmentid + index.toString()} onClick={() => handleDetail(datas?.departmentid)} />
-            <DeleteIcon
-              key={datas.departmentid + index.toString() + index.toString()}
-              onDelete={() => handleDelete(datas?.departmentid)}
-            />
-          </TableCell>
+          <TableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
+  <Edit  style={{ marginRight: '8px' }} key={datas.departmentid + index.toString()} onClick={() => handleDetail(datas?.departmentid)} />
+  <DeleteIcon   key={datas.departmentid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.departmentid)} />
+</TableCell>
         </TableRow>
       );
     });
@@ -179,13 +178,13 @@ export default function Designation() {
         content
       ) : (
         <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-          <TableCell align="right">no data</TableCell>
+          <TableCell align="left">no data</TableCell>
         </TableRow>
       );
   } else if (DepartmentmasterisError) {
     content = (
       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-        <TableCell align="right">{Departmentmastererror}</TableCell>
+        <TableCell align="left">{Departmentmastererror}</TableCell>
       </TableRow>
     );
   }
@@ -214,6 +213,7 @@ export default function Designation() {
             departmentid: data.departmentid,
           }).unwrap();
           handleClose();
+          
           reset();
         }
       } else {
@@ -224,6 +224,7 @@ export default function Designation() {
             name: data.department_name,
           }).unwrap();
           handleClose();
+          getDepartmentRefetch();
           reset();
         }
       }
@@ -315,9 +316,9 @@ export default function Designation() {
             <Table sx={{ mt: 5 }}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Department Code</TableCell>
-                  <TableCell align="right">Department Name</TableCell>
-                  <TableCell align="right">Action</TableCell>
+                  <TableCell><b>Department Code</b></TableCell>
+                  <TableCell align="left"><b>Department Name</b></TableCell>
+                  <TableCell align="center"><b>Action</b></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>{content}</TableBody>
@@ -337,7 +338,7 @@ export default function Designation() {
                   <Button
                     onClick={handleClose}
                     variant="outlined"
-                    startIcon={<Add />}
+                    startIcon={<CloseIcon />}
                   >
                     Close
                   </Button>
@@ -421,7 +422,7 @@ export default function Designation() {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Add
+                  Save
                 </Button>
               </Box>
             </BasicModal>
