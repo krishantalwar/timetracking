@@ -306,7 +306,7 @@ export default function JobListing() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item xs={10}>
-                <Typography>Shift Master</Typography>
+                <Typography>Post a Job</Typography>
               </Grid>
 
               <Grid item xs={2}>
