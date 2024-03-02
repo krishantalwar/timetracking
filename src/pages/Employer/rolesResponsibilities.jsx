@@ -200,7 +200,7 @@ export default function RolesandResponsibilities() {
                                 name="role"
                                 control={control}
                                 rules={{ required: 'Role is required' }}
-                                defaultValue=""
+
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
@@ -214,7 +214,7 @@ export default function RolesandResponsibilities() {
                                             // inputProps: {name: 'screen_allocation' }
                                         }}
 
-                                        defaultValue=""
+
                                         formcontrolpops={{
                                             "fullWidth": true,
                                             "variant": "standard",

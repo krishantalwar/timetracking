@@ -2,10 +2,10 @@ import { apiSlice } from "../api/api";
 
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getProfile: builder.query({
+        getCountry: builder.query({
             // query: () => '/shiftmaster/',
-            query: (id) => ({
-                url: "/profile/" + id,
+            query: () => ({
+                url: "/country",
                 method: "GET",
                 // body: detail
             }),
@@ -41,47 +41,47 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
             },
         }),
-        editProfile: builder.mutation({
-            query: (detail) => ({
-                //change end point
-                url: 'profile/edit/' + detail.id,
-                method: 'POST',
-                body: detail
-            }),
-            transformResponse: responseData => {
-                console.log(responseData)
-                // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
-                // return authAdapter.setAll(initialState, responseData)
-                return responseData;
-            },
+        // editProfile: builder.mutation({
+        //     query: (detail) => ({
+        //         //change end point
+        //         url: 'profile/edit/' + detail.id,
+        //         method: 'POST',
+        //         body: detail
+        //     }),
+        //     transformResponse: responseData => {
+        //         console.log(responseData)
+        //         // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
+        //         // return authAdapter.setAll(initialState, responseData)
+        //         return responseData;
+        //     },
 
-            // onError: (error, _, api) => {
-            //     console.error('Login Error:', error);
-            // },
-            // onSettled: (result, error, variables) => {
-            //     console.log('Mutation Settled:', result, error, variables);
-            // },
-            async onQueryStarted(args, { queryFulfilled }) {
-                // console.log(args);
-                try {
-                    const { data } = await queryFulfilled;
-                    console.log(data);
-                } catch (error) {
-                    console.log("error", error)
-                }
-            },
+        //     // onError: (error, _, api) => {
+        //     //     console.error('Login Error:', error);
+        //     // },
+        //     // onSettled: (result, error, variables) => {
+        //     //     console.log('Mutation Settled:', result, error, variables);
+        //     // },
+        //     async onQueryStarted(args, { queryFulfilled }) {
+        //         // console.log(args);
+        //         try {
+        //             const { data } = await queryFulfilled;
+        //             console.log(data);
+        //         } catch (error) {
+        //             console.log("error", error)
+        //         }
+        //     },
 
-            invalidatesTags: [
-                { type: 'profile', id: "profileLIST" }
-            ],
-        }),
+        //     invalidatesTags: [
+        //         { type: 'profile', id: "profileLIST" }
+        //     ],
+        // }),
     }),
     overrideExisting: false,
 })
 
 export const {
-    useGetProfileQuery,
-    useEditProfileMutation
+    useGetCountryQuery,
+    // useEditProfileMutation
 } = extendedApiSlice;
 
 export default extendedApiSlice;
