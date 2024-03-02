@@ -171,7 +171,7 @@ export default function Navbar(props) {
                     <MenuItem
                       key={index}
                       onClick={logout}
-                      sx={{ display: "flex", gap: "10px" }}
+                      sx={{ display: "flex", gap: "12px",  ml:"5px" }}
                     >
                       {item.icon}
                       <Typography textAlign="center">{item.label}</Typography>

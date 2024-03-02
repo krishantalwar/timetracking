@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Copyright from "../../layouts/copyright";
 import Paper from "@mui/material/Paper";
-
+import CloseIcon from '@mui/icons-material/Close';
 import {
   useCreateShiftMasterMutation,
   useGetShiftQuery,
@@ -95,6 +95,7 @@ export default function ShiftMaster() {
     isSuccess: shiftmasterisSuccess,
     isError: shiftmasterisError,
     error: shiftmastererror,
+    refetch:getShiftRefetch
   } = useGetShiftQuery("getShift");
 
   const [
@@ -229,6 +230,7 @@ export default function ShiftMaster() {
           }
           await CreateShiftMaster(defaultValues).unwrap();
           handleClose();
+          getShiftRefetch();
           reset();
         }
       }
@@ -405,7 +407,7 @@ export default function ShiftMaster() {
                   <Button
                     onClick={handleClose}
                     variant="outlined"
-                    startIcon={<Add />}
+                    startIcon={<CloseIcon />}
                   >
                     Close
                   </Button>
@@ -438,7 +440,7 @@ export default function ShiftMaster() {
                           id="shift_code"
                           label="Shift Code"
                           type="text"
-                          readOnly
+                          // readOnly
                           disabled
                           formcontrolpops={{
                             fullWidth: true,

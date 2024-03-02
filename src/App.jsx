@@ -11,7 +11,6 @@ import Joblisting from "./pages/Employer/JobListing";
 import Master from "./layouts/master";
 import OldMaster from "./layouts/oldmaster";
 import SignIn from "./pages/auth/login";
-import DepartmentDesignation from "./pages/Employer/departDesig";
 import AddEmployeeold from "./pages/Employer/addEmployeeold";
 import Profile from "./pages/Employer/profile";
 import Password from "./pages/Employer/changePassword";
@@ -36,10 +35,6 @@ function App() {
             element={<TimeTrackingActivities />}
           />
           <Route path="/joblisting" element={<Joblisting />} />
-          <Route
-            path="/department_designation"
-            element={<DepartmentDesignation />}
-          />
           <Route path="/wizzard" element={<AddEmployeeold />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/password" element={<Password />} />

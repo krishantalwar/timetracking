@@ -11,9 +11,7 @@ import Profile2 from "../../src/assets/Time-management-icons/mingcute_user-5-lin
 import DoneSharpIcon from "@mui/icons-material/DoneSharp";
 import Time from "../../src/assets/Time-management-icons/carbon_time.png";
 import Dataimg from "../../src/assets/Time-management-icons/material-symbols-light_upload-sharp.png";
-import Dept_desigimg from "../../src/assets/Time-management-icons/tabler_building.png";
 import Reportsimg from "../../src/assets/Time-management-icons/mdi_report-box-outline.png";
-import Logoutimg from "../../src/assets/Time-management-icons/fluent_arrow-exit-20-regular.png";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
@@ -76,11 +74,6 @@ const menu = [
     path: "timetrackingactivities",
   },
   {
-    icon: "Dept_Desig",
-    name: "Department & Designation",
-    path: "department_designation",
-  },
-  {
     icon: "Reports",
     name: "Reports",
   },
@@ -96,9 +89,7 @@ const iconMapping = {
   TimeTracking: <img src={Time} alt="" />,
   DataUpload: <img src={Dataimg} alt="" />,
   postjob: <BusinessCenterOutlinedIcon />,
-  Dept_Desig: <img src={Dept_desigimg} alt="" />,
   Reports: <img src={Reportsimg} alt="" />,
-  Logout: <img src={Logoutimg} alt="" />,
 };
 
 export const mainListItems = (

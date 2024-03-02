@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Copyright from "../../layouts/copyright";
 import Paper from "@mui/material/Paper";
-
+import CloseIcon from '@mui/icons-material/Close';
 import {
   useCreateDesignationMasterMutation,
   useGetDesignationQuery,
@@ -79,6 +79,7 @@ export default function Designation() {
     isSuccess: designationmasterisSuccess,
     isError: designationmasterisError,
     error: designationmastererror,
+    refetch:getDesignationRefetch
   } = useGetDesignationQuery("getDesignation");
 
 
@@ -220,6 +221,7 @@ export default function Designation() {
             name: data.designation_name,
           }).unwrap();
           handleClose();
+          getDesignationRefetch();
           reset();
         }
       }
@@ -339,7 +341,7 @@ export default function Designation() {
                   <Button
                     onClick={handleClose}
                     variant="outlined"
-                    startIcon={<Add />}
+                    startIcon={<CloseIcon />}
                   >
                     Close
                   </Button>
