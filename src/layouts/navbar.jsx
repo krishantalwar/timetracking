@@ -15,6 +15,7 @@ import { TbLogout } from "react-icons/tb";
 import logo from "../assets/Time-management-icons/logo.png";
 import { NavLink } from "react-router-dom";
 import LockResetIcon from "@mui/icons-material/LockReset";
+import ResetPassword from '../assets/Time-management-icons/password.png'
 import {
   useLogoutsMutation,
   // useLoginGoogleMutation
@@ -33,7 +34,7 @@ const NavLinks = React.forwardRef((props, ref) => {
 
 const settings = [
   { icon: <TbUser />, label: "Profile", path:"/profile" },
-  { icon: <LockResetIcon />, label: "Reset Password", path: "/password" },
+  { icon: <img src={ResetPassword} alt="" />, label: "Reset Password", path: "/password" },
   { icon: <TbLogout />, label: "Logout" },
 ];
 

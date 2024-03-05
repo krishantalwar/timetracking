@@ -8,14 +8,15 @@ import ListItemText from "@mui/material/ListItemText";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import Profile from "../../src/assets/Time-management-icons/Profile.png";
 import Profile2 from "../../src/assets/Time-management-icons/mingcute_user-5-line.png";
-import DoneSharpIcon from "@mui/icons-material/DoneSharp";
 import Time from "../../src/assets/Time-management-icons/carbon_time.png";
 import Dataimg from "../../src/assets/Time-management-icons/material-symbols-light_upload-sharp.png";
 import Reportsimg from "../../src/assets/Time-management-icons/mdi_report-box-outline.png";
+import Tabler from "../assets/Time-management-icons/icons/department.png"
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import BadgeIcon from '@mui/icons-material/Badge';
+import DashboardIcon from '../assets/Time-management-icons/Dashboard.png';
+import DesignationIcon from '../assets/Time-management-icons/Desigantion.png';
+import RoleIcon from '../assets/Time-management-icons/roles.png';
+import PostjobIcon from '../assets/Time-management-icons/job-post.png'
 
 const NavLinks = React.forwardRef((props, ref) => {
   const elementClasses =
@@ -80,15 +81,15 @@ const menu = [
 ];
 
 const iconMapping = {
-  Dashboard: <DashboardIcon />,
+  Dashboard: <img src={DashboardIcon} alt="" />,
   Employee: <img src={Profile} alt="" />,
   Shift: <img src={Profile2} alt="" />,
-  Roles: <DoneSharpIcon />,
-  department: <AccountTreeIcon />,
-  designation: <BadgeIcon />,
+  Roles: <img src={RoleIcon} alt="" />,
+  department:  <img src={Tabler} alt="" />,
+  designation: <img src={DesignationIcon} alt="" />,
   TimeTracking: <img src={Time} alt="" />,
   DataUpload: <img src={Dataimg} alt="" />,
-  postjob: <BusinessCenterOutlinedIcon />,
+  postjob: <img src={PostjobIcon} alt="" />,
   Reports: <img src={Reportsimg} alt="" />,
 };
 

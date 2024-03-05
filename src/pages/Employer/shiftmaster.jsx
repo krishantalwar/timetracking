@@ -165,20 +165,23 @@ export default function ShiftMaster() {
           key={datas.shiftid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="right">{datas?.shiftid}</TableCell>
-          <TableCell component="th" scope="row">
-            {datas?.name}
-          </TableCell>
-          <TableCell align="right">{datas?.start_time}</TableCell>
-          <TableCell align="right">{datas?.end_time}</TableCell>
+          <TableCell align="left">{datas?.shiftid}</TableCell>
+          <TableCell component="th" scope="row"> {datas?.name} </TableCell>
+          <TableCell align="left">{datas?.start_time}</TableCell>
+          <TableCell align="left">{datas?.end_time}</TableCell>
 
-          <TableCell align="right">
+          {/* <TableCell align="right">
             <Edit key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
             <DeleteIcon
               key={datas.shiftid + index.toString() + index.toString()}
               onDelete={() => handleDelete(datas?.shiftid)}
             />
-          </TableCell>
+          </TableCell> */}
+
+          <TableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
+  <Edit  style={{ marginRight: '8px' }} key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
+  <DeleteIcon   key={datas.shiftid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.shiftid)} />
+</TableCell>
         </TableRow>
       );
     });
@@ -384,10 +387,10 @@ export default function ShiftMaster() {
               <TableHead>
                 <TableRow>
                   <TableCell>Shift Code</TableCell>
-                  <TableCell align="right">Shift Name</TableCell>
-                  <TableCell align="right">Start Time</TableCell>
-                  <TableCell align="right">End Time</TableCell>
-                  <TableCell align="right">Action</TableCell>
+                  <TableCell align="left">Shift Name</TableCell>
+                  <TableCell align="left">Start Time</TableCell>
+                  <TableCell align="left">End Time</TableCell>
+                  <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>{content}</TableBody>

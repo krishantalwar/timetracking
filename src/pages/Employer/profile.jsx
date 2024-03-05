@@ -93,14 +93,14 @@ export default function Profile() {
     if (profileData != null && profileData != undefined) {
       if (useGetProfileQueryisSuccess) {
         const defaultValues = {
-          first_name: profileData.first_name ?? "",
-          last_name: profileData.last_name ?? "",
-          email: profileData.email ?? "",
-          address: profileData.userDetail.address ?? "",
-          phone: profileData.userDetail.phone ?? "",
-          city: profileData.userDetail.city ?? "",
-          state: profileData.userDetail.state ?? "",
-          country: profileData.userDetail.country ?? "",
+          first_name: profileData?.first_name ?? "",
+          last_name: profileData?.last_name ?? "",
+          email: profileData?.email ?? "",
+          address: profileData?.userDetail?.address ?? "",
+          phone: profileData?.userDetail?.phone ?? "",
+          city: profileData?.userDetail?.city ?? "",
+          state: profileData?.userDetail?.state ?? "",
+          country: profileData?.userDetail?.country ?? "",
           id: currentUser.user,
         }
         // console.log(defaultValues)
