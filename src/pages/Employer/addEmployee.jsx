@@ -1,37 +1,27 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper'
-import { TextField } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import MenuItem from '@mui/material/MenuItem';
+import * as React from "react";
+import { useState } from "react";
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { TextField } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import MenuItem from "@mui/material/MenuItem";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import {
-  useGetCountryQuery,
-} from '../../features/country/countryService'
+import { useGetCountryQuery } from "../../features/country/countryService";
 
-import {
-  useGetDepartmentQuery,
-} from '../../features/department/departmentService'
+import { useGetDepartmentQuery } from "../../features/department/departmentService";
 
-import {
+import { useGetDesignationQuery } from "../../features/designation/designationService";
 
-  useGetDesignationQuery,
-} from "../../features/designation/designationService";
+import { useGetShiftQuery } from "../../features/shiftmaster/shiftService";
 
-import {
-  useGetShiftQuery,
-} from "../../features/shiftmaster/shiftService";
-
-import {
-  useGetRoleQuery,
-} from "../../features/roles/roles";
+import { useGetRoleQuery } from "../../features/roles/roles";
 
 import {
   useForm,
@@ -44,16 +34,15 @@ function getSteps() {
   return ["Employee Details", "Shift Allocation", "Role Assigned", "Documents"];
 }
 
+
 const EmployeDetails = () => {
-  const
-    {
-      data: countryData,
-      isLoading: countryDataisLoading,
-      isSuccess: countryDataisSuccess,
-      isError: countryDataisError,
-      error: countryDataerror,
-    }
-      = useGetCountryQuery('getCountry');
+  const {
+    data: countryData,
+    isLoading: countryDataisLoading,
+    isSuccess: countryDataisSuccess,
+    isError: countryDataisError,
+    error: countryDataerror,
+  } = useGetCountryQuery("getCountry");
 
   const {
     data: DepartmentmasterDate,
@@ -62,7 +51,7 @@ const EmployeDetails = () => {
     isSuccess: DepartmentmasterisSuccess,
     isError: DepartmentmasterisError,
     error: Departmentmastererror,
-    refetch: getDepartmentRefetch
+    refetch: getDepartmentRefetch,
   } = useGetDepartmentQuery("getDepartment");
 
   const {
@@ -72,19 +61,19 @@ const EmployeDetails = () => {
     isSuccess: designationmasterisSuccess,
     isError: designationmasterisError,
     error: designationmastererror,
-    refetch: getDesignationRefetch
+    refetch: getDesignationRefetch,
   } = useGetDesignationQuery("getDesignation");
-
-
 
   let countyoptions = <MenuItem key={1}></MenuItem>;
   if (countryDataisLoading) {
     countyoptions = <MenuItem key={1}></MenuItem>;
   } else if (countryDataisSuccess) {
     countyoptions = countryData.map((datas) => {
-      return (<MenuItem key={datas.id} value={datas.id} >
-        {datas.name}
-      </MenuItem>);
+      return (
+        <MenuItem key={datas.id} value={datas.id}>
+          {datas.name}
+        </MenuItem>
+      );
     });
   } else if (countryDataisError) {
     countyoptions = <MenuItem key={1}>{countryDataerror}</MenuItem>;
@@ -92,28 +81,34 @@ const EmployeDetails = () => {
   const {
     control,
     formState: { errors },
-    watch
+    watch,
   } = useFormContext();
+  
   // console.log(errors);
 
   const countrychnage = watch("country");
   // console.log(countrychnage);
 
   let stateoptions = <MenuItem key={1}></MenuItem>;
-  if (countrychnage != "" && countrychnage != undefined && countryDataisSuccess) {
+  if (
+    countrychnage != "" &&
+    countrychnage != undefined &&
+    countryDataisSuccess
+  ) {
     if (countryDataisLoading) {
       stateoptions = <MenuItem key={1}></MenuItem>;
     } else if (countryDataisSuccess) {
       const filtercountry = countryData.filter((datas) => {
-        return datas.id == countrychnage
+        return datas.id == countrychnage;
       });
 
       stateoptions = filtercountry[0]?.country_state.map((datas) => {
-        return (<MenuItem key={datas.stateid} value={datas.stateid} >
-          {datas.name}
-        </MenuItem>);
+        return (
+          <MenuItem key={datas.stateid} value={datas.stateid}>
+            {datas.name}
+          </MenuItem>
+        );
       });
-
     } else if (countryDataisError) {
       stateoptions = <MenuItem key={1}>{countryDataerror}</MenuItem>;
     }
@@ -124,9 +119,11 @@ const EmployeDetails = () => {
     deaprtmentptions = <MenuItem key={1}></MenuItem>;
   } else if (DepartmentmasterisSuccess) {
     deaprtmentptions = DepartmentmasterDate.map((datas) => {
-      return (<MenuItem key={datas?.departmentid} value={datas?.departmentid} >
-        {datas?.name}
-      </MenuItem>);
+      return (
+        <MenuItem key={datas?.departmentid} value={datas?.departmentid}>
+          {datas?.name}
+        </MenuItem>
+      );
     });
   } else if (DepartmentmasterisError) {
     deaprtmentptions = <MenuItem key={1}>{Departmentmastererror}</MenuItem>;
@@ -137,23 +134,28 @@ const EmployeDetails = () => {
     designationptions = <MenuItem key={1}></MenuItem>;
   } else if (designationmasterisSuccess) {
     designationptions = designationmasterDate.map((datas) => {
-      return (<MenuItem key={datas?.designationid} value={datas?.designationid} >
-        {datas?.name}
-      </MenuItem>);
+      return (
+        <MenuItem key={datas?.designationid} value={datas?.designationid}>
+          {datas?.name}
+        </MenuItem>
+      );
     });
   } else if (designationmasterisError) {
     deaprtmentptions = <MenuItem key={1}>{designationmastererror}</MenuItem>;
   }
 
-  let reporting_mangeroptions = <MenuItem key={1} value={1}>mn,n,n</MenuItem>;
-
+  let reporting_mangeroptions = (
+    <MenuItem key={1} value={1}>
+      mn,n,n
+    </MenuItem>
+  );
 
   return (
     <>
       <Grid
         container
         sx={{
-          padding: "30px"
+          padding: "30px",
         }}
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -225,7 +227,7 @@ const EmployeDetails = () => {
             rules={{ required: "email  is required." }}
             render={({ field }) => (
               <TextField
-                type='email'
+                type="email"
                 id="email"
                 label="Email"
                 variant="outlined"
@@ -254,13 +256,12 @@ const EmployeDetails = () => {
                 id="country"
                 {...field}
                 select
-
-
-                SelectProps={{
-                  // native: true,
-                  // inputProps: {name: 'screen_allocation' }
-                }}
-
+                SelectProps={
+                  {
+                    // native: true,
+                    // inputProps: {name: 'screen_allocation' }
+                  }
+                }
                 error={Boolean(errors?.loction)}
                 helperText={errors?.loction?.message}
               >
@@ -284,10 +285,12 @@ const EmployeDetails = () => {
                 margin="normal"
                 {...field}
                 select
-                SelectProps={{
-                  // native: true,
-                  // inputProps: {name: 'screen_allocation' }
-                }}
+                SelectProps={
+                  {
+                    // native: true,
+                    // inputProps: {name: 'screen_allocation' }
+                  }
+                }
                 error={Boolean(errors?.sub_loction)}
                 helperText={errors.sub_loction?.message}
               >
@@ -356,10 +359,12 @@ const EmployeDetails = () => {
                 label="Department"
                 id="department"
                 select
-                SelectProps={{
-                  // native: true,
-                  // inputProps: {name: 'screen_allocation' }
-                }}
+                SelectProps={
+                  {
+                    // native: true,
+                    // inputProps: {name: 'screen_allocation' }
+                  }
+                }
                 {...field}
                 error={Boolean(errors?.department)}
                 helperText={errors?.department?.message}
@@ -383,10 +388,12 @@ const EmployeDetails = () => {
                 fullWidth
                 margin="normal"
                 select
-                SelectProps={{
-                  // native: true,
-                  // inputProps: {name: 'screen_allocation' }
-                }}
+                SelectProps={
+                  {
+                    // native: true,
+                    // inputProps: {name: 'screen_allocation' }
+                  }
+                }
                 {...field}
                 error={Boolean(errors?.designation)}
                 helperText={errors.designation?.message}
@@ -411,10 +418,12 @@ const EmployeDetails = () => {
                 id="reporting_manager"
                 {...field}
                 select
-                SelectProps={{
-                  // native: true,
-                  // inputProps: {name: 'screen_allocation' }
-                }}
+                SelectProps={
+                  {
+                    // native: true,
+                    // inputProps: {name: 'screen_allocation' }
+                  }
+                }
                 error={Boolean(errors?.reporting_manager)}
                 helperText={errors?.reporting_manager?.message}
               >
@@ -429,7 +438,6 @@ const EmployeDetails = () => {
 };
 
 const ShiftAllocation = () => {
-
   const {
     data: shiftmasterData,
     isLoading: shiftmasterisLoading,
@@ -437,110 +445,114 @@ const ShiftAllocation = () => {
     isSuccess: shiftmasterisSuccess,
     isError: shiftmasterisError,
     error: shiftmastererror,
-    refetch: getShiftRefetch
+    refetch: getShiftRefetch,
   } = useGetShiftQuery("getShift");
 
   const {
     control,
     formState: { errors },
-    watch
+    watch,
   } = useFormContext();
-  // console.log(errors);
+ 
 
   let shiftptions = <MenuItem key={1}></MenuItem>;
   if (shiftmasterisLoading) {
     shiftptions = <MenuItem key={1}></MenuItem>;
   } else if (shiftmasterisSuccess) {
     shiftptions = shiftmasterData.map((datas) => {
-      return (<MenuItem key={datas?.shiftid} value={datas?.shiftid} >
-        {datas?.name}
-      </MenuItem>);
+      return (
+        <MenuItem key={datas?.shiftid} value={datas?.shiftid}>
+          {datas?.name}
+        </MenuItem>
+      );
     });
   } else if (shiftmasterisError) {
     shiftptions = <MenuItem key={1}>{shiftmastererror}</MenuItem>;
   }
   const shift_allocationchange = watch("shift_allocation");
 
-  console.log(shift_allocationchange)
+  console.log(shift_allocationchange);
 
   let shift_detail = "";
 
-  if (shift_allocationchange != "" && shift_allocationchange != undefined && shiftmasterisSuccess) {
+  if (
+    shift_allocationchange != "" &&
+    shift_allocationchange != undefined &&
+    shiftmasterisSuccess
+  ) {
     const shift_allocation_selected = shiftmasterData.filter((datas) => {
-      return datas.shiftid == shift_allocationchange
+      return datas.shiftid == shift_allocationchange;
     });
 
     if (shift_allocation_selected.length) {
-      shift_detail = <Box>
-        <Typography component='h3' >Shift Detail</Typography>
-        <Grid
-          container
-          sx={{
-            padding: "30px"
-          }}
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        >
-
-          <Grid item xs={4}>
-
-            <Card sx={{ width: "100%", backgroundColor: "lightgreen" }}>
-              <CardContent>
-                <Box sx={{ display: "flex", color: "#fff" }}>
-                  <Box marginLeft={1} marginTop={-2}>
-                    <h3>Shift Name</h3>
-                    <Typography>
-                      {shift_allocation_selected[0].name}
-                    </Typography>
+      shift_detail = (
+        <Box>
+          <Typography component="h3">Shift Detail</Typography>
+          <Grid
+            container
+            sx={{
+              padding: "30px",
+            }}
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid item xs={4}>
+              <Card sx={{ width: "100%", backgroundColor: "lightgreen" }}>
+                <CardContent>
+                  <Box sx={{ display: "flex", color: "#fff" }}>
+                    <Box marginLeft={1} marginTop={-2}>
+                      <h3>Shift Name</h3>
+                      <Typography>
+                        {shift_allocation_selected[0].name}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-
-            <Card sx={{ width: "100%", backgroundColor: "orange" }}>
-              <CardContent>
-                <Box sx={{ display: "flex", color: "#fff" }}>
-                  <Box marginLeft={1} marginTop={-2}>
-                    <h3>Shift Start Time</h3>
-                    <Typography>
-                      {shift_allocation_selected[0].start_time + ' To ' + shift_allocation_selected[0].end_time}
-                    </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={4}>
+              <Card sx={{ width: "100%", backgroundColor: "orange" }}>
+                <CardContent>
+                  <Box sx={{ display: "flex", color: "#fff" }}>
+                    <Box marginLeft={1} marginTop={-2}>
+                      <h3>Shift Start Time</h3>
+                      <Typography>
+                        {shift_allocation_selected[0].start_time +
+                          " To " +
+                          shift_allocation_selected[0].end_time}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-
-            <Card sx={{ width: "100%", backgroundColor: "blue" }}>
-              <CardContent>
-                <Box sx={{ display: "flex", color: "#fff" }}>
-                  <Box marginLeft={1} marginTop={-2}>
-                    <h3>Break TIme</h3>
-                    <Typography>
-                      {shift_allocation_selected[0].break_start_time + ' To ' + shift_allocation_selected[0].break_end_time}
-                    </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={4}>
+              <Card sx={{ width: "100%", backgroundColor: "blue" }}>
+                <CardContent>
+                  <Box sx={{ display: "flex", color: "#fff" }}>
+                    <Box marginLeft={1} marginTop={-2}>
+                      <h3>Break TIme</h3>
+                      <Typography>
+                        {shift_allocation_selected[0].break_start_time +
+                          " To " +
+                          shift_allocation_selected[0].break_end_time}
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
-
-        </Grid>
-      </Box>;
-
+        </Box>
+      );
     }
-
-
   }
   return (
     <>
       <Grid
         container
         sx={{
-          padding: "30px"
+          padding: "30px",
         }}
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -596,7 +608,6 @@ const ShiftAllocation = () => {
             rules={{ required: "Shift allocation is required." }}
             render={({ field }) => (
               <TextField
-
                 select
                 id="shift_allocation"
                 label="Shift Allocation"
@@ -613,11 +624,8 @@ const ShiftAllocation = () => {
             )}
           />
         </Grid>
-
-
       </Grid>
       {shift_detail}
-
     </>
   );
 };
@@ -629,7 +637,7 @@ const RoleAssigned = () => {
     isSuccess: roleisSuccess,
     isError: roleisError,
     error: roleerror,
-    refetch: getRolerefetch
+    refetch: getRolerefetch,
   } = useGetRoleQuery("getRole");
 
   const {
@@ -641,24 +649,23 @@ const RoleAssigned = () => {
   let roleoptions = "";
   if (roleisLoading) {
     roleoptions = <MenuItem key={1}></MenuItem>;
-
   } else if (roleisSuccess) {
     roleoptions = roleDate.map((datas) => {
-      return (<MenuItem key={datas.roleid} value={datas.roleid}>
-        {datas.name}
-      </MenuItem>);
+      return (
+        <MenuItem key={datas.roleid} value={datas.roleid}>
+          {datas.name}
+        </MenuItem>
+      );
     });
-
   } else if (roleisError) {
     roleoptions = <MenuItem key={1}></MenuItem>;
-
   }
   return (
     <>
       <Grid
         container
         sx={{
-          padding: "30px"
+          padding: "30px",
         }}
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -733,6 +740,14 @@ const RoleAssigned = () => {
   );
 };
 const Documents = () => {
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const handleFileChange = (event) => {
+    const files = [...event.target.files];
+    setSelectedFiles(files);
+    event.target.value = ''; 
+    return files;
+  };
+
   const {
     control,
     formState: { errors },
@@ -743,7 +758,7 @@ const Documents = () => {
       <Grid
         container
         sx={{
-          padding: "30px"
+          padding: "30px",
         }}
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
@@ -790,14 +805,12 @@ const Documents = () => {
             )}
           />
         </Grid>
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
           <Controller
             control={control}
             name="upload_documents[]"
             rules={{ required: "Document is required." }}
             render={({ field }) => (
-
-
               <TextField
                 {...field}
                 type="file"
@@ -805,21 +818,42 @@ const Documents = () => {
                   shrink: true,
                 }}
                 inputProps={{ multiple: true }}
-                multiple
-
+                // multiple
                 id="Document"
                 label="Upload Document"
                 variant="outlined"
                 placeholder="Upload document"
                 fullWidth
                 margin="normal"
-
                 error={Boolean(errors?.upload_documents)}
                 helperText={errors.upload_documents?.message}
               >
               </TextField>
             )}
           />
+        </Grid> */}
+
+        <Grid item xs={6}>
+          <Controller
+            control={control}
+            name="upload_documents"
+            rules={{ required: "Document is required." }}
+            render={({ field }) => (
+              <input
+                type="file"
+                multiple
+                onChange={(e) => field.onChange(handleFileChange(e))}
+              />
+            )}
+          />
+          <div>
+            {selectedFiles.length > 0 && (
+              <p>
+                {selectedFiles.length}{" "}
+                {selectedFiles.length === 1 ? "file" : "files"} selected
+              </p>
+            )}
+          </div>
         </Grid>
       </Grid>
     </>
@@ -844,33 +878,30 @@ export default function HorizontalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skippedSteps, setSkipped] = React.useState([]);
   const steps = getSteps();
-  const methods = useForm(
-    {
-      mode: 'onChange',
-      defaultValues: {
-        employe_code: "s",
-        first_name: "s",
-        last_name: "",
-        email: "",
-        country: "",
-        state: "",
-        date_of_birth: "",
-        date_of_joining: "",
-        department: "",
-        designation: "",
-        reporting_manager: "",
-        shift_allocation: "",
-        role_assigned: "",
-        'upload_documents[]': [],
-        'upload_document': []
-      },
-    }
-  );
+  const methods = useForm({
+    mode: "onChange",
+    defaultValues: {
+      employe_code: "s",
+      first_name: "s",
+      last_name: "",
+      email: "",
+      country: "",
+      state: "",
+      date_of_birth: "",
+      date_of_joining: "",
+      department: "",
+      designation: "",
+      reporting_manager: "",
+      shift_allocation: "",
+      role_assigned: "",
+      "upload_documents[]": [],
+      upload_document: [],
+    },
+  });
 
   const isStepOptional = (step) => {
     return step === 1;
   };
-
 
   const isStepFalied = () => {
     return Boolean(Object.keys(methods.formState.errors).length);
@@ -902,11 +933,11 @@ export default function HorizontalLinearStepper() {
       //   .then((res) => {
       //     console.log(res);
       setActiveStep((pre) => pre + 1);
-      console.log(activeStep)
+      console.log(activeStep);
       // });
     } else {
       setActiveStep((pre) => pre + 1);
-      console.log(activeStep)
+      console.log(activeStep);
       // setActiveStep(activeStep + 1);
       // setSkippedSteps(
       //   skippedSteps.filter((skipItem) => skipItem !== activeStep)
@@ -937,33 +968,30 @@ export default function HorizontalLinearStepper() {
     setActiveStep(0);
   };
 
-
-
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
-
+    <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
       <Grid item xs={12} sm={12} md={12} component={Paper} elevation={6} square>
         <Box
           sx={{
             my: 2,
             mx: 4,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             //   alignItems: 'center',
           }}
         >
           <Box>Add Employee</Box>
-          <Typography sx={{
-            my: 2,
-            // mx: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            mb: 3
-            //   alignItems: 'center',
-          }}>
-
-          </Typography>
+          <Typography
+            sx={{
+              my: 2,
+              // mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              mb: 3,
+              //   alignItems: 'center',
+            }}
+          ></Typography>
 
           <Stepper alternativeLabel activeStep={activeStep}>
             {steps.map((step, index) => {
@@ -999,14 +1027,13 @@ export default function HorizontalLinearStepper() {
               <Typography sx={{ mt: 2, mb: 1 }}>
                 All steps completed - you&apos;re finished
               </Typography>
-              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                <Box sx={{ flex: '1 1 auto' }} />
+              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                <Box sx={{ flex: "1 1 auto" }} />
                 {/* <Button onClick={handleReset}>Reset</Button> */}
               </Box>
             </React.Fragment>
           ) : (
             <React.Fragment>
-
               <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(handleNext)}>
                   {getStepContent(activeStep)}
@@ -1014,7 +1041,7 @@ export default function HorizontalLinearStepper() {
                   <Box
                     align="right"
                     sx={{
-                      padding: "10px"
+                      padding: "10px",
                     }}
                   >
                     <Button
@@ -1044,10 +1071,8 @@ export default function HorizontalLinearStepper() {
                       {activeStep === steps.length - 1 ? "Finish" : "Next"}
                     </Button>
                   </Box>
-
                 </form>
               </FormProvider>
-
             </React.Fragment>
           )}
         </Box>
