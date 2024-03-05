@@ -271,8 +271,8 @@ export default function RolesandResponsibilities() {
                     <TableHead>
                         <TableRow>
                             <TableCell>Role Code</TableCell>
-                            <TableCell align="right">Role Name</TableCell>
-                            <TableCell align="right">Action</TableCell>
+                            <TableCell align="left">Role Name</TableCell>
+                            <TableCell align="center">Action</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>{rolelisting}</TableBody>
