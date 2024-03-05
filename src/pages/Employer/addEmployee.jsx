@@ -5,15 +5,33 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
-import Input from '../../components/ui/forminputs/input';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper'
 import { TextField } from '@mui/material';
-import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
-import Selects from '../../components/ui/forminputs/select'
-import FormPropsDatePickers from '../../components/ui/forminputs/datePicker'
+import MenuItem from '@mui/material/MenuItem';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import {
+  useGetCountryQuery,
+} from '../../features/country/countryService'
+
+import {
+  useGetDepartmentQuery,
+} from '../../features/department/departmentService'
+
+import {
+
+  useGetDesignationQuery,
+} from "../../features/designation/designationService";
+
+import {
+  useGetShiftQuery,
+} from "../../features/shiftmaster/shiftService";
+
+import {
+  useGetRoleQuery,
+} from "../../features/roles/roles";
 
 import {
   useForm,
@@ -27,11 +45,109 @@ function getSteps() {
 }
 
 const EmployeDetails = () => {
+  const
+    {
+      data: countryData,
+      isLoading: countryDataisLoading,
+      isSuccess: countryDataisSuccess,
+      isError: countryDataisError,
+      error: countryDataerror,
+    }
+      = useGetCountryQuery('getCountry');
+
+  const {
+    data: DepartmentmasterDate,
+    isLoading: DepartmentmasterisLoading,
+    isFetching: DepartmentmasterisFetching,
+    isSuccess: DepartmentmasterisSuccess,
+    isError: DepartmentmasterisError,
+    error: Departmentmastererror,
+    refetch: getDepartmentRefetch
+  } = useGetDepartmentQuery("getDepartment");
+
+  const {
+    data: designationmasterDate,
+    isLoading: designationmasterisLoading,
+    isFetching: designationmasterisFetching,
+    isSuccess: designationmasterisSuccess,
+    isError: designationmasterisError,
+    error: designationmastererror,
+    refetch: getDesignationRefetch
+  } = useGetDesignationQuery("getDesignation");
+
+
+
+  let countyoptions = <MenuItem key={1}></MenuItem>;
+  if (countryDataisLoading) {
+    countyoptions = <MenuItem key={1}></MenuItem>;
+  } else if (countryDataisSuccess) {
+    countyoptions = countryData.map((datas) => {
+      return (<MenuItem key={datas.id} value={datas.id} >
+        {datas.name}
+      </MenuItem>);
+    });
+  } else if (countryDataisError) {
+    countyoptions = <MenuItem key={1}>{countryDataerror}</MenuItem>;
+  }
   const {
     control,
     formState: { errors },
+    watch
   } = useFormContext();
-  console.log(errors);
+  // console.log(errors);
+
+  const countrychnage = watch("country");
+  // console.log(countrychnage);
+
+  let stateoptions = <MenuItem key={1}></MenuItem>;
+  if (countrychnage != "" && countrychnage != undefined && countryDataisSuccess) {
+    if (countryDataisLoading) {
+      stateoptions = <MenuItem key={1}></MenuItem>;
+    } else if (countryDataisSuccess) {
+      const filtercountry = countryData.filter((datas) => {
+        return datas.id == countrychnage
+      });
+
+      stateoptions = filtercountry[0]?.country_state.map((datas) => {
+        return (<MenuItem key={datas.stateid} value={datas.stateid} >
+          {datas.name}
+        </MenuItem>);
+      });
+
+    } else if (countryDataisError) {
+      stateoptions = <MenuItem key={1}>{countryDataerror}</MenuItem>;
+    }
+  }
+
+  let deaprtmentptions = <MenuItem key={1}></MenuItem>;
+  if (DepartmentmasterisLoading) {
+    deaprtmentptions = <MenuItem key={1}></MenuItem>;
+  } else if (DepartmentmasterisSuccess) {
+    deaprtmentptions = DepartmentmasterDate.map((datas) => {
+      return (<MenuItem key={datas?.departmentid} value={datas?.departmentid} >
+        {datas?.name}
+      </MenuItem>);
+    });
+  } else if (DepartmentmasterisError) {
+    deaprtmentptions = <MenuItem key={1}>{Departmentmastererror}</MenuItem>;
+  }
+
+  let designationptions = <MenuItem key={1}></MenuItem>;
+  if (designationmasterisLoading) {
+    designationptions = <MenuItem key={1}></MenuItem>;
+  } else if (designationmasterisSuccess) {
+    designationptions = designationmasterDate.map((datas) => {
+      return (<MenuItem key={datas?.designationid} value={datas?.designationid} >
+        {datas?.name}
+      </MenuItem>);
+    });
+  } else if (designationmasterisError) {
+    deaprtmentptions = <MenuItem key={1}>{designationmastererror}</MenuItem>;
+  }
+
+  let reporting_mangeroptions = <MenuItem key={1} value={1}>mn,n,n</MenuItem>;
+
+
   return (
     <>
       <Grid
@@ -54,7 +170,6 @@ const EmployeDetails = () => {
                 label="Employee Code"
                 variant="outlined"
                 placeholder="Enter employee code"
-
                 margin="normal"
                 {...field}
                 error={Boolean(errors?.employe_code)}
@@ -106,7 +221,28 @@ const EmployeDetails = () => {
         <Grid item xs={4}>
           <Controller
             control={control}
-            name="loction"
+            name="email"
+            rules={{ required: "email  is required." }}
+            render={({ field }) => (
+              <TextField
+                type='email'
+                id="email"
+                label="Email"
+                variant="outlined"
+                placeholder="Enter email"
+                fullWidth
+                margin="normal"
+                {...field}
+                error={Boolean(errors?.email)}
+                helperText={errors.email?.message}
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <Controller
+            control={control}
+            name="country"
             rules={{ required: "Location is required" }}
             render={({ field }) => (
               <TextField
@@ -115,31 +251,48 @@ const EmployeDetails = () => {
                 placeholder="Enter location"
                 fullWidth
                 label="Location"
-                id="loction"
+                id="country"
                 {...field}
+                select
+
+
+                SelectProps={{
+                  // native: true,
+                  // inputProps: {name: 'screen_allocation' }
+                }}
+
                 error={Boolean(errors?.loction)}
                 helperText={errors?.loction?.message}
-              />
+              >
+                {countyoptions}
+              </TextField>
             )}
           />
         </Grid>
         <Grid item xs={4}>
           <Controller
             control={control}
-            name="sub_loction"
+            name="state"
             rules={{ required: "Sub location is required." }}
             render={({ field }) => (
               <TextField
-                id="sub_loction"
+                id="state"
                 label="Sub Location"
                 variant="outlined"
                 placeholder="Enter sub location"
                 fullWidth
                 margin="normal"
                 {...field}
+                select
+                SelectProps={{
+                  // native: true,
+                  // inputProps: {name: 'screen_allocation' }
+                }}
                 error={Boolean(errors?.sub_loction)}
                 helperText={errors.sub_loction?.message}
-              />
+              >
+                {stateoptions}
+              </TextField>
             )}
           />
         </Grid>
@@ -202,10 +355,17 @@ const EmployeDetails = () => {
                 fullWidth
                 label="Department"
                 id="department"
+                select
+                SelectProps={{
+                  // native: true,
+                  // inputProps: {name: 'screen_allocation' }
+                }}
                 {...field}
                 error={Boolean(errors?.department)}
                 helperText={errors?.department?.message}
-              />
+              >
+                {deaprtmentptions}
+              </TextField>
             )}
           />
         </Grid>
@@ -222,10 +382,17 @@ const EmployeDetails = () => {
                 placeholder="Enter designation"
                 fullWidth
                 margin="normal"
+                select
+                SelectProps={{
+                  // native: true,
+                  // inputProps: {name: 'screen_allocation' }
+                }}
                 {...field}
                 error={Boolean(errors?.designation)}
                 helperText={errors.designation?.message}
-              />
+              >
+                {designationptions}
+              </TextField>
             )}
           />
         </Grid>
@@ -240,12 +407,19 @@ const EmployeDetails = () => {
                 variant="outlined"
                 placeholder="Enter reporting manager"
                 fullWidth
-                label="Designation"
+                label="Reporting Manager"
                 id="reporting_manager"
                 {...field}
+                select
+                SelectProps={{
+                  // native: true,
+                  // inputProps: {name: 'screen_allocation' }
+                }}
                 error={Boolean(errors?.reporting_manager)}
                 helperText={errors?.reporting_manager?.message}
-              />
+              >
+                {reporting_mangeroptions}
+              </TextField>
             )}
           />
         </Grid>
@@ -255,11 +429,112 @@ const EmployeDetails = () => {
 };
 
 const ShiftAllocation = () => {
+
+  const {
+    data: shiftmasterData,
+    isLoading: shiftmasterisLoading,
+    isFetching: shiftmasterisFetching,
+    isSuccess: shiftmasterisSuccess,
+    isError: shiftmasterisError,
+    error: shiftmastererror,
+    refetch: getShiftRefetch
+  } = useGetShiftQuery("getShift");
+
   const {
     control,
     formState: { errors },
+    watch
   } = useFormContext();
-  console.log(errors);
+  // console.log(errors);
+
+  let shiftptions = <MenuItem key={1}></MenuItem>;
+  if (shiftmasterisLoading) {
+    shiftptions = <MenuItem key={1}></MenuItem>;
+  } else if (shiftmasterisSuccess) {
+    shiftptions = shiftmasterData.map((datas) => {
+      return (<MenuItem key={datas?.shiftid} value={datas?.shiftid} >
+        {datas?.name}
+      </MenuItem>);
+    });
+  } else if (shiftmasterisError) {
+    shiftptions = <MenuItem key={1}>{shiftmastererror}</MenuItem>;
+  }
+  const shift_allocationchange = watch("shift_allocation");
+
+  console.log(shift_allocationchange)
+
+  let shift_detail = "";
+
+  if (shift_allocationchange != "" && shift_allocationchange != undefined && shiftmasterisSuccess) {
+    const shift_allocation_selected = shiftmasterData.filter((datas) => {
+      return datas.shiftid == shift_allocationchange
+    });
+
+    if (shift_allocation_selected.length) {
+      shift_detail = <Box>
+        <Typography component='h3' >Shift Detail</Typography>
+        <Grid
+          container
+          sx={{
+            padding: "30px"
+          }}
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        >
+
+          <Grid item xs={4}>
+
+            <Card sx={{ width: "100%", backgroundColor: "lightgreen" }}>
+              <CardContent>
+                <Box sx={{ display: "flex", color: "#fff" }}>
+                  <Box marginLeft={1} marginTop={-2}>
+                    <h3>Shift Name</h3>
+                    <Typography>
+                      {shift_allocation_selected[0].name}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={4}>
+
+            <Card sx={{ width: "100%", backgroundColor: "orange" }}>
+              <CardContent>
+                <Box sx={{ display: "flex", color: "#fff" }}>
+                  <Box marginLeft={1} marginTop={-2}>
+                    <h3>Shift Start Time</h3>
+                    <Typography>
+                      {shift_allocation_selected[0].start_time + ' To ' + shift_allocation_selected[0].end_time}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={4}>
+
+            <Card sx={{ width: "100%", backgroundColor: "blue" }}>
+              <CardContent>
+                <Box sx={{ display: "flex", color: "#fff" }}>
+                  <Box marginLeft={1} marginTop={-2}>
+                    <h3>Break TIme</h3>
+                    <Typography>
+                      {shift_allocation_selected[0].break_start_time + ' To ' + shift_allocation_selected[0].break_end_time}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+
+        </Grid>
+      </Box>;
+
+    }
+
+
+  }
   return (
     <>
       <Grid
@@ -277,6 +552,7 @@ const ShiftAllocation = () => {
             rules={{ required: "Employe code is required." }}
             render={({ field }) => (
               <TextField
+                readOnly
                 disabled
                 id="employe_code"
                 label="Employee Code"
@@ -298,6 +574,7 @@ const ShiftAllocation = () => {
             rules={{ required: "First name is required" }}
             render={({ field }) => (
               <TextField
+                readOnly
                 disabled
                 margin="normal"
                 variant="outlined"
@@ -319,6 +596,7 @@ const ShiftAllocation = () => {
             rules={{ required: "Shift allocation is required." }}
             render={({ field }) => (
               <TextField
+
                 select
                 id="shift_allocation"
                 label="Shift Allocation"
@@ -330,32 +608,51 @@ const ShiftAllocation = () => {
                 error={Boolean(errors?.shift_allocation)}
                 helperText={errors.shift_allocation?.message}
               >
-                <MenuItem key={1} value={1}>
-                  Morning
-                </MenuItem>
-                <MenuItem key={2} value={2}>
-                  Afternoon
-                </MenuItem>
-                <MenuItem key={3} value={3}>
-                  Evening
-                </MenuItem>
-                <MenuItem key={4} value={4}>
-                  Night
-                </MenuItem>
+                {shiftptions}
               </TextField>
             )}
           />
         </Grid>
+
+
       </Grid>
+      {shift_detail}
+
     </>
   );
 };
 const RoleAssigned = () => {
   const {
+    data: roleDate,
+    isLoading: roleisLoading,
+    isFetching: roleisFetching,
+    isSuccess: roleisSuccess,
+    isError: roleisError,
+    error: roleerror,
+    refetch: getRolerefetch
+  } = useGetRoleQuery("getRole");
+
+  const {
     control,
     formState: { errors },
   } = useFormContext();
   console.log(errors);
+
+  let roleoptions = "";
+  if (roleisLoading) {
+    roleoptions = <MenuItem key={1}></MenuItem>;
+
+  } else if (roleisSuccess) {
+    roleoptions = roleDate.map((datas) => {
+      return (<MenuItem key={datas.roleid} value={datas.roleid}>
+        {datas.name}
+      </MenuItem>);
+    });
+
+  } else if (roleisError) {
+    roleoptions = <MenuItem key={1}></MenuItem>;
+
+  }
   return (
     <>
       <Grid
@@ -426,18 +723,7 @@ const RoleAssigned = () => {
                 error={Boolean(errors?.role_assigned)}
                 helperText={errors.role_assigned?.message}
               >
-                <MenuItem key={1} value={1}>
-                  Manager
-                </MenuItem>
-                <MenuItem key={2} value={2}>
-                  Employee
-                </MenuItem>
-                <MenuItem key={3} value={3}>
-                  Role
-                </MenuItem>
-                <MenuItem key={4} value={4}>
-                  Role
-                </MenuItem>
+                {roleoptions}
               </TextField>
             )}
           />
@@ -507,21 +793,29 @@ const Documents = () => {
         <Grid item xs={6}>
           <Controller
             control={control}
-            name="upload_document"
+            name="upload_documents[]"
             rules={{ required: "Document is required." }}
             render={({ field }) => (
+
+
               <TextField
-                InputLabelProps={{ shrink: true }}
+                {...field}
                 type="file"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{ multiple: true }}
+                multiple
+
                 id="Document"
                 label="Upload Document"
                 variant="outlined"
                 placeholder="Upload document"
                 fullWidth
                 margin="normal"
-                {...field}
-                error={Boolean(errors?.upload_document)}
-                helperText={errors.upload_document?.message}
+
+                error={Boolean(errors?.upload_documents)}
+                helperText={errors.upload_documents?.message}
               >
               </TextField>
             )}
@@ -533,15 +827,14 @@ const Documents = () => {
 };
 function getStepContent(step) {
   switch (step) {
-    case 0:
-      return <EmployeDetails />;
-
+    // case 0:
+    //   return <EmployeDetails />;
     // case 1:
     //   return <ShiftAllocation />;
     // case 2:
     //   return <RoleAssigned />;
-    // case 3:
-    //   return <Documents />;
+    case 0:
+      return <Documents />;
     default:
       return "unknown step";
   }
@@ -555,18 +848,21 @@ export default function HorizontalLinearStepper() {
     {
       mode: 'onChange',
       defaultValues: {
-        firstName: "",
-        lastName: "",
-        nickName: "",
-        emailAddress: "",
-        phoneNumber: "",
-        alternatePhone: "",
-        address1: "",
-        address2: "",
+        employe_code: "s",
+        first_name: "s",
+        last_name: "",
+        email: "",
         country: "",
-        cardNumber: "",
-        cardMonth: "",
-        cardYear: "",
+        state: "",
+        date_of_birth: "",
+        date_of_joining: "",
+        department: "",
+        designation: "",
+        reporting_manager: "",
+        shift_allocation: "",
+        role_assigned: "",
+        'upload_documents[]': [],
+        'upload_document': []
       },
     }
   );
@@ -596,18 +892,21 @@ export default function HorizontalLinearStepper() {
   // };
   const handleNext = (data) => {
     console.log(data);
-    console.log(activeStep);
-    console.log(steps);
+    // console.log("data");
+    // console.log(activeStep);
+    // console.log(steps);
     if (activeStep == steps.length - 1) {
-      console.log("ds");
+      // console.log("ds");
       // fetch("https://jsonplaceholder.typicode.com/comments")
       //   .then((data) => data.json())
       //   .then((res) => {
       //     console.log(res);
       setActiveStep((pre) => pre + 1);
+      console.log(activeStep)
       // });
     } else {
       setActiveStep((pre) => pre + 1);
+      console.log(activeStep)
       // setActiveStep(activeStep + 1);
       // setSkippedSteps(
       //   skippedSteps.filter((skipItem) => skipItem !== activeStep)
