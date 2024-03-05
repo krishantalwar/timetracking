@@ -842,9 +842,20 @@ const Documents = () => {
               <input
                 type="file"
                 multiple
+                variant="outlined"
                 onChange={(e) => field.onChange(handleFileChange(e))}
-              />
+                style={{
+                  border: "1px solid grey", // Custom border style
+                  borderRadius: "4px", // Rounded corners
+                  padding: "20px", // Padding
+                  width: "100%", // Full width
+                  height:"60px",
+                  boxSizing: "border-box", // Include border and padding in width
+                }}
+              />                 
             )}
+            
+           
           />
           <div>
             {selectedFiles.length > 0 && (
@@ -854,6 +865,12 @@ const Documents = () => {
               </p>
             )}
           </div>
+        {errors.upload_documents && <span style={
+          {
+            color:"red"
+          }
+        }
+          >{errors.upload_documents.message}</span>}
         </Grid>
       </Grid>
     </>
