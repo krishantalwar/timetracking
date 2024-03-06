@@ -39,9 +39,8 @@ function getSteps() {
 }
 
 
-const EmployeDetails = (props) => {
-  console.log(props)
-  console.log(props?.usercode)
+const EmployeDetails = () => {
+
   const {
     data: countryData,
     isLoading: countryDataisLoading,
@@ -70,11 +69,11 @@ const EmployeDetails = (props) => {
     refetch: getDesignationRefetch,
   } = useGetDesignationQuery("getDesignation");
 
-  console.log(countryDataisLoading);
-  console.log(countryDataisSuccess);
-  console.log(countryDataisError);
-  console.log(countryDataerror);
-  console.log(countryData);
+  // console.log(countryDataisLoading);
+  // console.log(countryDataisSuccess);
+  // console.log(countryDataisError);
+  // console.log(countryDataerror);
+  // console.log(countryData);
   let countyoptions = <MenuItem key={1}></MenuItem>;
   if (countryDataisLoading) {
     countyoptions = <MenuItem key={1}></MenuItem>;
@@ -93,12 +92,16 @@ const EmployeDetails = (props) => {
     control,
     formState: { errors },
     watch,
+    getValues,
   } = useFormContext();
 
   // console.log(errors);
 
   const countrychnage = watch("country");
+  const empcode = getValues("employe_code");
   // console.log(countrychnage);
+  // console.log(empcode);
+
 
   let stateoptions = <MenuItem key={1}></MenuItem>;
   if (
@@ -109,9 +112,11 @@ const EmployeDetails = (props) => {
     if (countryDataisLoading) {
       stateoptions = <MenuItem key={1}></MenuItem>;
     } else if (countryDataisSuccess) {
+
       const filtercountry = countryData.filter((datas) => {
         return datas.id == countrychnage;
       });
+      console.log(filtercountry)
 
       stateoptions = filtercountry[0]?.country_state.map((datas) => {
         return (
@@ -161,38 +166,38 @@ const EmployeDetails = (props) => {
     </MenuItem>
   );
   let reporting_manger = "";
-  if (props?.usercode != "EM1" && props?.usercode != "") {
-    reporting_manger =
-      <Grid item xs={4}>
-        <Controller
-          control={control}
-          name="reporting_manager"
-          rules={{ required: "Reporting manager is required" }}
-          render={({ field }) => (
-            <TextField
-              margin="normal"
-              variant="outlined"
-              placeholder="Enter reporting manager"
-              fullWidth
-              label="Reporting Manager"
-              id="reporting_manager"
-              {...field}
-              select
-              SelectProps={
-                {
-                  // native: true,
-                  // inputProps: {name: 'screen_allocation' }
-                }
-              }
-              error={Boolean(errors?.reporting_manager)}
-              helperText={errors?.reporting_manager?.message}
-            >
-              {reporting_mangeroptions}
-            </TextField>
-          )}
-        />
-      </Grid>
-  }
+  // if (props?.usercode != "EM1" && props?.usercode != "") {
+  //   reporting_manger =
+  //     <Grid item xs={4}>
+  //       <Controller
+  //         control={control}
+  //         name="reporting_manager"
+  //         rules={{ required: "Reporting manager is required" }}
+  //         render={({ field }) => (
+  //           <TextField
+  //             margin="normal"
+  //             variant="outlined"
+  //             placeholder="Enter reporting manager"
+  //             fullWidth
+  //             label="Reporting Manager"
+  //             id="reporting_manager"
+  //             {...field}
+  //             select
+  //             SelectProps={
+  //               {
+  //                 // native: true,
+  //                 // inputProps: {name: 'screen_allocation' }
+  //               }
+  //             }
+  //             error={Boolean(errors?.reporting_manager)}
+  //             helperText={errors?.reporting_manager?.message}
+  //           >
+  //             {reporting_mangeroptions}
+  //           </TextField>
+  //         )}
+  //       />
+  //     </Grid>
+  // }
 
   return (
     <>
@@ -779,9 +784,9 @@ const Documents = () => {
     //   shouldValidate: true,
     //   shouldDirty: true
     // });
-    console.log(getValues())
+    // console.log(getValues())
     // setValue('upload_document', 'dd');
-    console.log(getValues())
+    // console.log(getValues())
     // console.log("setvl", setValue('upload_document', 'dd'));
     // return setValue('upload_document', 'dd');
 
@@ -909,7 +914,8 @@ const Documents = () => {
     </>
   );
 };
-function getStepContent(step, usercodeDate) {
+
+function getStepContent(step) {
   switch (step) {
     case 0:
       return <EmployeDetails />;
