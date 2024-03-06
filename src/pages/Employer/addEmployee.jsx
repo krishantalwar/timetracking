@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -14,19 +13,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useGetCountryQuery } from "../../features/country/countryService";
-
 import { useGetDepartmentQuery } from "../../features/department/departmentService";
-
 import { useGetDesignationQuery } from "../../features/designation/designationService";
-
 import { useGetShiftQuery } from "../../features/shiftmaster/shiftService";
-
 import { useGetRoleQuery } from "../../features/roles/roles";
-
-
 import { useGetCodeusersQuery } from "../../features/user/userService";
-import userServiceApis from "../../features/user/userService";
-
 import {
   useForm,
   Controller,
@@ -38,9 +29,7 @@ function getSteps() {
   return ["Employee Details", "Shift Allocation", "Role Assigned", "Documents"];
 }
 
-
 const EmployeDetails = () => {
-
   const {
     data: countryData,
     isLoading: countryDataisLoading,
@@ -69,11 +58,6 @@ const EmployeDetails = () => {
     refetch: getDesignationRefetch,
   } = useGetDesignationQuery("getDesignation");
 
-  // console.log(countryDataisLoading);
-  // console.log(countryDataisSuccess);
-  // console.log(countryDataisError);
-  // console.log(countryDataerror);
-  // console.log(countryData);
   let countyoptions = <MenuItem key={1}></MenuItem>;
   if (countryDataisLoading) {
     countyoptions = <MenuItem key={1}></MenuItem>;
@@ -102,7 +86,6 @@ const EmployeDetails = () => {
   // console.log(countrychnage);
   // console.log(empcode);
 
-
   let stateoptions = <MenuItem key={1}></MenuItem>;
   if (
     countrychnage != "" &&
@@ -112,11 +95,10 @@ const EmployeDetails = () => {
     if (countryDataisLoading) {
       stateoptions = <MenuItem key={1}></MenuItem>;
     } else if (countryDataisSuccess) {
-
       const filtercountry = countryData.filter((datas) => {
         return datas.id == countrychnage;
       });
-      console.log(filtercountry)
+      console.log(filtercountry);
 
       stateoptions = filtercountry[0]?.country_state.map((datas) => {
         return (
@@ -166,38 +148,6 @@ const EmployeDetails = () => {
     </MenuItem>
   );
   let reporting_manger = "";
-  // if (props?.usercode != "EM1" && props?.usercode != "") {
-  //   reporting_manger =
-  //     <Grid item xs={4}>
-  //       <Controller
-  //         control={control}
-  //         name="reporting_manager"
-  //         rules={{ required: "Reporting manager is required" }}
-  //         render={({ field }) => (
-  //           <TextField
-  //             margin="normal"
-  //             variant="outlined"
-  //             placeholder="Enter reporting manager"
-  //             fullWidth
-  //             label="Reporting Manager"
-  //             id="reporting_manager"
-  //             {...field}
-  //             select
-  //             SelectProps={
-  //               {
-  //                 // native: true,
-  //                 // inputProps: {name: 'screen_allocation' }
-  //               }
-  //             }
-  //             error={Boolean(errors?.reporting_manager)}
-  //             helperText={errors?.reporting_manager?.message}
-  //           >
-  //             {reporting_mangeroptions}
-  //           </TextField>
-  //         )}
-  //       />
-  //     </Grid>
-  // }
 
   return (
     <>
@@ -454,7 +404,6 @@ const EmployeDetails = () => {
             )}
           />
         </Grid>
-
       </Grid>
     </>
   );
@@ -476,7 +425,6 @@ const ShiftAllocation = () => {
     formState: { errors },
     watch,
   } = useFormContext();
-
 
   let shiftptions = <MenuItem key={1}></MenuItem>;
   if (shiftmasterisLoading) {
@@ -767,18 +715,18 @@ const Documents = () => {
     control,
     formState: { errors },
     setValue,
-    getValues
+    getValues,
   } = useFormContext();
   console.log(errors);
 
   const handleFileChange = (event) => {
     const files = [...event.target.files];
-    console.log(files)
+    console.log(files);
     // event.target.value = files;
 
-    setValue('upload_documents', files, {
+    setValue("upload_documents", files, {
       shouldValidate: true,
-      shouldDirty: true
+      shouldDirty: true,
     });
     // setValue('upload_document', files, {
     //   shouldValidate: true,
@@ -789,7 +737,6 @@ const Documents = () => {
     // console.log(getValues())
     // console.log("setvl", setValue('upload_document', 'dd'));
     // return setValue('upload_document', 'dd');
-
   };
   return (
     <>
@@ -867,8 +814,8 @@ const Documents = () => {
                 //   handleFileChange(e); // Call handleFileChange directly
                 // }}
                 onChange={(e) => {
-                  field.onChange(e)
-                  handleFileChange(e)
+                  field.onChange(e);
+                  handleFileChange(e);
                   // console.log(...e.target.files)
                   // setValue("upload_document", 'file', {
                   //   shouldValidate: true,
@@ -876,8 +823,7 @@ const Documents = () => {
                   // })
                   // console.log(getValues())
                   // return undefined
-                }
-                }
+                }}
                 // onChange={(e) => {
                 //   handleFileChange(e)
 
@@ -904,12 +850,10 @@ const Documents = () => {
                 //   })
                 error={Boolean(errors?.upload_document)}
                 helperText={errors.upload_document?.message}
-              >
-              </TextField>
+              ></TextField>
             )}
           />
         </Grid>
-
       </Grid>
     </>
   );
@@ -933,7 +877,6 @@ function getStepContent(step) {
 }
 
 export default function HorizontalLinearStepper() {
-
   const [activeStep, setActiveStep] = React.useState(0);
   const [skippedSteps, setSkipped] = React.useState([]);
   const steps = getSteps();
@@ -960,7 +903,6 @@ export default function HorizontalLinearStepper() {
       // "upload_documents[]": [],
       upload_document: [],
     },
-
   });
 
   const isStepOptional = (step) => {
@@ -1029,13 +971,12 @@ export default function HorizontalLinearStepper() {
     isSuccess: usercodeisSuccess,
     isError: usercodeisError,
     error: usercodeerror,
-    refetch: usercodRefetch
+    refetch: usercodRefetch,
   } = useGetCodeusersQuery("getCodeusers");
 
-  if (usercodeisSuccess) {
-
-    methods.reset(
-      {
+  React.useEffect(() => {
+    if (usercodeisSuccess) {
+      methods.reset({
         employe_code: usercodeDate?.code,
         first_name: "",
         last_name: "",
@@ -1046,15 +987,16 @@ export default function HorizontalLinearStepper() {
         date_of_joining: "",
         department: "",
         designation: "",
-        reporting_manager: usercodeDate?.code == "EM1" ? '' : '',
+        reporting_manager: usercodeDate?.code == "EM1" ? "" : "",
         shift_allocation: "",
         role_assigned: "",
         upload_documents: [],
         // "upload_documents[]": [],
         upload_document: [],
-      },
-    )
-  }
+      });
+    }
+  }, [usercodeisSuccess, usercodeDate, methods]);
+
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
