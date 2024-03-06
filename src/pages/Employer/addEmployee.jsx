@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { TextField } from "@mui/material";
+import { TextField, Input } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import MenuItem from "@mui/material/MenuItem";
 import Card from "@mui/material/Card";
@@ -23,6 +23,10 @@ import { useGetShiftQuery } from "../../features/shiftmaster/shiftService";
 
 import { useGetRoleQuery } from "../../features/roles/roles";
 
+
+import { useGetCodeusersQuery } from "../../features/user/userService";
+import userServiceApis from "../../features/user/userService";
+
 import {
   useForm,
   Controller,
@@ -35,7 +39,9 @@ function getSteps() {
 }
 
 
-const EmployeDetails = () => {
+const EmployeDetails = (props) => {
+  console.log(props)
+  console.log(props?.usercode)
   const {
     data: countryData,
     isLoading: countryDataisLoading,
@@ -64,6 +70,11 @@ const EmployeDetails = () => {
     refetch: getDesignationRefetch,
   } = useGetDesignationQuery("getDesignation");
 
+  console.log(countryDataisLoading);
+  console.log(countryDataisSuccess);
+  console.log(countryDataisError);
+  console.log(countryDataerror);
+  console.log(countryData);
   let countyoptions = <MenuItem key={1}></MenuItem>;
   if (countryDataisLoading) {
     countyoptions = <MenuItem key={1}></MenuItem>;
@@ -83,7 +94,7 @@ const EmployeDetails = () => {
     formState: { errors },
     watch,
   } = useFormContext();
-  
+
   // console.log(errors);
 
   const countrychnage = watch("country");
@@ -149,6 +160,39 @@ const EmployeDetails = () => {
       mn,n,n
     </MenuItem>
   );
+  let reporting_manger = "";
+  if (props?.usercode != "EM1" && props?.usercode != "") {
+    reporting_manger =
+      <Grid item xs={4}>
+        <Controller
+          control={control}
+          name="reporting_manager"
+          rules={{ required: "Reporting manager is required" }}
+          render={({ field }) => (
+            <TextField
+              margin="normal"
+              variant="outlined"
+              placeholder="Enter reporting manager"
+              fullWidth
+              label="Reporting Manager"
+              id="reporting_manager"
+              {...field}
+              select
+              SelectProps={
+                {
+                  // native: true,
+                  // inputProps: {name: 'screen_allocation' }
+                }
+              }
+              error={Boolean(errors?.reporting_manager)}
+              helperText={errors?.reporting_manager?.message}
+            >
+              {reporting_mangeroptions}
+            </TextField>
+          )}
+        />
+      </Grid>
+  }
 
   return (
     <>
@@ -167,6 +211,8 @@ const EmployeDetails = () => {
             rules={{ required: "Employe code is required." }}
             render={({ field }) => (
               <TextField
+                readOnly
+                disabled
                 fullWidth
                 id="employe_code"
                 label="Employee Code"
@@ -403,35 +449,7 @@ const EmployeDetails = () => {
             )}
           />
         </Grid>
-        <Grid item xs={4}>
-          <Controller
-            control={control}
-            name="reporting_manager"
-            rules={{ required: "Reporting manager is required" }}
-            render={({ field }) => (
-              <TextField
-                margin="normal"
-                variant="outlined"
-                placeholder="Enter reporting manager"
-                fullWidth
-                label="Reporting Manager"
-                id="reporting_manager"
-                {...field}
-                select
-                SelectProps={
-                  {
-                    // native: true,
-                    // inputProps: {name: 'screen_allocation' }
-                  }
-                }
-                error={Boolean(errors?.reporting_manager)}
-                helperText={errors?.reporting_manager?.message}
-              >
-                {reporting_mangeroptions}
-              </TextField>
-            )}
-          />
-        </Grid>
+
       </Grid>
     </>
   );
@@ -453,7 +471,7 @@ const ShiftAllocation = () => {
     formState: { errors },
     watch,
   } = useFormContext();
- 
+
 
   let shiftptions = <MenuItem key={1}></MenuItem>;
   if (shiftmasterisLoading) {
@@ -740,19 +758,34 @@ const RoleAssigned = () => {
   );
 };
 const Documents = () => {
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const handleFileChange = (event) => {
-    const files = [...event.target.files];
-    setSelectedFiles(files);
-    event.target.value = ''; 
-    return files;
-  };
-
   const {
     control,
     formState: { errors },
+    setValue,
+    getValues
   } = useFormContext();
   console.log(errors);
+
+  const handleFileChange = (event) => {
+    const files = [...event.target.files];
+    console.log(files)
+    // event.target.value = files;
+
+    setValue('upload_documents', files, {
+      shouldValidate: true,
+      shouldDirty: true
+    });
+    // setValue('upload_document', files, {
+    //   shouldValidate: true,
+    //   shouldDirty: true
+    // });
+    console.log(getValues())
+    // setValue('upload_document', 'dd');
+    console.log(getValues())
+    // console.log("setvl", setValue('upload_document', 'dd'));
+    // return setValue('upload_document', 'dd');
+
+  };
   return (
     <>
       <Grid
@@ -805,10 +838,10 @@ const Documents = () => {
             )}
           />
         </Grid>
-        {/* <Grid item xs={6}>
+        <Grid item xs={6}>
           <Controller
             control={control}
-            name="upload_documents[]"
+            name="upload_document"
             rules={{ required: "Document is required." }}
             render={({ field }) => (
               <TextField
@@ -818,88 +851,94 @@ const Documents = () => {
                   shrink: true,
                 }}
                 inputProps={{ multiple: true }}
-                // multiple
+                multiple
                 id="Document"
                 label="Upload Document"
                 variant="outlined"
                 placeholder="Upload document"
                 fullWidth
                 margin="normal"
-                error={Boolean(errors?.upload_documents)}
-                helperText={errors.upload_documents?.message}
+                // onChange={(e) => {
+                //   handleFileChange(e); // Call handleFileChange directly
+                // }}
+                onChange={(e) => {
+                  field.onChange(e)
+                  handleFileChange(e)
+                  // console.log(...e.target.files)
+                  // setValue("upload_document", 'file', {
+                  //   shouldValidate: true,
+                  //   shouldDirty: true
+                  // })
+                  // console.log(getValues())
+                  // return undefined
+                }
+                }
+                // onChange={(e) => {
+                //   handleFileChange(e)
+
+                //   // field.onChange((f) => {
+                //   //   handleFileChange(e)
+
+                //   // })
+                //   // return '';
+                // }
+
+                // }
+
+                // onChange={(e) =>
+                //   field.onChange((f) => {
+                //     handleFileChange(e)
+                //     // console.log(e);
+                //     // console.log(...e.target.files)
+                // setValue("upload_documents", [...e.target.files], {
+                //   shouldValidate: true,
+                //   shouldDirty: true
+                // })
+
+                //     // console.log(getValues());
+                //   })
+                error={Boolean(errors?.upload_document)}
+                helperText={errors.upload_document?.message}
               >
               </TextField>
             )}
           />
-        </Grid> */}
-
-        <Grid item xs={6}>
-          <Controller
-            control={control}
-            name="upload_documents"
-            rules={{ required: "Document is required." }}
-            render={({ field }) => (
-              <input
-                type="file"
-                multiple
-                variant="outlined"
-                onChange={(e) => field.onChange(handleFileChange(e))}
-                style={{
-                  border: "1px solid grey", // Custom border style
-                  borderRadius: "4px", // Rounded corners
-                  padding: "20px", // Padding
-                  width: "100%", // Full width
-                  height:"60px",
-                  boxSizing: "border-box", // Include border and padding in width
-                }}
-              />                 
-            )}
-            
-           
-          />
-          <div>
-            {selectedFiles.length > 0 && (
-              <p>
-                {selectedFiles.length}{" "}
-                {selectedFiles.length === 1 ? "file" : "files"} selected
-              </p>
-            )}
-          </div>
-        {errors.upload_documents && <span style={
-          {
-            color:"red"
-          }
-        }
-          >{errors.upload_documents.message}</span>}
         </Grid>
+
       </Grid>
     </>
   );
 };
-function getStepContent(step) {
+function getStepContent(step, usercodeDate) {
   switch (step) {
-    // case 0:
-    //   return <EmployeDetails />;
-    // case 1:
-    //   return <ShiftAllocation />;
-    // case 2:
-    //   return <RoleAssigned />;
     case 0:
+      return <EmployeDetails />;
+    case 1:
+      return <ShiftAllocation />;
+    case 2:
+      return <RoleAssigned />;
+    case 3:
       return <Documents />;
+    // case 0:
+    //   return <Documents />;
     default:
       return "unknown step";
   }
 }
 
 export default function HorizontalLinearStepper() {
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [skippedSteps, setSkipped] = React.useState([]);
   const steps = getSteps();
   const methods = useForm({
     mode: "onChange",
+
+    // shouldUseNativeValidation: true,
+    // shouldFocusError: true,
     defaultValues: {
-      employe_code: "s",
-      first_name: "s",
+      employe_code: "",
+      first_name: "",
       last_name: "",
       email: "",
       country: "",
@@ -911,9 +950,11 @@ export default function HorizontalLinearStepper() {
       reporting_manager: "",
       shift_allocation: "",
       role_assigned: "",
-      "upload_documents[]": [],
+      upload_documents: [],
+      // "upload_documents[]": [],
       upload_document: [],
     },
+
   });
 
   const isStepOptional = (step) => {
@@ -928,16 +969,6 @@ export default function HorizontalLinearStepper() {
     return skippedSteps.includes(step);
   };
 
-  // const handleNext = () => {
-  //   let newSkipped = skipped;
-  //   if (isStepSkipped(activeStep)) {
-  //     newSkipped = new Set(newSkipped.values());
-  //     newSkipped.delete(activeStep);
-  //   }
-
-  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  //   setSkipped(newSkipped);
-  // };
   const handleNext = (data) => {
     console.log(data);
     // console.log("data");
@@ -985,6 +1016,39 @@ export default function HorizontalLinearStepper() {
     setActiveStep(0);
   };
 
+  const {
+    data: usercodeDate,
+    isLoading: usercodeisLoading,
+    isFetching: usercodeisFetching,
+    isSuccess: usercodeisSuccess,
+    isError: usercodeisError,
+    error: usercodeerror,
+    refetch: usercodRefetch
+  } = useGetCodeusersQuery("getCodeusers");
+
+  if (usercodeisSuccess) {
+
+    methods.reset(
+      {
+        employe_code: usercodeDate?.code,
+        first_name: "",
+        last_name: "",
+        email: "",
+        country: "",
+        state: "",
+        date_of_birth: "",
+        date_of_joining: "",
+        department: "",
+        designation: "",
+        reporting_manager: usercodeDate?.code == "EM1" ? '' : '',
+        shift_allocation: "",
+        role_assigned: "",
+        upload_documents: [],
+        // "upload_documents[]": [],
+        upload_document: [],
+      },
+    )
+  }
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />

@@ -13,7 +13,7 @@ import { apiSlice } from "../api/api";
 // cityslicka
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getShift: builder.query({
+        getUsers: builder.query({
             // query: () => '/user/',
             query: () => ({
                 url: "user",
@@ -85,10 +85,10 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 { type: 'userMaster', id: "userMasterLIST" }
             ],
         }),
-        getCode: builder.query({
+        getCodeusers: builder.query({
             // query: () => '/user/',
             query: () => ({
-                url: 'user/code',
+                url: 'users/code',
                 method: 'GET',
                 // body: detail
             }),
@@ -221,12 +221,12 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    useCreateUserMasterMutation,
-    useGetShiftQuery,
-    useLazyGetCodeQuery,
-    useDeleteUserMasterMutation,
-    useGetUserMasterDetailMutation,
-    useEditUserMasterMutation,
+    // useCreateUserMasterMutation,
+    // useGetShiftQuery,
+    useGetCodeusersQuery,
+    // useDeleteUserMasterMutation,
+    // useGetUserMasterDetailMutation,
+    // useEditUserMasterMutation,
 
 } = extendedApiSlice;
 

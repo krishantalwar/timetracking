@@ -13,6 +13,11 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.token = action.payload.tokens;
       state.user = action.payload.user.userid;
+      if (action.payload?.user?.company_id && (action.payload?.user?.userDetail?.userType?.name == "employer" || action.payload?.user?.userDetail?.userType?.name == "employee")) {
+        state.company_id = action.payload.user.company_id;
+      } else {
+        state.company_id = action.payload.user.userid
+      }
       return state;
     },
     getAuth: (state, action) => {
