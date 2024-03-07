@@ -54,9 +54,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
         createUserMaster: builder.mutation({
             query: (detail) => ({
-                url: "user/add",
+                url: "users/create",
                 method: "POST",
+                headers: {
+                    'Content-Type': 'multipart/form-data;'
+                },
                 body: detail,
+                formData: true,
             }),
             transformResponse: (responseData) => {
                 console.log(responseData);
@@ -221,7 +225,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    // useCreateUserMasterMutation,
+    useCreateUserMasterMutation,
     // useGetShiftQuery,
     useGetCodeusersQuery,
     // useDeleteUserMasterMutation,

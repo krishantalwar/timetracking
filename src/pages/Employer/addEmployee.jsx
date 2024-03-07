@@ -17,13 +17,15 @@ import { useGetDepartmentQuery } from "../../features/department/departmentServi
 import { useGetDesignationQuery } from "../../features/designation/designationService";
 import { useGetShiftQuery } from "../../features/shiftmaster/shiftService";
 import { useGetRoleQuery } from "../../features/roles/roles";
-import { useGetCodeusersQuery } from "../../features/user/userService";
+import { useGetCodeusersQuery, useCreateUserMasterMutation } from "../../features/user/userService";
 import {
   useForm,
   Controller,
   FormProvider,
   useFormContext,
 } from "react-hook-form";
+import { selectCurrentUser } from "../../features/auth/authSelector";
+import { useSelector, useDispatch } from "react-redux";
 
 function getSteps() {
   return ["Employee Details", "Shift Allocation", "Role Assigned", "Documents"];
@@ -861,24 +863,24 @@ const Documents = () => {
 
 function getStepContent(step) {
   switch (step) {
-    case 0:
-      return <EmployeDetails />;
-    case 1:
-      return <ShiftAllocation />;
-    case 2:
-      return <RoleAssigned />;
-    case 3:
-      return <Documents />;
     // case 0:
-    //   return <Documents />;
+    //   return <EmployeDetails />;
+    // case 1:
+    //   return <ShiftAllocation />;
+    // case 2:
+    //   return <RoleAssigned />;
+    case 0:
+      return <Documents />;
     default:
-      return "unknown step";
+      return "Added Successfully";
   }
 }
 
 export default function HorizontalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skippedSteps, setSkipped] = React.useState([]);
+  const currentUser = useSelector(selectCurrentUser);
+
   const steps = getSteps();
   const methods = useForm({
     mode: "onChange",
@@ -917,28 +919,39 @@ export default function HorizontalLinearStepper() {
     return skippedSteps.includes(step);
   };
 
-  const handleNext = (data) => {
+  const [
+    saveuser,
+    {
+      isLoading,
+      isSuccess,
+    },
+  ] = useCreateUserMasterMutation();
+
+  const handleNext = async (data) => {
     console.log(data);
+    await saveuser(
+      data).unwrap();
+    // saveuser(data)
     // console.log("data");
     // console.log(activeStep);
     // console.log(steps);
-    if (activeStep == steps.length - 1) {
-      // console.log("ds");
-      // fetch("https://jsonplaceholder.typicode.com/comments")
-      //   .then((data) => data.json())
-      //   .then((res) => {
-      //     console.log(res);
-      setActiveStep((pre) => pre + 1);
-      console.log(activeStep);
-      // });
-    } else {
-      setActiveStep((pre) => pre + 1);
-      console.log(activeStep);
-      // setActiveStep(activeStep + 1);
-      // setSkippedSteps(
-      //   skippedSteps.filter((skipItem) => skipItem !== activeStep)
-      // );
-    }
+    // if (activeStep == steps.length - 1) {
+    //   // console.log("ds");
+    //   // fetch("https://jsonplaceholder.typicode.com/comments")
+    //   //   .then((data) => data.json())
+    //   //   .then((res) => {
+    //   //     console.log(res);
+    //   setActiveStep((pre) => pre + 1);
+    //   console.log(activeStep);
+    //   // });
+    // } else {
+    //   setActiveStep((pre) => pre + 1);
+    //   console.log(activeStep);
+    //   // setActiveStep(activeStep + 1);
+    //   // setSkippedSteps(
+    //   //   skippedSteps.filter((skipItem) => skipItem !== activeStep)
+    //   // );
+    // }
   };
 
   const handleBack = () => {
@@ -978,7 +991,7 @@ export default function HorizontalLinearStepper() {
     if (usercodeisSuccess) {
       methods.reset({
         employe_code: usercodeDate?.code,
-        first_name: "",
+        first_name: "s",
         last_name: "",
         email: "",
         country: "",
@@ -987,7 +1000,7 @@ export default function HorizontalLinearStepper() {
         date_of_joining: "",
         department: "",
         designation: "",
-        reporting_manager: usercodeDate?.code == "EM1" ? "" : "",
+        reporting_manager: usercodeDate?.code == "EM1" ? currentUser?.user : "",
         shift_allocation: "",
         role_assigned: "",
         upload_documents: [],
@@ -1064,7 +1077,11 @@ export default function HorizontalLinearStepper() {
           ) : (
             <React.Fragment>
               <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit(handleNext)}>
+
+                <Box component="form"
+                  onSubmit={methods.handleSubmit(handleNext)}
+                  encType={"multipart/form-data"}
+                  method="post" sx={{ mt: 1, ml: 2 }}>
                   {getStepContent(activeStep)}
 
                   <Box
@@ -1100,7 +1117,8 @@ export default function HorizontalLinearStepper() {
                       {activeStep === steps.length - 1 ? "Finish" : "Next"}
                     </Button>
                   </Box>
-                </form>
+
+                </Box>
               </FormProvider>
             </React.Fragment>
           )}
