@@ -631,7 +631,7 @@ const RoleAssigned = () => {
       );
     });
   } else if (roleisError) {
-    roleoptions = <MenuItem key={1}></MenuItem>;
+    roleoptions = <MenuItem key={1}>{roleerror}</MenuItem>;
   }
   return (
     <>
@@ -719,27 +719,27 @@ const Documents = () => {
     setValue,
     getValues,
   } = useFormContext();
-  console.log(errors);
+  // console.log(errors);
 
-  const handleFileChange = (event) => {
-    const files = [...event.target.files];
-    console.log(files);
-    // event.target.value = files;
+  // const handleFileChange = (event) => {
+  //   const files = [...event.target.files];
+  //   console.log(files);
+  //   // event.target.value = files;
 
-    setValue("upload_documents", files, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    // setValue('upload_document', files, {
-    //   shouldValidate: true,
-    //   shouldDirty: true
-    // });
-    // console.log(getValues())
-    // setValue('upload_document', 'dd');
-    // console.log(getValues())
-    // console.log("setvl", setValue('upload_document', 'dd'));
-    // return setValue('upload_document', 'dd');
-  };
+  //   // setValue("upload_documents", files, {
+  //   //   shouldValidate: true,
+  //   //   shouldDirty: true,
+  //   // });
+  //   // setValue('upload_document', files, {
+  //   //   shouldValidate: true,
+  //   //   shouldDirty: true
+  //   // });
+  //   // console.log(getValues())
+  //   // setValue('upload_document', 'dd');
+  //   // console.log(getValues())
+  //   // console.log("setvl", setValue('upload_document', 'dd'));
+  //   // return setValue('upload_document', 'dd');
+  // };
   return (
     <>
       <Grid
@@ -815,17 +815,17 @@ const Documents = () => {
                 // onChange={(e) => {
                 //   handleFileChange(e); // Call handleFileChange directly
                 // }}
-                onChange={(e) => {
-                  field.onChange(e);
-                  handleFileChange(e);
-                  // console.log(...e.target.files)
-                  // setValue("upload_document", 'file', {
-                  //   shouldValidate: true,
-                  //   shouldDirty: true
-                  // })
-                  // console.log(getValues())
-                  // return undefined
-                }}
+                // onChange={(e) => {
+                //   field.onChange(e);
+                //   handleFileChange(e);
+                // console.log(...e.target.files)
+                // setValue("upload_document", 'file', {
+                //   shouldValidate: true,
+                //   shouldDirty: true
+                // })
+                // console.log(getValues())
+                // return undefined
+                // }}
                 // onChange={(e) => {
                 //   handleFileChange(e)
 
@@ -863,13 +863,13 @@ const Documents = () => {
 
 function getStepContent(step) {
   switch (step) {
-    // case 0:
-    //   return <EmployeDetails />;
-    // case 1:
-    //   return <ShiftAllocation />;
-    // case 2:
-    //   return <RoleAssigned />;
     case 0:
+      return <EmployeDetails />;
+    case 1:
+      return <ShiftAllocation />;
+    case 2:
+      return <RoleAssigned />;
+    case 3:
       return <Documents />;
     default:
       return "Added Successfully";
@@ -901,9 +901,8 @@ export default function HorizontalLinearStepper() {
       reporting_manager: "",
       shift_allocation: "",
       role_assigned: "",
-      upload_documents: [],
-      // "upload_documents[]": [],
-      upload_document: [],
+      // upload_documents: [],
+      upload_document: "",
     },
   });
 
@@ -927,31 +926,71 @@ export default function HorizontalLinearStepper() {
     },
   ] = useCreateUserMasterMutation();
 
+  const {
+    data: usercodeDate,
+    isLoading: usercodeisLoading,
+    isFetching: usercodeisFetching,
+    isSuccess: usercodeisSuccess,
+    isError: usercodeisError,
+    error: usercodeerror,
+    refetch: usercodRefetch,
+  } = useGetCodeusersQuery("getCodeusers");
+
   const handleNext = async (data) => {
-    console.log(data);
-    await saveuser(
-      data).unwrap();
+    // console.log(data);
+
+
     // saveuser(data)
     // console.log("data");
     // console.log(activeStep);
     // console.log(steps);
-    // if (activeStep == steps.length - 1) {
-    //   // console.log("ds");
-    //   // fetch("https://jsonplaceholder.typicode.com/comments")
-    //   //   .then((data) => data.json())
-    //   //   .then((res) => {
-    //   //     console.log(res);
-    //   setActiveStep((pre) => pre + 1);
-    //   console.log(activeStep);
-    //   // });
-    // } else {
-    //   setActiveStep((pre) => pre + 1);
-    //   console.log(activeStep);
-    //   // setActiveStep(activeStep + 1);
-    //   // setSkippedSteps(
-    //   //   skippedSteps.filter((skipItem) => skipItem !== activeStep)
-    //   // );
-    // }
+    if (activeStep == steps.length - 1) {
+      // console.log("ds");
+      // fetch("https://jsonplaceholder.typicode.com/comments")
+      //   .then((data) => data.json())
+      //   .then((res) => {
+      //     console.log(res);
+
+      if (!isLoading) {
+        await saveuser(
+          data).unwrap();
+        setActiveStep((pre) => pre + 1);
+        await usercodRefetch();
+
+        methods.reset({
+          employe_code: usercodeDate?.code,
+          first_name: "",
+          last_name: "",
+          email: "",
+          country: "",
+          state: "",
+          date_of_birth: "",
+          date_of_joining: "",
+          department: "",
+          designation: "",
+          reporting_manager: usercodeDate?.code == "EM1" ? currentUser?.user : currentUser?.user,
+          shift_allocation: "",
+          role_assigned: "",
+          // upload_documents: [],
+          upload_document: "",
+        });
+
+        setActiveStep((pre) => {
+          console.log(pre)
+          return 0;
+        });
+      }
+
+      // console.log(activeStep);
+      // });
+    } else {
+      setActiveStep((pre) => pre + 1);
+      // console.log(activeStep);
+      // setActiveStep(activeStep + 1);
+      // setSkippedSteps(
+      //   skippedSteps.filter((skipItem) => skipItem !== activeStep)
+      // );
+    }
   };
 
   const handleBack = () => {
@@ -977,21 +1016,14 @@ export default function HorizontalLinearStepper() {
     setActiveStep(0);
   };
 
-  const {
-    data: usercodeDate,
-    isLoading: usercodeisLoading,
-    isFetching: usercodeisFetching,
-    isSuccess: usercodeisSuccess,
-    isError: usercodeisError,
-    error: usercodeerror,
-    refetch: usercodRefetch,
-  } = useGetCodeusersQuery("getCodeusers");
 
   React.useEffect(() => {
+    console.log(currentUser)
     if (usercodeisSuccess) {
+      // console.log(usercodeDate)
       methods.reset({
         employe_code: usercodeDate?.code,
-        first_name: "s",
+        first_name: "",
         last_name: "",
         email: "",
         country: "",
@@ -1000,13 +1032,14 @@ export default function HorizontalLinearStepper() {
         date_of_joining: "",
         department: "",
         designation: "",
-        reporting_manager: usercodeDate?.code == "EM1" ? currentUser?.user : "",
+        reporting_manager: usercodeDate?.code == "EM1" ? currentUser?.user : currentUser?.user,
         shift_allocation: "",
         role_assigned: "",
-        upload_documents: [],
-        // "upload_documents[]": [],
-        upload_document: [],
+        // upload_documents: [],
+        upload_document: "",
       });
+      // console.log("currentUser")
+      // console.log(methods.getValues())
     }
   }, [usercodeisSuccess, usercodeDate, methods]);
 

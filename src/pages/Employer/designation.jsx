@@ -79,7 +79,7 @@ export default function Designation() {
     isSuccess: designationmasterisSuccess,
     isError: designationmasterisError,
     error: designationmastererror,
-    refetch:getDesignationRefetch
+    refetch: getDesignationRefetch
   } = useGetDesignationQuery("getDesignation");
 
 
@@ -109,7 +109,7 @@ export default function Designation() {
   ] = useGetDesignationDetailMutation();
 
   const handleDetail = async (row) => {
-    console.log(row);
+    // console.log(row);
     // console.log('aaaa');
     try {
       // console.log(!DeleteDesignationisLoading);
@@ -137,14 +137,14 @@ export default function Designation() {
   };
 
   const handleDelete = async (row) => {
-    console.log(row);
-    console.log("aaaa");
+    // console.log(row);
+    // console.log("aaaa");
     try {
-      console.log(!DeleteDesignationisLoading);
-      // if (!DeleteDesignationisLoading) {
-      const asd = await DeleteDesignation(row).unwrap();
-      console.log(asd);
-      // }
+      // console.log(!DeleteDesignationisLoading);
+      if (!DeleteDesignationisLoading) {
+        const asd = await DeleteDesignation(row).unwrap();
+        // console.log(asd);
+      }
     } catch (error) {
       console.error("delete error:", error);
     }
@@ -172,11 +172,11 @@ export default function Designation() {
           <TableCell component="th" scope="row">
             {datas?.name}
           </TableCell>
-          
+
           <TableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
-  <Edit  style={{ marginRight: '8px' }} key={datas.designationid + index.toString()} onClick={() => handleDetail(datas?.designationid)} />
-  <DeleteIcon   key={datas.designationid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.designationid)} />
-</TableCell>
+            <Edit style={{ marginRight: '8px' }} key={datas.designationid + index.toString()} onClick={() => handleDetail(datas?.designationid)} />
+            <DeleteIcon key={datas.designationid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.designationid)} />
+          </TableCell>
 
         </TableRow>
       );

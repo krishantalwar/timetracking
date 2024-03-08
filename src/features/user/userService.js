@@ -56,11 +56,11 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: (detail) => ({
                 url: "users/create",
                 method: "POST",
-                headers: {
-                    'Content-Type': 'multipart/form-data;'
-                },
+                // headers: {
+                //     'Content-Type': 'multipart/form-data;'
+                // },
                 body: detail,
-                formData: true,
+                // formData: true,
             }),
             transformResponse: (responseData) => {
                 console.log(responseData);
