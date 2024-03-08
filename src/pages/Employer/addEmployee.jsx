@@ -17,7 +17,11 @@ import { useGetDepartmentQuery } from "../../features/department/departmentServi
 import { useGetDesignationQuery } from "../../features/designation/designationService";
 import { useGetShiftQuery } from "../../features/shiftmaster/shiftService";
 import { useGetRoleQuery } from "../../features/roles/roles";
-import { useGetCodeusersQuery, useCreateUserMasterMutation } from "../../features/user/userService";
+import { useState } from "react";
+import {
+  useGetCodeusersQuery,
+  useCreateUserMasterMutation,
+} from "../../features/user/userService";
 import {
   useForm,
   Controller,
@@ -713,12 +717,20 @@ const RoleAssigned = () => {
   );
 };
 const Documents = () => {
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+
   const {
     control,
     formState: { errors },
     setValue,
     getValues,
   } = useFormContext();
+
+  const handleFileChange = (e) => {
+    const files = e.target.files;
+    setUploadedFiles(files);
+    setValue("upload_document", "abc");
+  };
   // console.log(errors);
 
   // const handleFileChange = (event) => {
@@ -799,11 +811,8 @@ const Documents = () => {
             rules={{ required: "Document is required." }}
             render={({ field }) => (
               <TextField
-                {...field}
                 type="file"
-                InputLabelProps={{
-                  shrink: true,
-                }}
+                InputLabelProps={{ shrink: true }}
                 inputProps={{ multiple: true }}
                 multiple
                 id="Document"
@@ -812,50 +821,27 @@ const Documents = () => {
                 placeholder="Upload document"
                 fullWidth
                 margin="normal"
-                // onChange={(e) => {
-                //   handleFileChange(e); // Call handleFileChange directly
-                // }}
-                // onChange={(e) => {
-                //   field.onChange(e);
-                //   handleFileChange(e);
-                // console.log(...e.target.files)
-                // setValue("upload_document", 'file', {
-                //   shouldValidate: true,
-                //   shouldDirty: true
-                // })
-                // console.log(getValues())
-                // return undefined
-                // }}
-                // onChange={(e) => {
-                //   handleFileChange(e)
-
-                //   // field.onChange((f) => {
-                //   //   handleFileChange(e)
-
-                //   // })
-                //   // return '';
-                // }
-
-                // }
-
-                // onChange={(e) =>
-                //   field.onChange((f) => {
-                //     handleFileChange(e)
-                //     // console.log(e);
-                //     // console.log(...e.target.files)
-                // setValue("upload_documents", [...e.target.files], {
-                //   shouldValidate: true,
-                //   shouldDirty: true
-                // })
-
-                //     // console.log(getValues());
-                //   })
                 error={Boolean(errors?.upload_document)}
                 helperText={errors.upload_document?.message}
-              ></TextField>
+                onChange={handleFileChange}
+              />
             )}
           />
         </Grid>
+
+        {/* <Grid item xs={6}>
+          <input
+            type="file"
+            onChange={handleFileChange}
+            accept=".pdf,.doc,.docx,.txt,image/*"
+            multiple
+          />
+          {errors.upload_document && (
+            <span style={{ color: "red" }}>
+              {errors.upload_document.message}
+            </span>
+          )}
+        </Grid> */}
       </Grid>
     </>
   );
@@ -918,13 +904,7 @@ export default function HorizontalLinearStepper() {
     return skippedSteps.includes(step);
   };
 
-  const [
-    saveuser,
-    {
-      isLoading,
-      isSuccess,
-    },
-  ] = useCreateUserMasterMutation();
+  const [saveuser, { isLoading, isSuccess }] = useCreateUserMasterMutation();
 
   const {
     data: usercodeDate,
@@ -939,7 +919,6 @@ export default function HorizontalLinearStepper() {
   const handleNext = async (data) => {
     // console.log(data);
 
-
     // saveuser(data)
     // console.log("data");
     // console.log(activeStep);
@@ -952,8 +931,7 @@ export default function HorizontalLinearStepper() {
       //     console.log(res);
 
       if (!isLoading) {
-        await saveuser(
-          data).unwrap();
+        await saveuser(data).unwrap();
         setActiveStep((pre) => pre + 1);
         await usercodRefetch();
 
@@ -968,7 +946,8 @@ export default function HorizontalLinearStepper() {
           date_of_joining: "",
           department: "",
           designation: "",
-          reporting_manager: usercodeDate?.code == "EM1" ? currentUser?.user : currentUser?.user,
+          reporting_manager:
+            usercodeDate?.code == "EM1" ? currentUser?.user : currentUser?.user,
           shift_allocation: "",
           role_assigned: "",
           // upload_documents: [],
@@ -976,7 +955,7 @@ export default function HorizontalLinearStepper() {
         });
 
         setActiveStep((pre) => {
-          console.log(pre)
+          console.log(pre);
           return 0;
         });
       }
@@ -1016,9 +995,8 @@ export default function HorizontalLinearStepper() {
     setActiveStep(0);
   };
 
-
   React.useEffect(() => {
-    console.log(currentUser)
+    console.log(currentUser);
     if (usercodeisSuccess) {
       // console.log(usercodeDate)
       methods.reset({
@@ -1032,7 +1010,8 @@ export default function HorizontalLinearStepper() {
         date_of_joining: "",
         department: "",
         designation: "",
-        reporting_manager: usercodeDate?.code == "EM1" ? currentUser?.user : currentUser?.user,
+        reporting_manager:
+          usercodeDate?.code == "EM1" ? currentUser?.user : currentUser?.user,
         shift_allocation: "",
         role_assigned: "",
         // upload_documents: [],
@@ -1110,11 +1089,13 @@ export default function HorizontalLinearStepper() {
           ) : (
             <React.Fragment>
               <FormProvider {...methods}>
-
-                <Box component="form"
+                <Box
+                  component="form"
                   onSubmit={methods.handleSubmit(handleNext)}
                   encType={"multipart/form-data"}
-                  method="post" sx={{ mt: 1, ml: 2 }}>
+                  method="post"
+                  sx={{ mt: 1, ml: 2 }}
+                >
                   {getStepContent(activeStep)}
 
                   <Box
@@ -1150,7 +1131,6 @@ export default function HorizontalLinearStepper() {
                       {activeStep === steps.length - 1 ? "Finish" : "Next"}
                     </Button>
                   </Box>
-
                 </Box>
               </FormProvider>
             </React.Fragment>
