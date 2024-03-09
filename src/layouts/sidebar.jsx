@@ -100,18 +100,24 @@ export const mainListItems = (
       return (
         <React.Suspense key={index} fallback={<div>Loading...</div>}>
           <ListItemButton
+          style={{
+            display: 'flex',
+            alignItems: 'center', // Align items vertically center
+            margin: "10px 7px 0px 15px" ,
+            borderRadius: "7px",
+           color:"black",
+           textDecoration: "none",
+           
+          //  fontWeight:"500"
+          }}
             component={NavLinks}
             to={item.path}
-            sx={{
-              margin: "5px 7px",
-              borderRadius: "7px",
-            }}
           >
-            <ListItemIcon sx={{ color: "#364152", minWidth: "30px" }}>
+            <ListItemIcon sx={{ color: "#364152", minWidth: "40px", margin:" 10px"}}>
               {IconComponent}
             </ListItemIcon>
             <ListItemText
-              primaryTypographyProps={{ fontSize: "12px" }}
+              primaryTypographyProps={{ fontSize: "14px" }}
               primary={item.name}
             />
           </ListItemButton>

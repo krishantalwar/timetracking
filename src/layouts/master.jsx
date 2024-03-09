@@ -21,7 +21,7 @@ import MuiAppBar from "@mui/material/AppBar";
 
 import Grid from "@mui/material/Grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-const drawerWidth = 200;
+const drawerWidth = 230;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",

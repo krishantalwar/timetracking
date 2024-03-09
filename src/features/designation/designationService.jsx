@@ -121,43 +121,45 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     getDesignationDetail: builder.mutation({
       // query: () => '/shiftmaster/',
       query: (data) => {
-        console.log(data)
-        return ({
-          url: 'designation/' + data,
-          method: 'GET',
+        console.log(data);
+        return {
+          url: "designation/" + data,
+          method: "GET",
           // body: detail
-        });
+        };
       },
-      transformResponse: responseData => {
-        console.log(responseData)
+      transformResponse: (responseData) => {
+        console.log(responseData);
         // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
         // return authAdapter.setAll(initialState, responseData)
         return responseData;
       },
-      async onQueryStarted(args, { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }) {
+      async onQueryStarted(
+        args,
+        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+      ) {
         // console.log(await getState());
         // console.log(await requestId);
         // console.log(await extra);
-        console.log(args)
+        console.log(args);
         try {
           const { data } = await queryFulfilled;
           console.log(data);
-          return data
+          return data;
           // dispatch(setAuth(data));
         } catch (error) {
-          console.log("error", error)
+          console.log("error", error);
         }
       },
-
     }),
     editDesignation: builder.mutation({
       query: (detail) => ({
-        url: 'designation/edit/' + detail.designationid,
-        method: 'POST',
-        body: detail
+        url: "designation/edit/" + detail.designationid,
+        method: "POST",
+        body: detail,
       }),
-      transformResponse: responseData => {
-        console.log(responseData)
+      transformResponse: (responseData) => {
+        console.log(responseData);
         // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
         // return authAdapter.setAll(initialState, responseData)
         return responseData;
@@ -175,45 +177,45 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
           console.log(data);
         } catch (error) {
-          console.log("error", error)
+          console.log("error", error);
         }
       },
 
-      invalidatesTags: [
-        { type: 'designation', id: "designationLIST" }
-      ],
+      invalidatesTags: [{ type: "designation", id: "designationLIST" }],
     }),
     getCodesdesignation: builder.query({
       // query: () => '/shiftmaster/',
       query: () => ({
-        url: 'designation/code',
-        method: 'GET',
+        url: "designation/code",
+        method: "GET",
         // keepUnusedDataFor: 0,
         // body: detail
       }),
-      transformResponse: responseData => {
-        console.log(responseData)
+      transformResponse: (responseData) => {
+        console.log(responseData);
         // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
         // return authAdapter.setAll(initialState, responseData)
         return responseData;
       },
-      async onQueryStarted(args, { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }) {
+      async onQueryStarted(
+        args,
+        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+      ) {
         // console.log(await getState());
         // console.log(await requestId);
         // console.log(await extra);
         try {
           const { data } = await queryFulfilled;
           console.log(data);
-          return data
+          return data;
           // dispatch(setAuth(data));
         } catch (error) {
-          console.log("error", error)
+          console.log("error", error);
         }
       },
       forceRefetch({ currentArg, previousArg }) {
-        return true
+        return true;
       },
-
     }),
   }),
   overrideExisting: false,
@@ -226,8 +228,6 @@ export const {
   useEditDesignationMutation,
   useGetDesignationDetailMutation,
   useLazyGetCodesdesignationQuery,
-
-} =
-  extendedApiSlice;
+} = extendedApiSlice;
 
 export default extendedApiSlice;

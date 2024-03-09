@@ -17,6 +17,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import { TextField } from "@mui/material";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
+import { Delete, Edit } from "@mui/icons-material";
 import {
   useCreateJobMutation,
   useEditJobMutation,
@@ -24,7 +25,7 @@ import {
   useDeleteJobMutation,
   // useGetCodejobQuery,
   useLazyGetCodejobQuery,
-  useGetJobQuery
+  useGetJobQuery,
 } from "../../features/job/jobService";
 import jobServiceApis from "../../features/job/jobService";
 import MenuItem from "@mui/material/MenuItem";
@@ -47,7 +48,7 @@ export default function JobListing() {
       job_description: "",
       location: "",
       sub_location: "",
-      rating: ""
+      rating: "",
     },
   });
 
@@ -58,10 +59,8 @@ export default function JobListing() {
     isSuccess: postjobisSuccess,
     isError: postjobisError,
     error: postjoberror,
-    refetch: postjobrefetch
+    refetch: postjobrefetch,
   } = useGetJobQuery("getJob");
-
-
 
   // console.log(postjobData);
   // console.log(postjobisLoading);
@@ -70,17 +69,17 @@ export default function JobListing() {
   // console.log(postjobisError);
   // console.log(postjoberror);
 
-  // const [
-  //   DeletePostjob,
-  //   {
-  //     // currentData,
-  //     // isFetching,
-  //     isLoading: DeletePostjobisLoading,
-  //     // isSuccess, isError,
-  //     // error,
-  //     // status
-  //   },
-  // ] = useDeleteJobMutation();
+  const [
+    DeleteJob,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DeleteJobisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useDeleteJobMutation();
 
   const [
     EditPostjob,
@@ -106,70 +105,54 @@ export default function JobListing() {
     },
   ] = useCreateJobMutation();
 
-  // const [
-  //   getPostjobDetail,
-  //   {
-  //     // currentData,
-  //     // isFetching,
-  //     isLoading: DetailShiftMasterisLoading,
-  //     // isSuccess, isError,
-  //     // error,
-  //     // status
-  //   },
-  // ] = useGetJobDetailMutation();
+  const [
+    getPostjobDetail,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: DetailJobisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useGetJobDetailMutation();
 
   const handleDetail = async (row) => {
-    console.log(row);
-    console.log('aaaa');
+    // console.log(row);
+    // console.log("aaaa");
     try {
-
-
-      console.log(!DeletePostjobisLoading);
+      console.log(!DetailJobisLoading);
       // if (!DeletePostjobisLoading) {
       const PostjobDetail = await getPostjobDetail(row).unwrap();
-      // console.log(asd);
-      // }
-      console.log(formState)
-      // formState.defaultValues.name = "asda";
-      // console.log(formState)
-      // useForm({
-
-
-      //below values need to change as per backend
       const defaultValues = {
-        // "break_end_time": ShiftMasterDetail?.break_end_time,
-        // "break_start_time": ShiftMasterDetail?.break_start_time,
-        // "end_time": ShiftMasterDetail?.end_time,
-        // "start_time": ShiftMasterDetail?.start_time,
-        // "overtime_end_time": ShiftMasterDetail?.overtime_end_time,
-        // "overtime_start_time": ShiftMasterDetail?.overtime_start_time,
-        // "name": ShiftMasterDetail?.name,
-        // "shiftid": ShiftMasterDetail?.shiftid,
-      }
+        "jobid": PostjobDetail?.jobid,
+        "desciption": PostjobDetail?.desciption,
+        "country": PostjobDetail?.country,
+        "state": PostjobDetail?.state,
+        "rating": PostjobDetail?.rating,
+      };
       // });
-      reset({ ...defaultValues })
+      reset({ ...defaultValues });
 
-      setIsOpen(prev => !prev);
+      setIsOpen((prev) => !prev);
     } catch (error) {
-      console.error("delete error:", error);
+      console.error("detail error:", error);
     }
   };
-
 
   const handleDelete = async (row) => {
     console.log(row);
     console.log("aaaa");
     try {
-      console.log(!DeletePostjobisLoading);
+      console.log(!DeleteJobisLoading);
       // if (!DeletePostjobisLoading) {
-      const asd = await DeletePostjob(row).unwrap();
+      const asd = await DeleteJob(row).unwrap();
       console.log(asd);
       // }
     } catch (error) {
       console.error("delete error:", error);
     }
   };
-
 
   let content = "";
   if (postjobisLoading) {
@@ -183,28 +166,39 @@ export default function JobListing() {
     content = postjobData.map((datas, index) => {
       return (
         <TableRow
-          key={datas.shiftid}
-          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-          <TableCell align="right">{datas?.jobid}</TableCell>
-          <TableCell component="th" scope="row"> {datas?.job_description}</TableCell>
-          <TableCell align="right">{datas?.location}</TableCell>
-          <TableCell align="right">{datas?.sub_location}</TableCell>
-          <TableCell align="right">{datas?.rating}</TableCell>
-          <TableCell align="right">
-            <Edit key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
+          key={datas.jobid}
+          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        >
+          <TableCell align="left">{datas?.jobid}</TableCell>
+          <TableCell component="th" scope="row" align="center">
+            {" "}
+            {datas?.desciption}
+          </TableCell>
+          <TableCell align="center">{datas?.country}</TableCell>
+          <TableCell align="center">{datas?.state}</TableCell>
+          <TableCell align="center">{datas?.rating}</TableCell>
+          <TableCell
+            align="center"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <Edit
+              style={{ marginRight: "8px" }}
+              key={datas.jobid + index.toString()}
+              onClick={() => handleDetail(datas?.jobid)}
+            />
             <DeleteIcon
-              key={datas.shiftid + index.toString() + index.toString()}
-              onDelete={() => handleDelete(datas?.shiftid)}
+              key={datas.jobid + index.toString() + index.toString()}
+              onDelete={() => handleDelete(datas?.jobid)}
             />
           </TableCell>
         </TableRow>
       );
     });
   } else if (postjobisError) {
-    console.log(postjoberror)
+    console.log(postjoberror);
     content = (
       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-        <TableCell align="right">errrr</TableCell>
+        <TableCell align="right">error</TableCell>
       </TableRow>
     );
   }
@@ -216,7 +210,7 @@ export default function JobListing() {
 
   const onSubmit = async (data) => {
     // event.preventDefault();
-    console.log(data)
+    console.log(data);
     // const data = new FormData(event.currentTarget);
     try {
       // console.log(isFetching);
@@ -229,7 +223,6 @@ export default function JobListing() {
 
       //shiftid  to change
       if (data?.jobid) {
-
         if (!EditpostjobisLoading) {
           await EditPostjob(data).unwrap();
           handleClose();
@@ -237,7 +230,6 @@ export default function JobListing() {
           postjobrefetch();
         }
       } else {
-
         if (!isLoading) {
           await CreatePostjob(data).unwrap();
           handleClose();
@@ -296,14 +288,12 @@ export default function JobListing() {
           job_name: "",
           location: "",
           sub_location: "",
-          rating: ""
-        }
+          rating: "",
+        };
 
         reset(defaultValues);
-
       }
       setIsOpen((prev) => !prev);
-
     } catch (error) {
       console.log(error);
     }
@@ -364,8 +354,6 @@ export default function JobListing() {
     }
   }
 
-
-
   // console.log("postjobData", !postjobData);
   // console.log("postjobData", !postjobisLoading);
   // console.log("postjobData", !postjobisFetching);
@@ -419,11 +407,11 @@ export default function JobListing() {
               <TableHead>
                 <TableRow>
                   <TableCell>Job ID</TableCell>
-                  <TableCell align="right">Job Description</TableCell>
-                  <TableCell align="right">Location</TableCell>
-                  <TableCell align="right">Sub Location</TableCell>
-                  <TableCell align="right">Rating</TableCell>
-                  <TableCell align="right">Action</TableCell>
+                  <TableCell align="center">Job Description</TableCell>
+                  <TableCell align="center">Location</TableCell>
+                  <TableCell align="center">Sub Location</TableCell>
+                  <TableCell align="center">Rating</TableCell>
+                  <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>{content}</TableBody>
@@ -501,7 +489,6 @@ export default function JobListing() {
                           id="job_name"
                           label="Name"
                           type="text"
-
                           formcontrolpops={{
                             fullWidth: true,
                             variant: "standard",
@@ -512,7 +499,6 @@ export default function JobListing() {
                       )}
                     />
                   </Grid>
-
 
                   <Grid item xs={12}>
                     <Controller
@@ -535,7 +521,9 @@ export default function JobListing() {
                             variant: "standard",
                           }}
                           error={Boolean(formState?.errors?.job_description)}
-                          helperText={formState?.errors?.job_description?.message}
+                          helperText={
+                            formState?.errors?.job_description?.message
+                          }
                         />
                       )}
                     />
@@ -560,13 +548,13 @@ export default function JobListing() {
                             fullWidth: true,
                             variant: "standard",
                           }}
-
                           select
                           SelectProps={
                             {
                               // native: true,
                               // inputProps: {name: 'screen_allocation' }
-                            }}
+                            }
+                          }
                           error={Boolean(formState?.errors?.location)}
                           helperText={formState?.errors?.location?.message}
                         >
@@ -589,7 +577,6 @@ export default function JobListing() {
                           margin="normal"
                           fullWidth
                           label="Sub Location"
-
                           id="sub_location"
                           formcontrolpops={{
                             fullWidth: true,
@@ -600,7 +587,8 @@ export default function JobListing() {
                             {
                               // native: true,
                               // inputProps: {name: 'screen_allocation' }
-                            }}
+                            }
+                          }
                           error={Boolean(formState?.errors?.sub_location)}
                           helperText={formState?.errors?.sub_location?.message}
                         >
@@ -622,28 +610,41 @@ export default function JobListing() {
                           margin="normal"
                           fullWidth
                           label="Rating"
-
                           id="rating"
                           formcontrolpops={{
                             fullWidth: true,
                             variant: "standard",
                           }}
                           error={Boolean(formState?.errors?.rating)}
-                          helperText={
-                            formState?.errors?.rating?.message
-                          }
-
+                          helperText={formState?.errors?.rating?.message}
                           select
-                          SelectProps={{
-                            // native: true,
-                            // inputProps: {name: 'screen_allocation' }
-                          }}
+                          SelectProps={
+                            {
+                              // native: true,
+                              // inputProps: {name: 'screen_allocation' }
+                            }
+                          }
                         >
-                          <MenuItem key={1} value={1}>1</MenuItem>;
-                          <MenuItem key={2} value={2}>2</MenuItem>;
-                          <MenuItem key={3} value={3}>3</MenuItem>;
-                          <MenuItem key={4} value={4}>4</MenuItem>;
-                          <MenuItem key={5} value={5}>5</MenuItem>;
+                          <MenuItem key={1} value={1}>
+                            1
+                          </MenuItem>
+                          ;
+                          <MenuItem key={2} value={2}>
+                            2
+                          </MenuItem>
+                          ;
+                          <MenuItem key={3} value={3}>
+                            3
+                          </MenuItem>
+                          ;
+                          <MenuItem key={4} value={4}>
+                            4
+                          </MenuItem>
+                          ;
+                          <MenuItem key={5} value={5}>
+                            5
+                          </MenuItem>
+                          ;
                         </TextField>
                       )}
                     />
