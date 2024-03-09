@@ -15,6 +15,7 @@ import Copyright from "../../layouts/copyright";
 import Paper from "@mui/material/Paper";
 import graphic from "../../assets/Time-management-icons/graphic.png/";
 import logo from "../../assets/Time-management-icons/logo.png";
+import Shiftpaylogo from "../../assets/Time-management-icons/shiftnpay.png";
 
 import {
   useLoginEmailMutation,
@@ -150,7 +151,7 @@ export default function SignIn() {
             {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               
             </Avatar> */}
-            <img src={logo} style={{ marginBottom: 20 }} />
+            <img src={Shiftpaylogo} style={{ marginBottom: 20 }} />
             <Typography component="h2" variant="h5">
               Welcome to Time Tracking & shift Managment System
             </Typography>
@@ -187,7 +188,7 @@ export default function SignIn() {
               <Controller
                 name="password"
                 control={control}
-                rules={{ required: 'Password is required', }}
+                rules={{ required: "Password is required" }}
                 render={({ field }) => (
                   <Input
                     {...field}

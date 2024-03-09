@@ -13,9 +13,10 @@ import Box from "@mui/material/Box";
 import { TbUser } from "react-icons/tb";
 import { TbLogout } from "react-icons/tb";
 import logo from "../assets/Time-management-icons/logo.png";
+import Shiftnpaylogo from "../assets/Time-management-icons/hover-icon/shiftnpay.png";
 import { NavLink } from "react-router-dom";
 import LockResetIcon from "@mui/icons-material/LockReset";
-import ResetPassword from '../assets/Time-management-icons/password.png'
+import ResetPassword from "../assets/Time-management-icons/password.png";
 import {
   useLogoutsMutation,
   // useLoginGoogleMutation
@@ -33,8 +34,12 @@ const NavLinks = React.forwardRef((props, ref) => {
 });
 
 const settings = [
-  { icon: <TbUser />, label: "Profile", path:"/profile" },
-  { icon: <img src={ResetPassword} alt="" />, label: "Reset Password", path: "/password" },
+  { icon: <TbUser />, label: "Profile", path: "/profile" },
+  {
+    icon: <img src={ResetPassword} alt="" />,
+    label: "Reset Password",
+    path: "/password",
+  },
   { icon: <TbLogout />, label: "Logout" },
 ];
 
@@ -102,7 +107,13 @@ export default function Navbar(props) {
             letterSpacing: "1px",
           }}
         >
-          <img src={logo} />
+          <img
+            style={{
+              width: "160px",
+              // height: "auto",
+            }}
+            src={Shiftnpaylogo}
+          />
         </Typography>
 
         <IconButton
@@ -172,7 +183,7 @@ export default function Navbar(props) {
                     <MenuItem
                       key={index}
                       onClick={logout}
-                      sx={{ display: "flex", gap: "12px",  ml:"5px" }}
+                      sx={{ display: "flex", gap: "12px", ml: "5px" }}
                     >
                       {item.icon}
                       <Typography textAlign="center">{item.label}</Typography>
