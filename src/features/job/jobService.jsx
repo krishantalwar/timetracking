@@ -13,10 +13,10 @@ import { apiSlice } from "../api/api";
 // cityslicka
 export const extendedApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getPostjob: builder.query({
-            // query: () => '/postjob/',
+        getJob: builder.query({
+            // query: () => '/job/',
             query: () => ({
-                url: "postjob",
+                url: "job",
                 method: "GET",
                 // body: detail
             }),
@@ -26,9 +26,17 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 // return authAdapter.setAll(initialState, responseData)
                 return responseData;
             },
-            providesTags: (result, error, arg) => [
-                ...result.map(() => ({ type: "postjob", id: "postjobLIST" })),
-            ],
+            providesTags: (result, error, arg) => {
+                // console.log(result)
+                // if (result) {
+                return ([
+                    ...result.map(() => ({ type: "job", id: "jobLIST" })),
+                ]);
+                // } else {
+                //     return [{ type: "job", id: "jobLIST" }]
+                // }
+
+            },
             // invalidatesTags: [
             //     { type: 'shiftmaster', id: "LIST" }
             // ],
@@ -52,9 +60,9 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
             },
         }),
-        createPostjob: builder.mutation({
+        createJob: builder.mutation({
             query: (detail) => ({
-                url: "postjob/add",
+                url: "job/add",
                 method: "POST",
                 body: detail,
             }),
@@ -72,7 +80,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             //     console.log('Mutation Settled:', result, error, variables);
             // },
             async onQueryStarted(args, { queryFulfilled }) {
-                console.log(args);
+                // console.log(args);
                 try {
                     const { data } = await queryFulfilled;
                     console.log(data);
@@ -82,13 +90,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
 
             invalidatesTags: [
-                { type: 'postjob', id: "postjobLIST" }
+                { type: 'job', id: "jobLIST" }
             ],
         }),
-        getCode: builder.query({
+        getCodejob: builder.query({
             // query: () => '/shiftmaster/',
             query: () => ({
-                url: 'postjob/code',
+                url: 'job/code',
                 method: 'GET',
                 // body: detail
             }),
@@ -113,12 +121,12 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
 
         }),
-        deletePostjob: builder.mutation({
+        deleteJob: builder.mutation({
             // query: () => '/shiftmaster/',
             query: (data) => {
                 console.log(data)
                 return ({
-                    url: 'postjob/delete/' + data,
+                    url: 'job/delete/' + data,
                     method: 'GET',
                     // body: detail
                 });
@@ -144,16 +152,16 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
             },
             invalidatesTags: [
-                { type: 'postjob', id: "postjobLIST" }
+                { type: 'job', id: "jobLIST" }
             ],
 
         }),
-        getPostjobDetail: builder.mutation({
+        getJobDetail: builder.mutation({
             // query: () => '/shiftmaster/',
             query: (data) => {
                 console.log(data)
                 return ({
-                    url: 'postjob/' + data,
+                    url: 'job/' + data,
                     method: 'GET',
                     // body: detail
                 });
@@ -179,14 +187,14 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 }
             },
             invalidatesTags: [
-                { type: 'postjob', id: "postjobLIST" }
+                { type: 'job', id: "jobLIST" }
             ],
 
         }),
-        editPostjob: builder.mutation({
+        editJob: builder.mutation({
             query: (detail) => ({
                 // need to change the endpoint
-                url: 'postjob/edit/' + detail.shiftid,
+                url: 'job/edit/' + detail.shiftid,
                 method: 'POST',
                 body: detail
             }),
@@ -214,7 +222,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             },
 
             invalidatesTags: [
-                { type: 'postjob', id: "postjobLIST" }
+                { type: 'job', id: "jobLIST" }
             ],
         }),
     }),
@@ -222,12 +230,12 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    useCreatePostjobMutation,
-    useEditPostjobMutation,
-    useGetPostjobDetailMutation,
-    useDeletePostjobMutation,
-    useLazyGetCodeQuery,
-    useGetPostjobQuery
+    useCreateJobMutation,
+    useEditJobMutation,
+    useGetJobDetailMutation,
+    useDeleteJobMutation,
+    useLazyGetCodejobQuery,
+    useGetJobQuery
 
 } = extendedApiSlice;
 

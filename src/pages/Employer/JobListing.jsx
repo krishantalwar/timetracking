@@ -17,12 +17,18 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import { TextField } from "@mui/material";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
-import { useCreatePostjobMutation,
-  useEditPostjobMutation,
-  useGetPostjobDetailMutation,
-  useDeletePostjobMutation,
-  // useLazyGetCodeQuery,
-  useGetPostjobQuery } from "../../features/postJob/postbobService";
+import {
+  useCreateJobMutation,
+  useEditJobMutation,
+  useGetJobDetailMutation,
+  useDeleteJobMutation,
+  // useGetCodejobQuery,
+  useLazyGetCodejobQuery,
+  useGetJobQuery
+} from "../../features/job/jobService";
+import jobServiceApis from "../../features/job/jobService";
+import MenuItem from "@mui/material/MenuItem";
+import { useGetCountryQuery } from "../../features/country/countryService";
 
 export default function JobListing() {
   const {
@@ -36,34 +42,45 @@ export default function JobListing() {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      job_id:"",
-      job_description:"",
-      location:"",
-      sub_location:"",
-      rating:""
+      job_code: "",
+      job_name: "",
+      job_description: "",
+      location: "",
+      sub_location: "",
+      rating: ""
     },
   });
 
   const {
     data: postjobData,
     isLoading: postjobisLoading,
-    isFetching: shiftmasterisFetching,
+    isFetching: postjobisFetching,
     isSuccess: postjobisSuccess,
     isError: postjobisError,
     error: postjoberror,
-  } = useGetPostjobQuery("getPostjob");
+    refetch: postjobrefetch
+  } = useGetJobQuery("getJob");
 
-  const [
-    DeletePostjob,
-    {
-      // currentData,
-      // isFetching,
-      isLoading: DeletePostjobisLoading,
-      // isSuccess, isError,
-      // error,
-      // status
-    },
-  ] = useDeletePostjobMutation();
+
+
+  // console.log(postjobData);
+  // console.log(postjobisLoading);
+  // console.log(postjobisFetching);
+  // console.log(postjobisSuccess);
+  // console.log(postjobisError);
+  // console.log(postjoberror);
+
+  // const [
+  //   DeletePostjob,
+  //   {
+  //     // currentData,
+  //     // isFetching,
+  //     isLoading: DeletePostjobisLoading,
+  //     // isSuccess, isError,
+  //     // error,
+  //     // status
+  //   },
+  // ] = useDeleteJobMutation();
 
   const [
     EditPostjob,
@@ -75,7 +92,7 @@ export default function JobListing() {
       // error,
       // status
     },
-  ] = useEditPostjobMutation();
+  ] = useEditJobMutation();
 
   const [
     CreatePostjob,
@@ -87,26 +104,26 @@ export default function JobListing() {
       // error,
       // status
     },
-  ] = useCreatePostjobMutation();
+  ] = useCreateJobMutation();
 
-  const [
-    getPostjobDetail,
-    {
-      // currentData,
-      // isFetching,
-      isLoading: DetailShiftMasterisLoading,
-      // isSuccess, isError,
-      // error,
-      // status
-    },
-  ] = useGetPostjobDetailMutation();
+  // const [
+  //   getPostjobDetail,
+  //   {
+  //     // currentData,
+  //     // isFetching,
+  //     isLoading: DetailShiftMasterisLoading,
+  //     // isSuccess, isError,
+  //     // error,
+  //     // status
+  //   },
+  // ] = useGetJobDetailMutation();
 
   const handleDetail = async (row) => {
     console.log(row);
     console.log('aaaa');
     try {
 
-      
+
       console.log(!DeletePostjobisLoading);
       // if (!DeletePostjobisLoading) {
       const PostjobDetail = await getPostjobDetail(row).unwrap();
@@ -153,7 +170,7 @@ export default function JobListing() {
     }
   };
 
- 
+
   let content = "";
   if (postjobisLoading) {
     content = (
@@ -184,9 +201,10 @@ export default function JobListing() {
       );
     });
   } else if (postjobisError) {
+    console.log(postjoberror)
     content = (
       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-        <TableCell align="right">{postjoberror}</TableCell>
+        <TableCell align="right">errrr</TableCell>
       </TableRow>
     );
   }
@@ -210,12 +228,13 @@ export default function JobListing() {
       // console.log(!isLoading);
 
       //shiftid  to change
-      if (data?.shiftid) { 
+      if (data?.jobid) {
 
         if (!EditpostjobisLoading) {
           await EditPostjob(data).unwrap();
           handleClose();
           reset();
+          postjobrefetch();
         }
       } else {
 
@@ -223,6 +242,7 @@ export default function JobListing() {
           await CreatePostjob(data).unwrap();
           handleClose();
           reset();
+          postjobrefetch();
         }
       }
 
@@ -248,8 +268,18 @@ export default function JobListing() {
 
   const [isOpen, setIsOpen] = React.useState(false);
 
+  const [getCode, { data: codedata, isLoading: getcodeisLoading, refetch }] =
+    jobServiceApis.endpoints.getCodejob.useLazyQuery();
+
+  // const {
+  //   data: codedata,
+  //   isLoading: getcodeisLoading,
+  //   isFetching: codeisFetching,
+  //   isSuccess: codeisSuccess,
+  //   refetch: coderefetch
+  // } = useGetCodejobQuery("getCodejob");
+
   const handleOpen = async () => {
-    console.log("asdas");
     try {
       const {
         data: codedata,
@@ -257,25 +287,91 @@ export default function JobListing() {
         isFetching: codeisFetching,
         isSuccess: codeisSuccess,
       } = await getCode();
-
-      console.log(codedata);
-      console.log(getcodeisLoading);
-      console.log(getcodeisLoading);
-      console.log(codeisSuccess);
+      // await coderefetch()
       if (codeisSuccess) {
-        console.log(codedata);
+        // console.log(codedata);
+        const defaultValues = {
+          job_code: codedata.code,
+          job_description: "",
+          job_name: "",
+          location: "",
+          sub_location: "",
+          rating: ""
+        }
+
+        reset(defaultValues);
+
       }
-      // console.log(queryStateResults);
-      // console.log(info);
+      setIsOpen((prev) => !prev);
+
     } catch (error) {
       console.log(error);
     }
-    setIsOpen((prev) => !prev);
   };
 
   const handleClose = () => {
     setIsOpen((prev) => !prev);
   };
+
+  const {
+    data: countryData,
+    isLoading: countryDataisLoading,
+    isSuccess: countryDataisSuccess,
+    isError: countryDataisError,
+    error: countryDataerror,
+  } = useGetCountryQuery("getCountry");
+
+  let countyoptions = <MenuItem key={1}></MenuItem>;
+  if (countryDataisLoading) {
+    countyoptions = <MenuItem key={1}></MenuItem>;
+  } else if (countryDataisSuccess) {
+    countyoptions = countryData.map((datas) => {
+      return (
+        <MenuItem key={datas.id} value={datas.id}>
+          {datas.name}
+        </MenuItem>
+      );
+    });
+  } else if (countryDataisError) {
+    countyoptions = <MenuItem key={1}>{countryDataerror}</MenuItem>;
+  }
+
+  const countrychnage = watch("location");
+
+  let stateoptions = <MenuItem key={1}></MenuItem>;
+  if (
+    countrychnage != "" &&
+    countrychnage != undefined &&
+    countryDataisSuccess
+  ) {
+    if (countryDataisLoading) {
+      stateoptions = <MenuItem key={1}></MenuItem>;
+    } else if (countryDataisSuccess) {
+      const filtercountry = countryData.filter((datas) => {
+        return datas.id == countrychnage;
+      });
+      console.log(filtercountry);
+
+      stateoptions = filtercountry[0]?.country_state.map((datas) => {
+        return (
+          <MenuItem key={datas.stateid} value={datas.stateid}>
+            {datas.name}
+          </MenuItem>
+        );
+      });
+    } else if (countryDataisError) {
+      stateoptions = <MenuItem key={1}>{countryDataerror}</MenuItem>;
+    }
+  }
+
+
+
+  // console.log("postjobData", !postjobData);
+  // console.log("postjobData", !postjobisLoading);
+  // console.log("postjobData", !postjobisFetching);
+  // console.log("postjobData", !postjobisSuccess);
+  // console.log("postjobData", !postjobisError);
+  // console.log("postjobData", !postjoberror);
 
   return (
     <React.Fragment>
@@ -369,7 +465,7 @@ export default function JobListing() {
                 >
                   <Grid item xs={6}>
                     <Controller
-                      name="job_id"
+                      name="job_code"
                       control={control}
                       // rules={{ required: "shift code is required" }}
                       render={({ field }) => (
@@ -377,8 +473,8 @@ export default function JobListing() {
                           {...field}
                           margin="normal"
                           fullWidth
-                          id="job_id"
-                          label="Job ID"
+                          id="job_code"
+                          label="Job Code"
                           type="text"
                           readOnly
                           disabled
@@ -386,14 +482,39 @@ export default function JobListing() {
                             fullWidth: true,
                             variant: "standard",
                           }}
-                          error={Boolean(formState?.errors?.job_id)}
-                          helperText={formState?.errors?.job_id?.message}
+                          error={Boolean(formState?.errors?.job_code)}
+                          helperText={formState?.errors?.job_code?.message}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Controller
+                      name="job_name"
+                      control={control}
+                      // rules={{ required: "shift code is required" }}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          margin="normal"
+                          fullWidth
+                          id="job_name"
+                          label="Name"
+                          type="text"
+
+                          formcontrolpops={{
+                            fullWidth: true,
+                            variant: "standard",
+                          }}
+                          error={Boolean(formState?.errors?.job_name)}
+                          helperText={formState?.errors?.job_name?.message}
                         />
                       )}
                     />
                   </Grid>
 
-                  <Grid item xs={6}>
+
+                  <Grid item xs={12}>
                     <Controller
                       name="job_description"
                       control={control}
@@ -406,7 +527,7 @@ export default function JobListing() {
                           margin="normal"
                           fullWidth
                           label="Job Description"
-                          type="text"
+                          type="textarea"
                           id="name"
                           autoComplete="name"
                           formcontrolpops={{
@@ -439,9 +560,18 @@ export default function JobListing() {
                             fullWidth: true,
                             variant: "standard",
                           }}
+
+                          select
+                          SelectProps={
+                            {
+                              // native: true,
+                              // inputProps: {name: 'screen_allocation' }
+                            }}
                           error={Boolean(formState?.errors?.location)}
                           helperText={formState?.errors?.location?.message}
-                        ></TextField>
+                        >
+                          {countyoptions}
+                        </TextField>
                       )}
                     />
                   </Grid>
@@ -459,15 +589,23 @@ export default function JobListing() {
                           margin="normal"
                           fullWidth
                           label="Sub Location"
-                          type="text"
+
                           id="sub_location"
                           formcontrolpops={{
                             fullWidth: true,
                             variant: "standard",
                           }}
+                          select
+                          SelectProps={
+                            {
+                              // native: true,
+                              // inputProps: {name: 'screen_allocation' }
+                            }}
                           error={Boolean(formState?.errors?.sub_location)}
                           helperText={formState?.errors?.sub_location?.message}
-                        ></TextField>
+                        >
+                          {stateoptions}
+                        </TextField>
                       )}
                     />
                   </Grid>
@@ -484,7 +622,7 @@ export default function JobListing() {
                           margin="normal"
                           fullWidth
                           label="Rating"
-                          type="text"
+
                           id="rating"
                           formcontrolpops={{
                             fullWidth: true,
@@ -494,7 +632,19 @@ export default function JobListing() {
                           helperText={
                             formState?.errors?.rating?.message
                           }
-                        ></TextField>
+
+                          select
+                          SelectProps={{
+                            // native: true,
+                            // inputProps: {name: 'screen_allocation' }
+                          }}
+                        >
+                          <MenuItem key={1} value={1}>1</MenuItem>;
+                          <MenuItem key={2} value={2}>2</MenuItem>;
+                          <MenuItem key={3} value={3}>3</MenuItem>;
+                          <MenuItem key={4} value={4}>4</MenuItem>;
+                          <MenuItem key={5} value={5}>5</MenuItem>;
+                        </TextField>
                       )}
                     />
                   </Grid>
