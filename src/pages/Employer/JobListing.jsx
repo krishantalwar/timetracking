@@ -18,6 +18,8 @@ import TableCell from "@mui/material/TableCell";
 import { TextField } from "@mui/material";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
 import { Delete, Edit } from "@mui/icons-material";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   useCreateJobMutation,
   useEditJobMutation,
@@ -32,6 +34,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useGetCountryQuery } from "../../features/country/countryService";
 
 export default function JobListing() {
+  const [isopen, setIsopen] = React.useState(false);
   const {
     handleSubmit,
     control,
@@ -209,9 +212,9 @@ export default function JobListing() {
   // console.log(shiftmastererror)
 
   const onSubmit = async (data) => {
-    // event.preventDefault();
-    console.log(data);
-    // const data = new FormData(event.currentTarget);
+  
+    setIsopen(true);
+    
     try {
       // console.log(isFetching);
       // console.log(status);
@@ -222,21 +225,28 @@ export default function JobListing() {
       // console.log(!isLoading);
 
       //shiftid  to change
-      if (data?.jobid) {
-        if (!EditpostjobisLoading) {
-          await EditPostjob(data).unwrap();
-          handleClose();
-          reset();
-          postjobrefetch();
+      setTimeout(async()=>{
+
+        if (data?.jobid) {
+          if (!EditpostjobisLoading) {
+            await EditPostjob(data).unwrap();
+            setIsopen(false);
+            handleClose();
+            reset();
+            postjobrefetch();
+          }
+        } else {
+          if (!isLoading) {
+            await CreatePostjob(data).unwrap();
+            setIsopen(false);
+            handleClose();
+            reset();
+            postjobrefetch();
+          }
         }
-      } else {
-        if (!isLoading) {
-          await CreatePostjob(data).unwrap();
-          handleClose();
-          reset();
-          postjobrefetch();
-        }
-      }
+      
+      },3000)
+     
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
 
@@ -354,6 +364,14 @@ export default function JobListing() {
     }
   }
 
+  const handleopen = () => {
+    setIsopen(true);
+  };
+
+  const handleclose = () => {
+    setIsopen(false);
+  };
+
   // console.log("postjobData", !postjobData);
   // console.log("postjobData", !postjobisLoading);
   // console.log("postjobData", !postjobisFetching);
@@ -417,7 +435,7 @@ export default function JobListing() {
               <TableBody>{content}</TableBody>
             </Table>
 
-            <BasicModal isOpen={isOpen} onClose={handleClose}>
+            <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose}>
               <Grid
                 container
                 rowSpacing={1}
@@ -651,6 +669,8 @@ export default function JobListing() {
                   </Grid>
                 </Grid>
 
+
+                <Grid>
                 <Button
                   type="submit"
                   fullWidth
@@ -659,6 +679,16 @@ export default function JobListing() {
                 >
                   Add
                 </Button>
+                            <Backdrop
+                      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                      open={isopen}
+                      onClick={handleclose}
+                    >
+                      <CircularProgress color="inherit" />
+                    </Backdrop>
+                </Grid>
+
+                
               </Box>
             </BasicModal>
 

@@ -6,7 +6,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Copyright from "../../layouts/copyright";
 import Paper from "@mui/material/Paper";
-
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   useCreateDepartmentnMasterMutation,
   useGetDepartmentQuery,
@@ -30,6 +31,7 @@ import TableCell from "@mui/material/TableCell";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
 
 export default function Designation() {
+  const [isopen, setIsopen] = React.useState(false);
   const {
     handleSubmit,
     control,
@@ -194,40 +196,39 @@ export default function Designation() {
 
   const onSubmit = async (data) => {
     try {
-      // console.log(isLoading);
-      // console.log(!isLoading);
-      // if (!isLoading) {
-      //   await CreateDepartmentMaster({
-      //     name: data.department_name,
-      //   }).unwrap();
-      //   handleClose();
-      //   reset();
-      // }
+      setIsopen(true);
 
-      if (data?.departmentid) {
+      setTimeout(async()=>{
+        if (data?.departmentid) {
 
-        if (!updateDepartmentnisLoading) {
-          await updateDepartmentDetails({
-            department_code: data.department_code,
-            name: data.department_name,
-            departmentid: data.departmentid,
-          }).unwrap();
-          handleClose();
-          
-          reset();
+          if (!updateDepartmentnisLoading) {
+            await updateDepartmentDetails({
+              department_code: data.department_code,
+              name: data.department_name,
+              departmentid: data.departmentid,
+            }).unwrap();
+            setIsopen(false);
+            handleClose();
+            
+            reset();
+          }
+        } else {
+  
+          if (!isLoading) {
+            await CreateDepartmentMaster({
+              department_code: data.department_code,
+              name: data.department_name,
+            }).unwrap();
+            setIsopen(false);
+            handleClose();
+            getDepartmentRefetch();
+            reset();
+          }
         }
-      } else {
 
-        if (!isLoading) {
-          await CreateDepartmentMaster({
-            department_code: data.department_code,
-            name: data.department_name,
-          }).unwrap();
-          handleClose();
-          getDepartmentRefetch();
-          reset();
-        }
-      }
+      },3000)
+
+     
     } catch (error) {
       console.error("Login error:", error);
     }
@@ -264,6 +265,15 @@ export default function Designation() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+
+  const handleopen = () => {
+    setIsopen(true);
+  };
+
+  const handleclose = () => {
+    setIsopen(false);
   };
 
   const handleClose = () => {
@@ -324,7 +334,7 @@ export default function Designation() {
               <TableBody>{content}</TableBody>
             </Table>
 
-            <BasicModal isOpen={isOpen} onClose={handleClose}>
+            <BasicModal isOpen={isOpen} onClose={handleClose}  isopen={handleopen} onclose={handleclose} >
               <Grid
                 container
                 rowSpacing={1}
@@ -416,14 +426,25 @@ export default function Designation() {
                   </Grid>
                 </Grid>
 
-                <Button
+<Grid>
+<Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Save
+                  ADD
                 </Button>
+                
+                            <Backdrop
+                      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                      open={isopen}
+                      onClick={handleclose}
+                    >
+                      <CircularProgress color="inherit" />
+                    </Backdrop>
+</Grid>
+                
               </Box>
             </BasicModal>
 
