@@ -111,12 +111,12 @@ export default function RolesandResponsibilities() {
                     key={datas.roleid}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                    <TableCell align="right">{datas?.role_code}</TableCell>
+                    <TableCell align="center">{datas?.role_code}</TableCell>
                     <TableCell component="th" scope="row">
                         {datas?.name}
                     </TableCell>
 
-                    <TableCell align="right">
+                    <TableCell align="center">
                         {/* shiftid need to change */}
                         <VisibilityIcon key={datas.roleid + index.toString()} onClick={() => handleDetail(datas?.roleid)} />
 
@@ -270,7 +270,7 @@ export default function RolesandResponsibilities() {
                 <Table sx={{ mt: 5 }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Role Code</TableCell>
+                            <TableCell align='center'>Role Code</TableCell>
                             <TableCell align="left">Role Name</TableCell>
                             <TableCell align="center">Action</TableCell>
                         </TableRow>
