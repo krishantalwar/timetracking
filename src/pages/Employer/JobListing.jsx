@@ -49,6 +49,7 @@ export default function JobListing() {
       location: "",
       sub_location: "",
       rating: "",
+      jobid: ""
     },
   });
 
@@ -126,10 +127,13 @@ export default function JobListing() {
       const PostjobDetail = await getPostjobDetail(row).unwrap();
       const defaultValues = {
         "jobid": PostjobDetail?.jobid,
-        "desciption": PostjobDetail?.desciption,
-        "country": PostjobDetail?.country,
-        "state": PostjobDetail?.state,
+        "job_description": PostjobDetail?.desciption,
+        "location": PostjobDetail?.country,
+        "sub_location": PostjobDetail?.state,
         "rating": PostjobDetail?.rating,
+        "job_code": PostjobDetail?.job_code,
+        "job_name": PostjobDetail?.name,
+
       };
       // });
       reset({ ...defaultValues });
@@ -169,13 +173,13 @@ export default function JobListing() {
           key={datas.jobid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="left">{datas?.jobid}</TableCell>
+          <TableCell align="left">{"JB" + datas?.jobid}</TableCell>
           <TableCell component="th" scope="row" align="center">
             {" "}
             {datas?.desciption}
           </TableCell>
-          <TableCell align="center">{datas?.country}</TableCell>
-          <TableCell align="center">{datas?.state}</TableCell>
+          <TableCell align="center">{datas?.job_country?.name}</TableCell>
+          <TableCell align="center">{datas?.job_state?.name}</TableCell>
           <TableCell align="center">{datas?.rating}</TableCell>
           <TableCell
             align="center"
@@ -227,14 +231,25 @@ export default function JobListing() {
           await EditPostjob(data).unwrap();
           handleClose();
           reset();
-          postjobrefetch();
+          await postjobrefetch();
         }
       } else {
         if (!isLoading) {
-          await CreatePostjob(data).unwrap();
+
+          const bodyDefault = {
+            // "jobid": data?.jobid,
+            "job_description": data?.job_description,
+            "location": data?.location,
+            "sub_location": data?.sub_location,
+            "rating": data?.rating,
+            "job_code": data?.job_code,
+            "job_name": data?.job_name,
+
+          };
+          await CreatePostjob(bodyDefault).unwrap();
           handleClose();
           reset();
-          postjobrefetch();
+          await postjobrefetch();
         }
       }
 
