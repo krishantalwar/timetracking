@@ -99,7 +99,7 @@ export default function ShiftMaster() {
     isSuccess: shiftmasterisSuccess,
     isError: shiftmasterisError,
     error: shiftmastererror,
-    refetch:getShiftRefetch
+    refetch: getShiftRefetch
   } = useGetShiftQuery("getShift");
 
   const [
@@ -183,9 +183,9 @@ export default function ShiftMaster() {
           </TableCell> */}
 
           <TableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
-  <Edit  style={{ marginRight: '8px' }} key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
-  <DeleteIcon   key={datas.shiftid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.shiftid)} />
-</TableCell>
+            <Edit style={{ marginRight: '8px' }} key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
+            <DeleteIcon key={datas.shiftid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.shiftid)} />
+          </TableCell>
         </TableRow>
       );
     });
@@ -209,13 +209,14 @@ export default function ShiftMaster() {
     try {
       setIsopen(true);
 
-      setTimeout(async ()=>{
+      setTimeout(async () => {
         if (data?.shiftid) {
 
           if (!EditShiftMasterisLoading) {
             await EditShiftMaster(data).unwrap();
             setIsopen(false);
             handleClose();
+            getShiftRefetch();
             reset();
           }
         } else {
@@ -239,8 +240,8 @@ export default function ShiftMaster() {
           }
         }
 
-      },3000)
-     
+      }, 3000)
+
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
 
@@ -670,24 +671,24 @@ export default function ShiftMaster() {
                     />
                   </Grid>
                 </Grid>
- <Grid>
- <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Add
-                </Button>
-                            <Backdrop
-                      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                      open={isopen}
-                      onClick={handleclose}
-                    >
-                      <CircularProgress color="inherit" />
-                    </Backdrop>
- </Grid>
-                
+                <Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Add
+                  </Button>
+                  <Backdrop
+                    sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={isopen}
+                    onClick={handleclose}
+                  >
+                    <CircularProgress color="inherit" />
+                  </Backdrop>
+                </Grid>
+
               </Box>
             </BasicModal>
 
