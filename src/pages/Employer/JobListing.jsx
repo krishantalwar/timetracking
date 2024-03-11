@@ -18,6 +18,8 @@ import TableCell from "@mui/material/TableCell";
 import { TextField } from "@mui/material";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
 import { Delete, Edit } from "@mui/icons-material";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   useCreateJobMutation,
   useEditJobMutation,
@@ -50,7 +52,6 @@ export default function JobListing() {
       location: "",
       sub_location: "",
       rating: "",
-      jobid: ""
     },
   });
 
@@ -128,13 +129,10 @@ export default function JobListing() {
       const PostjobDetail = await getPostjobDetail(row).unwrap();
       const defaultValues = {
         "jobid": PostjobDetail?.jobid,
-        "job_description": PostjobDetail?.desciption,
-        "location": PostjobDetail?.country,
-        "sub_location": PostjobDetail?.state,
+        "desciption": PostjobDetail?.desciption,
+        "country": PostjobDetail?.country,
+        "state": PostjobDetail?.state,
         "rating": PostjobDetail?.rating,
-        "job_code": PostjobDetail?.job_code,
-        "job_name": PostjobDetail?.name,
-
       };
       // });
       reset({ ...defaultValues });
@@ -174,13 +172,13 @@ export default function JobListing() {
           key={datas.jobid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="left">{"JB" + datas?.jobid}</TableCell>
+          <TableCell align="left">{datas?.jobid}</TableCell>
           <TableCell component="th" scope="row" align="center">
             {" "}
             {datas?.desciption}
           </TableCell>
-          <TableCell align="center">{datas?.job_country?.name}</TableCell>
-          <TableCell align="center">{datas?.job_state?.name}</TableCell>
+          <TableCell align="center">{datas?.country}</TableCell>
+          <TableCell align="center">{datas?.state}</TableCell>
           <TableCell align="center">{datas?.rating}</TableCell>
           <TableCell
             align="center"
@@ -235,26 +233,15 @@ export default function JobListing() {
             setIsopen(false);
             handleClose();
             reset();
-            await postjobrefetch();
+            postjobrefetch();
           }
         } else {
           if (!isLoading) {
-
-            const bodyDefault = {
-              // "jobid": data?.jobid,
-              "job_description": data?.job_description,
-              "location": data?.location,
-              "sub_location": data?.sub_location,
-              "rating": data?.rating,
-              "job_code": data?.job_code,
-              "job_name": data?.job_name,
-
-            };
-            await CreatePostjob(bodyDefault).unwrap();
+            await CreatePostjob(data).unwrap();
             setIsopen(false);
             handleClose();
             reset();
-            await postjobrefetch();
+            postjobrefetch();
           }
         }
 
@@ -377,6 +364,14 @@ export default function JobListing() {
     }
   }
 
+  const handleopen = () => {
+    setIsopen(true);
+  };
+
+  const handleclose = () => {
+    setIsopen(false);
+  };
+
   // console.log("postjobData", !postjobData);
   // console.log("postjobData", !postjobisLoading);
   // console.log("postjobData", !postjobisFetching);
@@ -440,7 +435,7 @@ export default function JobListing() {
               <TableBody>{content}</TableBody>
             </Table>
 
-            <BasicModal isOpen={isOpen} onClose={handleClose}>
+            <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose}>
               <Grid
                 container
                 rowSpacing={1}
@@ -674,14 +669,26 @@ export default function JobListing() {
                   </Grid>
                 </Grid>
 
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Add
-                </Button>
+
+                <Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Add
+                  </Button>
+                  <Backdrop
+                    sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={isopen}
+                    onClick={handleclose}
+                  >
+                    <CircularProgress color="inherit" />
+                  </Backdrop>
+                </Grid>
+
+
               </Box>
             </BasicModal>
 
