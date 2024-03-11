@@ -8,6 +8,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import BasicModal from "../../components/ui/modal/modal";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -16,6 +17,8 @@ import Paper from "@mui/material/Paper";
 import graphic from "../../assets/Time-management-icons/graphic.png/";
 import logo from "../../assets/Time-management-icons/logo.png";
 import Shiftpaylogo from "../../assets/Time-management-icons/shiftnpay.png";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import {
   useLoginEmailMutation,
@@ -38,6 +41,9 @@ import { useForm, Controller } from "react-hook-form";
 // };
 
 export default function SignIn() {
+
+  const [isopen, setIsopen] = React.useState(false);
+
   const {
     handleSubmit,
     control,
@@ -81,23 +87,20 @@ export default function SignIn() {
   };
 
   const onSubmit = async (data) => {
-    // event.preventDefault();
-    // console.log(data)
-    // const data = new FormData(event.currentTarget);
     try {
-      // console.log(isFetching);
-      // console.log(status);
-      console.log(isLoading);
-      // console.log(isSuccess);
-      // console.log(isError);
-      // console.log(error);
-      console.log(!isLoading);
-      if (!isLoading) {
-        await LoginEmail({
-          email: data.email,
-          password: data.password,
-        }).unwrap();
-      }
+      setIsopen(true);
+      setTimeout(async()=>{
+
+        if (!isLoading) {
+          await LoginEmail({
+            email: data.email,
+            password: data.password,
+          }).unwrap();
+          setIsopen(false);
+        }
+
+      },3000)
+     
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
 
@@ -117,6 +120,14 @@ export default function SignIn() {
       // setAPIError(error.data)
       console.error("Login error:", error);
     }
+  };
+
+  const handleopen = () => {
+    setIsopen(true);
+  };
+
+  const handleclose = () => {
+    setIsopen(false);
   };
 
   // const handleChange = (event) => {
@@ -219,6 +230,13 @@ export default function SignIn() {
               >
                 Sign In
               </Button>
+                            <Backdrop
+                      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                      open={isopen}
+                      onClick={handleclose}
+                    >
+                      <CircularProgress color="inherit" />
+                    </Backdrop>
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
@@ -247,7 +265,7 @@ export default function SignIn() {
             backgroundPosition: "center",
           }}
         />
-      </Grid>
+      </Grid> 
     </React.Fragment>
   );
 }

@@ -717,7 +717,7 @@ const RoleAssigned = () => {
   );
 };
 const Documents = () => {
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const {
     control,
@@ -727,9 +727,8 @@ const Documents = () => {
   } = useFormContext();
 
   const handleFileChange = (e) => {
-    const files = e.target.files;
-    setUploadedFiles(files);
-    setValue("upload_document", "abc");
+    const file= setSelectedFile(e.target.files[0]);
+    setValue("upload_document", file);
   };
   // console.log(errors);
 
@@ -804,7 +803,7 @@ const Documents = () => {
             )}
           />
         </Grid>
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
           <Controller
             control={control}
             name="upload_document"
@@ -827,9 +826,9 @@ const Documents = () => {
               />
             )}
           />
-        </Grid>
+        </Grid> */}
 
-        {/* <Grid item xs={6}>
+        <Grid item xs={6}>
           <input
             type="file"
             onChange={handleFileChange}
@@ -841,7 +840,7 @@ const Documents = () => {
               {errors.upload_document.message}
             </span>
           )}
-        </Grid> */}
+        </Grid>
       </Grid>
     </>
   );
@@ -887,7 +886,7 @@ export default function HorizontalLinearStepper() {
       reporting_manager: "",
       shift_allocation: "",
       role_assigned: "",
-      // upload_documents: [],
+      upload_documents: [],
       upload_document: "",
     },
   });
@@ -1014,7 +1013,7 @@ export default function HorizontalLinearStepper() {
           usercodeDate?.code == "EM1" ? currentUser?.user : currentUser?.user,
         shift_allocation: "",
         role_assigned: "",
-        // upload_documents: [],
+        upload_documents: [],
         upload_document: "",
       });
       // console.log("currentUser")

@@ -1,14 +1,15 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { useState, useEffect } from "react";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { useForm, Controller } from "react-hook-form";
 import Input from "../../components/ui/forminputs/input";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import { TextField } from "@mui/material";
 import Table from "../../components/ui/table/table";
 import TableHead from "@mui/material/TableHead";
@@ -20,17 +21,63 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
-export default function RolesandResponsibilities() {
+export default function TimeTracking() {
+
+
+const [startTime, setStartTime] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+
   const { handleSubmit, control, formState } = useForm({
     mode: "onChange",
     defaultValues: {
-      role: "",
-      screen_allocation: "",
+      empcode: "",
+      empname: "",
+      empdepartment:"",
+      designation:"",
+      startdate:"",
+      enddate:"",
+      
     },
   });
-  console.log(formState?.errors?.role?.message);
-  const onSubmit = async (data) => {};
 
+  useEffect(() => {
+    let interval;
+    if (timerRunning) {
+      interval = setInterval(() => {
+        setElapsedTime(Date.now() - startTime);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [timerRunning, startTime]);
+
+  const handleStartTime = () => {
+    setStartTime(Date.now() - elapsedTime);
+    setTimerRunning(true);
+  };
+
+  const handleStopTime = () => {
+    if (startTime) {
+      setTimerRunning(false);
+    }
+  };
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+
+  const onSubmit = async (data) => {};
   return (
     <React.Fragment>
       <Box component={Paper}>
@@ -49,7 +96,7 @@ export default function RolesandResponsibilities() {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             mt={0}
           >
-            <Grid item xs={4} mt={2}>
+            <Grid item xs={6} mt={2}>
               <Controller
                 name="empcode"
                 control={control}
@@ -74,9 +121,9 @@ export default function RolesandResponsibilities() {
               />
             </Grid>
 
-            <Grid item xs={4} mt={2}>
+            <Grid item xs={6} mt={2}>
               <Controller
-                name="emppname"
+                name="empname"
                 control={control}
                 rules={{ required: "Employee name is required" }}
                 defaultValue=""
@@ -92,8 +139,8 @@ export default function RolesandResponsibilities() {
                       fullWidth: true,
                       variant: "standard",
                     }}
-                    error={Boolean(formState?.errors?.emppname)}
-                    helperText={formState?.errors?.emppname?.message}
+                    error={Boolean(formState?.errors?.empname)}
+                    helperText={formState?.errors?.empname?.message}
                   />
                 )}
               />
@@ -105,9 +152,9 @@ export default function RolesandResponsibilities() {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             mt={0}
           >
-            <Grid item xs={4} mt={2}>
+            <Grid item xs={6} mt={2}>
               <Controller
-                name="emppdepartment"
+                name="empdepartment"
                 control={control}
                 rules={{ required: "Department is required" }}
                 defaultValue=""
@@ -123,14 +170,14 @@ export default function RolesandResponsibilities() {
                       fullWidth: true,
                       variant: "standard",
                     }}
-                    error={Boolean(formState?.errors?.emppdepartment)}
-                    helperText={formState?.errors?.emppdepartment?.message}
+                    error={Boolean(formState?.errors?.empdepartment)}
+                    helperText={formState?.errors?.empdepartment?.message}
                   />
                 )}
               />
             </Grid>
 
-            <Grid item xs={4} mt={2}>
+            <Grid item xs={6} mt={2}>
               <Controller
                 name="designation"
                 control={control}
@@ -153,13 +200,6 @@ export default function RolesandResponsibilities() {
                   />
                 )}
               />
-            </Grid>
-            <Grid ml={2} mt={2}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["TimePicker"]}>
-                  <TimePicker label="Total Time" />
-                </DemoContainer>
-              </LocalizationProvider>
             </Grid>
           </Grid>
           <Grid
@@ -186,8 +226,8 @@ export default function RolesandResponsibilities() {
                       fullWidth: true,
                       variant: "standard",
                     }}
-                    error={Boolean(formState?.errors?.date)}
-                    helperText={formState?.errors?.date?.message}
+                    error={Boolean(formState?.errors?.startdate)}
+                    helperText={formState?.errors?.startdate?.message}
                   />
                 )}
               />
@@ -217,38 +257,44 @@ export default function RolesandResponsibilities() {
                 )}
               />
             </Grid>
-            <Grid>
-              <Button
-                type="Button"
-                style={{
-                  backgroundColor: "lightblue",
-                  marginLeft: 20,
-                  marginTop: 30,
-                  border: "3px solid lightblue",
-                  width: 120,
-                  height: 40,
+            {/* <Grid container rowSpacing={1} columnSpacing={{ xs: 10, sm: 2, md: 3 }}> */}
+            <Grid item xs={4} mt={2}  >
+              <TextField
+                margin="none"
+                disabled
+                fullWidth
+                label="Total Time"
+                value={formatTime(timerRunning ? Date.now() - startTime : elapsedTime)}
+                type="text"
+                formcontrolpops={{
+                  fullWidth: true,
+                  variant: "standard",
                 }}
-              >
-                {" "}
-                Start Time{" "}
-              </Button>
-              <Button
-                type="Button"
                 style={{
-                  backgroundColor: "lightblue",
-                  marginLeft: 30,
-                  marginTop: 30,
-                  border: "3px solid lightblue",
-                  width: 120,
-                  height: 40,
+                  color:"red"
                 }}
-              >
-                {" "}
-                Stop Time{" "}
-              </Button>
+              />
             </Grid>
           </Grid>
-          <Grid mt={4}>
+          <Grid>
+            <Button
+              type="button"
+              onClick={timerRunning ? handleStopTime : handleStartTime}
+              style={{
+                backgroundColor: "lightblue",
+                marginRight: 50,
+                marginTop: 30,
+                border: "3px solid lightblue",
+                width: 120,
+                height: 40,
+                float:"right"
+              }}
+            >
+              {timerRunning ? "Stop Time" : "Start Time"}
+            </Button>
+          </Grid>
+          {/* </Grid> */}
+          <Grid mt={10}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -289,3 +335,5 @@ export default function RolesandResponsibilities() {
     </React.Fragment>
   );
 }
+
+

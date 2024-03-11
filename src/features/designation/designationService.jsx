@@ -80,7 +80,6 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
           console.log("error", error);
         }
       },
-
       invalidatesTags: [{ type: "designation", id: "designationLIST" }],
     }),
     deleteDesignation: builder.mutation({

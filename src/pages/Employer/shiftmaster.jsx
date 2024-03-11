@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import Copyright from "../../layouts/copyright";
 import Paper from "@mui/material/Paper";
 import CloseIcon from '@mui/icons-material/Close';
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   useCreateShiftMasterMutation,
   useGetShiftQuery,
@@ -39,6 +41,8 @@ import { TextField } from "@mui/material";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
 
 export default function ShiftMaster() {
+  const [isopen, setIsopen] = React.useState(false);
+
   const {
     handleSubmit,
     control,
@@ -203,40 +207,40 @@ export default function ShiftMaster() {
     // console.log(data)
     // const data = new FormData(event.currentTarget);
     try {
-      // console.log(isFetching);
-      // console.log(status);
-      // console.log(isLoading);
-      // console.log(isSuccess);
-      // console.log(isError);
-      // console.log(error);
-      // console.log(!isLoading);
-      if (data?.shiftid) {
+      setIsopen(true);
 
-        if (!EditShiftMasterisLoading) {
-          await EditShiftMaster(data).unwrap();
-          handleClose();
-          reset();
-        }
-      } else {
+      setTimeout(async ()=>{
+        if (data?.shiftid) {
 
-        if (!isLoading) {
-          const defaultValues = {
-            "break_end_time": data?.break_end_time,
-            "break_start_time": data?.break_start_time,
-            "end_time": data?.end_time,
-            "start_time": data?.start_time,
-            "overtime_end_time": data?.overtime_end_time,
-            "overtime_start_time": data?.overtime_start_time,
-            "name": data?.name,
-            // "shiftid": ShiftMasterDetail?.shiftid,
-            "shift_code": data.shift_code,
+          if (!EditShiftMasterisLoading) {
+            await EditShiftMaster(data).unwrap();
+            setIsopen(false);
+            handleClose();
+            reset();
           }
-          await CreateShiftMaster(defaultValues).unwrap();
-          handleClose();
-          getShiftRefetch();
-          reset();
+        } else {
+          if (!isLoading) {
+            const defaultValues = {
+              "break_end_time": data?.break_end_time,
+              "break_start_time": data?.break_start_time,
+              "end_time": data?.end_time,
+              "start_time": data?.start_time,
+              "overtime_end_time": data?.overtime_end_time,
+              "overtime_start_time": data?.overtime_start_time,
+              "name": data?.name,
+              // "shiftid": ShiftMasterDetail?.shiftid,
+              "shift_code": data.shift_code,
+            }
+            await CreateShiftMaster(defaultValues).unwrap();
+            setIsopen(false);
+            handleClose();
+            getShiftRefetch();
+            reset();
+          }
         }
-      }
+
+      },3000)
+     
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
 
@@ -255,6 +259,7 @@ export default function ShiftMaster() {
       // Handle login error
       // setAPIError(error.data)
       console.error("Login error:", error);
+
     }
   };
 
@@ -296,6 +301,14 @@ export default function ShiftMaster() {
     } catch (error) {
       console.error("delete error:", error);
     }
+  };
+
+  const handleopen = () => {
+    setIsopen(true);
+  };
+
+  const handleclose = () => {
+    setIsopen(false);
   };
 
 
@@ -396,7 +409,7 @@ export default function ShiftMaster() {
               <TableBody>{content}</TableBody>
             </Table>
 
-            <BasicModal isOpen={isOpen} onClose={handleClose}>
+            <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose}>
               <Grid
                 container
                 rowSpacing={1}
@@ -657,8 +670,8 @@ export default function ShiftMaster() {
                     />
                   </Grid>
                 </Grid>
-
-                <Button
+ <Grid>
+ <Button
                   type="submit"
                   fullWidth
                   variant="contained"
@@ -666,6 +679,15 @@ export default function ShiftMaster() {
                 >
                   Add
                 </Button>
+                            <Backdrop
+                      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                      open={isopen}
+                      onClick={handleclose}
+                    >
+                      <CircularProgress color="inherit" />
+                    </Backdrop>
+ </Grid>
+                
               </Box>
             </BasicModal>
 

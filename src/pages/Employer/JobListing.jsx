@@ -32,6 +32,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useGetCountryQuery } from "../../features/country/countryService";
 
 export default function JobListing() {
+  const [isopen, setIsopen] = React.useState(false);
   const {
     handleSubmit,
     control,
@@ -213,9 +214,9 @@ export default function JobListing() {
   // console.log(shiftmastererror)
 
   const onSubmit = async (data) => {
-    // event.preventDefault();
-    console.log(data);
-    // const data = new FormData(event.currentTarget);
+
+    setIsopen(true);
+
     try {
       // console.log(isFetching);
       // console.log(status);
@@ -226,32 +227,39 @@ export default function JobListing() {
       // console.log(!isLoading);
 
       //shiftid  to change
-      if (data?.jobid) {
-        if (!EditpostjobisLoading) {
-          await EditPostjob(data).unwrap();
-          handleClose();
-          reset();
-          await postjobrefetch();
-        }
-      } else {
-        if (!isLoading) {
+      setTimeout(async () => {
 
-          const bodyDefault = {
-            // "jobid": data?.jobid,
-            "job_description": data?.job_description,
-            "location": data?.location,
-            "sub_location": data?.sub_location,
-            "rating": data?.rating,
-            "job_code": data?.job_code,
-            "job_name": data?.job_name,
+        if (data?.jobid) {
+          if (!EditpostjobisLoading) {
+            await EditPostjob(data).unwrap();
+            setIsopen(false);
+            handleClose();
+            reset();
+            await postjobrefetch();
+          }
+        } else {
+          if (!isLoading) {
 
-          };
-          await CreatePostjob(bodyDefault).unwrap();
-          handleClose();
-          reset();
-          await postjobrefetch();
+            const bodyDefault = {
+              // "jobid": data?.jobid,
+              "job_description": data?.job_description,
+              "location": data?.location,
+              "sub_location": data?.sub_location,
+              "rating": data?.rating,
+              "job_code": data?.job_code,
+              "job_name": data?.job_name,
+
+            };
+            await CreatePostjob(bodyDefault).unwrap();
+            setIsopen(false);
+            handleClose();
+            reset();
+            await postjobrefetch();
+          }
         }
-      }
+
+      }, 3000)
+
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
 

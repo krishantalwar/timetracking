@@ -3,7 +3,6 @@ import Navigation from "./privateroutes/navigation.component";
 import Home from "./pages/home/home";
 import Forget from "./pages/auth/forgot";
 import ShiftMaster from "./pages/Employer/shiftmaster";
-// import RolesandResponsibilities from "./pages/Employer/roles & responsibilities";
 import RolesandResponsibilities from "./pages/Employer/rolesresponsibilities";
 import AddEmployee from "./pages/Employer/addEmployee";
 import TimeTrackingActivities from "./pages/Employer/timeTrackingActivities";
@@ -23,7 +22,7 @@ function App() {
     <Routes>
       <Route element={<Navigation />}>
         <Route path="/" element={<Master />}>
-          <Route index element={<Home />} />
+          <Route index element={<Home emp='Total Employee' present='Present' absent='Absent'late='Late Comer'/>} />
           <Route path="/addEmployee" element={<AddEmployee />} />
           <Route path="/shiftmaster" element={<ShiftMaster />} />
           <Route
@@ -41,6 +40,7 @@ function App() {
           <Route path="/timetracking" element={<TimeTracking />} />
           <Route path="/designation" element={<Designation />} />
           <Route path="/department" element={<Department />} />
+          <Route path="/employeedashboard" element={<Home emp='Total Job Assigned' present='Numbers of hours worked' absent='Absent' late='Late Coming' />} />
         </Route>
       </Route>
 

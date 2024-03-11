@@ -452,6 +452,12 @@ const Documents = () => {
     control,
     formState: { errors },
   } = useFormContext();
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    control.setValue("upload_document", file);
+  };
+
   console.log(errors);
   return (
     <>
@@ -505,7 +511,7 @@ const Documents = () => {
             )}
           />
         </Grid>
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
           <Controller
             control={control}
             name="upload_document"
@@ -527,6 +533,26 @@ const Documents = () => {
               </TextField>
             )}
           />
+        </Grid> */}
+
+<Grid item xs={6}>
+          {/* Input field for uploading document */}
+          <input
+            accept="application/pdf,image/*"
+            id="upload-document"
+            type="file"
+            onChange={handleFileChange}
+          />
+          {/* <label htmlFor="upload-document">
+            <Button variant="outlined" component="span">
+              Upload Document
+            </Button>
+          </label> */}
+          {errors.upload_document && (
+            <Typography color="error">
+              {errors.upload_document.message}  
+            </Typography>
+          )}
         </Grid>
       </Grid>
     </>

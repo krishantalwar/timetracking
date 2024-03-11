@@ -1,12 +1,15 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Copyright from "../../layouts/copyright";
 import Paper from "@mui/material/Paper";
 import CloseIcon from '@mui/icons-material/Close';
+// import Backdrops from "../../components/ui/Backdrop/Backdrop";
 import {
   useCreateDesignationMasterMutation,
   useGetDesignationQuery,
@@ -30,6 +33,10 @@ import TableCell from "@mui/material/TableCell";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
 
 export default function Designation() {
+
+  const [isopen, setIsopen] = React.useState(false);
+  // const [isLoaDing, setIsLoaDing] = React.useState(false); 
+
   const {
     handleSubmit,
     control,
@@ -47,6 +54,7 @@ export default function Designation() {
 
     },
   });
+
 
   const [
     updateDesignationDetails,
@@ -140,10 +148,10 @@ export default function Designation() {
     // console.log(row);
     // console.log("aaaa");
     try {
-      // console.log(!DeleteDesignationisLoading);
+
       if (!DeleteDesignationisLoading) {
         const asd = await DeleteDesignation(row).unwrap();
-        // console.log(asd);
+        
       }
     } catch (error) {
       console.error("delete error:", error);
@@ -188,53 +196,135 @@ export default function Designation() {
       <TableCell align="right">{designationmastererror}</TableCell></TableRow>;
   }
 
+
   const onSubmit = async (data) => {
     try {
-      // console.log(isLoading);
-      // console.log(!isLoading);
-      // if (!isLoading) {
-      //   await CreateDesignationMaster({
-      //     // code: data.designation_code,
-      //     name: data.designation_name,
-      //   }).unwrap();
-      //   handleClose();
-      //   reset();
-      // }
-      console.log(data);
+      // setIsLoaDing(true); 
+      setIsopen(true);
+      setTimeout(async () => {
 
-      if (data?.designation_id) {
+        if(data?.designation_id){
+          if (!updateDesignationisLoading) {
+                    await updateDesignationDetails({
+                      "designation_code": data.designation_code,
+                      "name": data.designation_name,
+                      "designationid": data.designation_id,
+                    }).unwrap();
+                    setIsopen(false);
+                    handleClose();
+                    reset();
+                  }
 
-        if (!updateDesignationisLoading) {
-          await updateDesignationDetails({
-            "designation_code": data.designation_code,
-            "name": data.designation_name,
-            "designationid": data.designation_id,
-          }).unwrap();
-          handleClose();
-          reset();
-        }
-      } else {
-
+        }else{
+          
         if (!isLoading) {
           await CreateDesignationMaster({
             designation_code: data.designation_code,
             name: data.designation_name,
           }).unwrap();
+          setIsopen(false); // Close backdrop after API call is complete
           handleClose();
           getDesignationRefetch();
           reset();
         }
-      }
+        // setIsLoaDing(false); // Reset loading state
+        }
+        
+      }, 2000); // 10 seconds delay
     } catch (error) {
       console.error("Login error:", error);
+      // setIsLoaDing(false); // Reset loading state if there's an error
     }
   };
+  
+
+
+  // const onSubmit = async (data) => {
+  //   try {
+    // setIsLoaDing(true); // Set loading to true when API call starts
+  
+    // // Show backdrop
+    // setIsopen(true);
+
+    // // Delay API call by 10 seconds
+    // setTimeout(async () =>{
+    //   if (data?.designation_id) {
+
+        //       if (!updateDesignationisLoading) {
+        //         await updateDesignationDetails({
+        //           "designation_code": data.designation_code,
+        //           "name": data.designation_name,
+        //           "designationid": data.designation_id,
+        //         }).unwrap();
+        //         handleClose();
+        //         reset();
+        //       }
+        //     } else {
+      
+        //       if (!isLoading) {
+        //         await CreateDesignationMaster({
+        //           designation_code: data.designation_code,
+        //           name: data.designation_name,
+        //         }).unwrap();
+        //         handleClose();
+        //         getDesignationRefetch();
+        //         reset();
+        //       }
+        //     }
+        //   } 
+
+//     },10000); // 10 seconds delay
+//   } catch (error) {
+//     console.error("Login error:", error);
+//     setIsLoaDing(false); // Reset loading state if there's an error
+//   }
+// };
+
+  
+
+  //     
+
+  //     if (data?.designation_id) {
+
+  //       if (!updateDesignationisLoading) {
+  //         await updateDesignationDetails({
+  //           "designation_code": data.designation_code,
+  //           "name": data.designation_name,
+  //           "designationid": data.designation_id,
+  //         }).unwrap();
+  //         handleClose();
+  //         reset();
+  //       }
+  //     } else {
+
+  //       if (!isLoading) {
+  //         await CreateDesignationMaster({
+  //           designation_code: data.designation_code,
+  //           name: data.designation_name,
+  //         }).unwrap();
+  //         handleClose();
+  //         getDesignationRefetch();
+  //         reset();
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+  //   }
+  // };
 
   const [isOpen, setIsOpen] = React.useState(false);
 
   const [getCodess, { data: codedata, isLoading: getcodeisLoading, refetch }] =
     designationServiceApis.endpoints.getCodesdesignation.useLazyQuery();
 
+
+    const handleopen = () => {
+      setIsopen(true);
+    };
+  
+    const handleclose = () => {
+      setIsopen(false);
+    };
 
   const handleOpen = async () => {
     // setIsOpen(true);
@@ -327,7 +417,7 @@ export default function Designation() {
               <TableBody>{content}</TableBody>
             </Table>
 
-            <BasicModal isOpen={isOpen} onClose={handleClose}>
+            <BasicModal isOpen={isOpen} onClose={handleClose}  isopen={handleopen} onclose={handleclose} >
               <Grid
                 container
                 rowSpacing={1}
@@ -418,15 +508,24 @@ export default function Designation() {
                     />
                   </Grid>
                 </Grid>
-
-                <Button
+               <Grid>
+               <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
                   Add
-                </Button>
+                            </Button>
+                            <Backdrop
+                      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                      open={isopen}
+                      onClick={handleclose}
+                    >
+                      <CircularProgress color="inherit" />
+                    </Backdrop>
+               </Grid>
+               
               </Box>
             </BasicModal>
 

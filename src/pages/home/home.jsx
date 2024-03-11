@@ -15,7 +15,7 @@ import EmployeeDetails from "../Employer/addEmployee.jsx";
 import Shimmer from "../../components/ui/shimmer/shimmer.jsx";
 import { useState ,useEffect } from "react";
 
-export default function Home(props = { mt: 8, mb: 4 }) {
+export default function Home(props) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function Home(props = { mt: 8, mb: 4 }) {
               <Box sx={{ display: "flex", color: "#fff" }}>
                 <img src={stat1} alt="Avatar" className="avatar" />
                 <Box marginLeft={1} marginTop={-2}>
-                  <h3>Total Employee</h3>
+                  <h3>{props.emp}</h3>
                 </Box>
               </Box>
             </CardContent>
@@ -55,7 +55,7 @@ export default function Home(props = { mt: 8, mb: 4 }) {
               <Box sx={{ display: "flex", color: "#fff" }}>
                 <img src={stat2} alt="Avatar" className="avatar" />
                 <Box marginLeft={1} marginTop={-2}>
-                  <h3>Present</h3>
+                  <h3>{props.present}</h3>
                 </Box>
               </Box>
             </CardContent>
@@ -67,7 +67,7 @@ export default function Home(props = { mt: 8, mb: 4 }) {
               <Box sx={{ display: "flex", color: "#fff" }}>
                 <img src={stat3} alt="Avatar" className="avatar" />
                 <Box marginLeft={1} marginTop={-2}>
-                  <h3>Absent</h3>
+                <h3>{props.absent}</h3>
                 </Box>
               </Box>
             </CardContent>
@@ -81,7 +81,7 @@ export default function Home(props = { mt: 8, mb: 4 }) {
               <Box sx={{ display: "flex", color: "#fff" }}>
                 <img src={stat4} alt="Avatar" className="avatar" />
                 <Box marginLeft={1} marginTop={-2}>
-                  <h3>Late Comer</h3>
+                <h3>{props.late}</h3>
                 </Box>
               </Box>
             </CardContent>
