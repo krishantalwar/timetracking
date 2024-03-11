@@ -727,7 +727,7 @@ const Documents = () => {
   } = useFormContext();
 
   const handleFileChange = (e) => {
-    const file= setSelectedFile(e.target.files[0]);
+    const file = setSelectedFile(e.target.files[0]);
     setValue("upload_document", file);
   };
   // console.log(errors);
@@ -848,13 +848,13 @@ const Documents = () => {
 
 function getStepContent(step) {
   switch (step) {
+    // case 0:
+    //   return <EmployeDetails />;
+    // case 1:
+    //   return <ShiftAllocation />;
+    // case 2:
+    //   return <RoleAssigned />;
     case 0:
-      return <EmployeDetails />;
-    case 1:
-      return <ShiftAllocation />;
-    case 2:
-      return <RoleAssigned />;
-    case 3:
       return <Documents />;
     default:
       return "Added Successfully";
@@ -916,59 +916,61 @@ export default function HorizontalLinearStepper() {
   } = useGetCodeusersQuery("getCodeusers");
 
   const handleNext = async (data) => {
-    // console.log(data);
+    console.log(data);
+    await saveuser(data).unwrap();
 
     // saveuser(data)
     // console.log("data");
     // console.log(activeStep);
     // console.log(steps);
-    if (activeStep == steps.length - 1) {
-      // console.log("ds");
-      // fetch("https://jsonplaceholder.typicode.com/comments")
-      //   .then((data) => data.json())
-      //   .then((res) => {
-      //     console.log(res);
 
-      if (!isLoading) {
-        await saveuser(data).unwrap();
-        setActiveStep((pre) => pre + 1);
-        await usercodRefetch();
+    // if (activeStep == steps.length - 1) {
+    //   // console.log("ds");
+    //   // fetch("https://jsonplaceholder.typicode.com/comments")
+    //   //   .then((data) => data.json())
+    //   //   .then((res) => {
+    //   //     console.log(res);
 
-        methods.reset({
-          employe_code: usercodeDate?.code,
-          first_name: "",
-          last_name: "",
-          email: "",
-          country: "",
-          state: "",
-          date_of_birth: "",
-          date_of_joining: "",
-          department: "",
-          designation: "",
-          reporting_manager:
-            usercodeDate?.code == "EM1" ? currentUser?.user : currentUser?.user,
-          shift_allocation: "",
-          role_assigned: "",
-          // upload_documents: [],
-          upload_document: "",
-        });
+    //   if (!isLoading) {
+    //     await saveuser(data).unwrap();
+    //     setActiveStep((pre) => pre + 1);
+    //     await usercodRefetch();
 
-        setActiveStep((pre) => {
-          console.log(pre);
-          return 0;
-        });
-      }
+    //     methods.reset({
+    //       employe_code: usercodeDate?.code,
+    //       first_name: "",
+    //       last_name: "",
+    //       email: "",
+    //       country: "",
+    //       state: "",
+    //       date_of_birth: "",
+    //       date_of_joining: "",
+    //       department: "",
+    //       designation: "",
+    //       reporting_manager:
+    //         usercodeDate?.code == "EM1" ? currentUser?.user : currentUser?.user,
+    //       shift_allocation: "",
+    //       role_assigned: "",
+    //       // upload_documents: [],
+    //       upload_document: "",
+    //     });
 
-      // console.log(activeStep);
-      // });
-    } else {
-      setActiveStep((pre) => pre + 1);
-      // console.log(activeStep);
-      // setActiveStep(activeStep + 1);
-      // setSkippedSteps(
-      //   skippedSteps.filter((skipItem) => skipItem !== activeStep)
-      // );
-    }
+    //     setActiveStep((pre) => {
+    //       console.log(pre);
+    //       return 0;
+    //     });
+    //   }
+
+    //   // console.log(activeStep);
+    //   // });
+    // } else {
+    //   setActiveStep((pre) => pre + 1);
+    //   // console.log(activeStep);
+    //   // setActiveStep(activeStep + 1);
+    //   // setSkippedSteps(
+    //   //   skippedSteps.filter((skipItem) => skipItem !== activeStep)
+    //   // );
+    // }
   };
 
   const handleBack = () => {
@@ -1000,7 +1002,7 @@ export default function HorizontalLinearStepper() {
       // console.log(usercodeDate)
       methods.reset({
         employe_code: usercodeDate?.code,
-        first_name: "",
+        first_name: "s",
         last_name: "",
         email: "",
         country: "",
