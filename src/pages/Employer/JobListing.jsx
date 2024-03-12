@@ -177,8 +177,8 @@ export default function JobListing() {
             {" "}
             {datas?.desciption}
           </TableCell>
-          <TableCell align="center">{datas?.country}</TableCell>
-          <TableCell align="center">{datas?.state}</TableCell>
+          <TableCell align="center">{datas?.job_country?.name}</TableCell>
+          <TableCell align="center">{datas?.job_state?.state}</TableCell>
           <TableCell align="center">{datas?.rating}</TableCell>
           <TableCell
             align="center"
