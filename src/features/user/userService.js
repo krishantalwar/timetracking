@@ -16,7 +16,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         getUsers: builder.query({
             // query: () => '/user/',
             query: () => ({
-                url: "user",
+                url: "users",
                 method: "GET",
                 // body: detail
             }),
@@ -60,7 +60,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 //     'Content-Type': 'multipart/form-data;'
                 // },
                 body: detail,
-                // formData: true,
+                formData: true,
             }),
             transformResponse: (responseData) => {
                 console.log(responseData);
@@ -226,7 +226,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useCreateUserMasterMutation,
-    // useGetShiftQuery,
+    useGetUsersQuery,
     useGetCodeusersQuery,
     // useDeleteUserMasterMutation,
     // useGetUserMasterDetailMutation,

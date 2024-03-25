@@ -25,16 +25,24 @@ import {
   useEditJobMutation,
   useGetJobDetailMutation,
   useDeleteJobMutation,
+  useAssignedtJobMutation,
   // useGetCodejobQuery,
   useLazyGetCodejobQuery,
   useGetJobQuery,
 } from "../../features/job/jobService";
 import jobServiceApis from "../../features/job/jobService";
+import userServiceApis from "../../features/user/userService";
+import {
+  useGetUsersQuery,
+} from "../../features/user/userService";
 import MenuItem from "@mui/material/MenuItem";
 import { useGetCountryQuery } from "../../features/country/countryService";
 
 export default function JobListing() {
   const [isopen, setIsopen] = React.useState(false);
+  const [assignedJobisopen, setAssignedJobIsopen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+
   const {
     handleSubmit,
     control,
@@ -56,6 +64,24 @@ export default function JobListing() {
   });
 
   const {
+    handleSubmit: assignedJobHandleSubmit,
+    control: assignedJobcontrol,
+    // errors,
+    // getValues, getFieldState,
+    formState: assignedJobformState,
+    reset: assignedJobreset,
+    watch: assignedJobwatch,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      job_code: "",
+      job_id: "",
+      job_name: "",
+      user_id: ""
+    },
+  });
+
+  const {
     data: postjobData,
     isLoading: postjobisLoading,
     isFetching: postjobisFetching,
@@ -64,6 +90,7 @@ export default function JobListing() {
     error: postjoberror,
     refetch: postjobrefetch,
   } = useGetJobQuery("getJob");
+
 
   // console.log(postjobData);
   // console.log(postjobisLoading);
@@ -157,6 +184,102 @@ export default function JobListing() {
     }
   };
 
+
+  const handleOpen = async () => {
+    try {
+      const {
+        data: codedata,
+        isLoading: getcodeisLoading,
+        isFetching: codeisFetching,
+        isSuccess: codeisSuccess,
+      } = await getCode();
+      // await coderefetch()
+      if (codeisSuccess) {
+        // console.log(codedata);
+        const defaultValues = {
+          job_code: codedata.code,
+          job_description: "",
+          job_name: "",
+          location: "",
+          sub_location: "",
+          rating: "",
+        };
+
+        reset(defaultValues);
+      }
+      setIsOpen((prev) => !prev);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const [getUsers, { data: userdata, isLoading: getuserisLoading, refetch: getuserrefetch }] =
+  //   userServiceApis.endpoints.getUsers.useLazyQuery();
+
+
+
+  const handleAssignedJobclose = () => {
+    setAssignedJobIsopen((prev) => !prev);
+  };
+
+
+  const {
+    data: userdata,
+    isLoading: getuserisLoading,
+    isSuccess: getuserisSuccess,
+    error: getusererror
+    // refetch: postjobrefetch,
+  } = useGetUsersQuery("getUsers");
+
+  let useroptions = <MenuItem key={1}></MenuItem>;
+
+  if (getuserisLoading) {
+    useroptions = <MenuItem key={1}></MenuItem>;
+  } else if (getuserisSuccess) {
+    // console.log(userdata)
+    useroptions = userdata.map((datas) => {
+      // console.log(datas);
+      return (
+        <MenuItem key={datas.userid} value={datas.userid}>
+          {datas.first_name}
+        </MenuItem>
+      );
+    });
+    // console.log(useroptions);
+  } else if (countryDataisError) {
+    useroptions = <MenuItem key={1}>{countryDataerror}</MenuItem>;
+  }
+
+  const [
+    assignedJob,
+    {
+      // currentData,
+      // isFetching,
+      isLoading: assignedJobisLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useAssignedtJobMutation();
+
+  const handlAssignedJobOpen = async (data) => {
+    const job = postjobData?.filter((datas) => {
+      return datas.jobid == data;
+    });
+
+    const defaultValues = {
+      "job_code": job[0]?.job_code,
+      "job_id": job[0]?.jobid,
+      "user_id": "",
+      "job_name": job[0]?.name,
+    };
+    // });
+    assignedJobreset({ ...defaultValues });
+    console.log(job);
+    setAssignedJobIsopen((prev) => !prev);
+  };
+
+
   let content = "";
   if (postjobisLoading) {
     content = (
@@ -184,11 +307,19 @@ export default function JobListing() {
             align="center"
             style={{ display: "flex", justifyContent: "center" }}
           >
+            <Button
+              variant="outlined"
+              onClick={() => handlAssignedJobOpen(datas?.jobid)}
+
+            >
+              Assigned a Job
+            </Button>
             <Edit
               style={{ marginRight: "8px" }}
               key={datas.jobid + index.toString()}
               onClick={() => handleDetail(datas?.jobid)}
             />
+
             <DeleteIcon
               key={datas.jobid + index.toString() + index.toString()}
               onDelete={() => handleDelete(datas?.jobid)}
@@ -268,10 +399,72 @@ export default function JobListing() {
     }
   };
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const assignedJobSubmit = async (data) => {
+
+    setIsopen(true);
+
+    try {
+      // console.log(isFetching);
+      // console.log(status);
+      // console.log(isLoading);
+      // console.log(isSuccess);
+      // console.log(isError);
+      // console.log(error);
+      // console.log(!isLoading);
+
+      //shiftid  to change
+      // setTimeout(async () => {
+      console.log(data);
+      if (data?.job_id) {
+        if (!assignedJobisLoading) {
+          await assignedJob(data).unwrap();
+          setIsopen(false);
+          handleAssignedJobclose();
+          // reset();
+          // postjobrefetch();
+        }
+      }
+      // else {
+      //   if (!isLoading) {
+      //     await assignedJob(data).unwrap();
+      //     // setIsopen(false);
+      //     // handleClose();
+      //     // reset();
+      //     // postjobrefetch();
+      //   }
+      // }
+
+      // }, 3000)
+
+
+      // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
+
+      // resetFormFields()
+      // Redirect to the dashboard page after successful login
+      // history.push('/dashboard');
+    } catch (error) {
+      // console.error('Login error:');
+      // console.log(isFetching);
+      // console.log(status);
+      // console.log(isLoading);
+      // console.log(isSuccess);
+      // console.log(isError);
+      // console.log(error);
+      // console.log(!isLoading);
+      // Handle login error
+      // setAPIError(error.data)
+      console.error("Login error:", error);
+    }
+  };
+
+
+
+
 
   const [getCode, { data: codedata, isLoading: getcodeisLoading, refetch }] =
     jobServiceApis.endpoints.getCodejob.useLazyQuery();
+
+
 
   // const {
   //   data: codedata,
@@ -281,33 +474,6 @@ export default function JobListing() {
   //   refetch: coderefetch
   // } = useGetCodejobQuery("getCodejob");
 
-  const handleOpen = async () => {
-    try {
-      const {
-        data: codedata,
-        isLoading: getcodeisLoading,
-        isFetching: codeisFetching,
-        isSuccess: codeisSuccess,
-      } = await getCode();
-      // await coderefetch()
-      if (codeisSuccess) {
-        // console.log(codedata);
-        const defaultValues = {
-          job_code: codedata.code,
-          job_description: "",
-          job_name: "",
-          location: "",
-          sub_location: "",
-          rating: "",
-        };
-
-        reset(defaultValues);
-      }
-      setIsOpen((prev) => !prev);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleClose = () => {
     setIsOpen((prev) => !prev);
@@ -372,6 +538,11 @@ export default function JobListing() {
     setIsopen(false);
   };
 
+
+  // const handleclose = () => {
+  //   setIsopen(false);
+  // };
+
   // console.log("postjobData", !postjobData);
   // console.log("postjobData", !postjobisLoading);
   // console.log("postjobData", !postjobisFetching);
@@ -435,6 +606,7 @@ export default function JobListing() {
               <TableBody>{content}</TableBody>
             </Table>
 
+            {/* add modal */}
             <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose}>
               <Grid
                 container
@@ -663,6 +835,152 @@ export default function JobListing() {
                             5
                           </MenuItem>
                           ;
+                        </TextField>
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+
+
+                <Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Add
+                  </Button>
+                  <Backdrop
+                    sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={isopen}
+                  // onClick={handleclose}
+                  >
+                    <CircularProgress color="inherit" />
+                  </Backdrop>
+                </Grid>
+
+
+              </Box>
+            </BasicModal>
+            {/* assigned modal */}
+
+
+
+            <BasicModal isOpen={assignedJobisopen} onClose={handleAssignedJobclose}>
+              <Grid
+                container
+                rowSpacing={1}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              >
+                <Grid item xs={10}>
+                  <Typography>Assigned a Job</Typography>
+                </Grid>
+
+                <Grid item xs={2}>
+                  <Button
+                    onClick={handleAssignedJobclose}
+                    variant="outlined"
+                    startIcon={<Add />}
+                  >
+                    Close
+                  </Button>
+                </Grid>
+              </Grid>
+              <Box
+                component="form"
+                onSubmit={assignedJobHandleSubmit(assignedJobSubmit)}
+                method="post"
+                id="modal-modal-description"
+                sx={{ mt: 1 }}
+              >
+                <Grid
+                  container
+                  rowSpacing={1}
+                  spacing={{ xs: 2, md: 3 }}
+                  columns={{ xs: 4, sm: 8, md: 12 }}
+                  columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                >
+                  <Grid item xs={6}>
+                    <Controller
+                      name="job_code"
+                      control={assignedJobcontrol}
+                      // rules={{ required: "shift code is required" }}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          margin="normal"
+                          fullWidth
+                          id="job_code"
+                          label="Job Code"
+                          type="text"
+                          readOnly
+                          disabled
+                          formcontrolpops={{
+                            fullWidth: true,
+                            variant: "standard",
+                          }}
+                          error={Boolean(formState?.errors?.job_code)}
+                          helperText={formState?.errors?.job_code?.message}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Controller
+                      name="job_name"
+                      control={assignedJobcontrol}
+                      // rules={{ required: "shift code is required" }}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          margin="normal"
+                          fullWidth
+                          readOnly
+                          disabled
+                          id="job_name"
+                          label="Name"
+                          type="text"
+                          formcontrolpops={{
+                            fullWidth: true,
+                            variant: "standard",
+                          }}
+                          error={Boolean(formState?.errors?.job_name)}
+                          helperText={formState?.errors?.job_name?.message}
+                        />
+                      )}
+                    />
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <Controller
+                      name="user_id"
+                      control={assignedJobcontrol}
+                      rules={{
+                        required: "user is required",
+                      }}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          margin="normal"
+                          fullWidth
+                          label="User"
+                          id="user_id"
+                          formcontrolpops={{
+                            fullWidth: true,
+                            variant: "standard",
+                          }}
+                          select
+                          SelectProps={
+                            {
+                              // native: true,
+                              // inputProps: {name: 'screen_allocation' }
+                            }
+                          }
+                          error={Boolean(formState?.errors?.user_id)}
+                          helperText={formState?.errors?.user_id?.message}
+                        >
+                          {useroptions}
                         </TextField>
                       )}
                     />
