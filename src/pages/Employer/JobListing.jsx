@@ -52,6 +52,7 @@ export default function JobListing() {
       location: "",
       sub_location: "",
       rating: "",
+      job_rate:"",
     },
   });
 
@@ -128,11 +129,13 @@ export default function JobListing() {
       // if (!DeletePostjobisLoading) {
       const PostjobDetail = await getPostjobDetail(row).unwrap();
       const defaultValues = {
-        "jobid": PostjobDetail?.jobid,
-        "desciption": PostjobDetail?.desciption,
-        "country": PostjobDetail?.country,
-        "state": PostjobDetail?.state,
+        "job_code":PostjobDetail?.job_code,
+        "job_name": PostjobDetail?.name,
+        "job_description": PostjobDetail?.desciption,
+        "location": PostjobDetail?.country,
+        "sub_location": PostjobDetail?.state,
         "rating": PostjobDetail?.rating,
+        "job_rate":PostjobDetail?.job_rate
       };
       // });
       reset({ ...defaultValues });
@@ -178,7 +181,7 @@ export default function JobListing() {
             {datas?.desciption}
           </TableCell>
           <TableCell align="center">{datas?.job_country?.name}</TableCell>
-          <TableCell align="center">{datas?.job_state?.state}</TableCell>
+          <TableCell align="center">{datas?.job_state?.name}</TableCell>
           <TableCell align="center">{datas?.rating}</TableCell>
           <TableCell
             align="center"
@@ -299,6 +302,7 @@ export default function JobListing() {
           location: "",
           sub_location: "",
           rating: "",
+          job_rate:"",
         };
 
         reset(defaultValues);
@@ -429,6 +433,7 @@ export default function JobListing() {
                   <TableCell align="center">Location</TableCell>
                   <TableCell align="center">Sub Location</TableCell>
                   <TableCell align="center">Rating</TableCell>
+                  <TableCell align="center">Job Rate</TableCell>
                   <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -667,6 +672,28 @@ export default function JobListing() {
                       )}
                     />
                   </Grid>
+
+                  <Grid item xs={6}>
+          <Controller
+            control={control}
+            name="job_rate"
+            rules={{ required: "Job Rate is required." }}
+            render={({ field }) => (
+              <TextField
+                fullWidth
+                id="job_rate"
+                label="Job Rate"
+                variant="outlined"
+                placeholder="Enter Job Rate"
+                margin="normal"
+                {...field}
+                error={Boolean(formState?.errors?.job_rate)}
+                helperText={formState?.errors?.job_rate?.message}
+              
+              />
+            )}
+          />
+        </Grid>
                 </Grid>
 
 

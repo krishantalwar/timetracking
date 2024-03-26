@@ -187,6 +187,29 @@ const EmployeDetails = () => {
             )}
           />
         </Grid>
+
+        <Grid item xs={4}>
+          <Controller
+            control={control}
+            name="ssn"
+            rules={{ required: "SSN is required." }}
+            render={({ field }) => (
+              <TextField
+                // readOnly
+                // disabled
+                fullWidth
+                id="ssn"
+                label="Social Security Number"
+                variant="outlined"
+                placeholder="Social Security Number"
+                margin="normal"
+                {...field}
+                error={Boolean(errors?.ssn)}
+                helperText={errors.ssn?.message}
+              />
+            )}
+          />
+        </Grid>
         <Grid item xs={4}>
           <Controller
             control={control}
@@ -728,7 +751,7 @@ const Documents = () => {
 
   const handleFileChange = (e) => {
     const file = setSelectedFile(e.target.files[0]);
-    setValue("upload_document", file);
+    setValue("upload_document", "file");
   };
   // console.log(errors);
 
@@ -803,7 +826,7 @@ const Documents = () => {
             )}
           />
         </Grid>
-        {/* <Grid item xs={6}>
+        <Grid item xs={6}>
           <Controller
             control={control}
             name="upload_document"
@@ -826,9 +849,9 @@ const Documents = () => {
               />
             )}
           />
-        </Grid> */}
+        </Grid>
 
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
           <input
             type="file"
             onChange={handleFileChange}
@@ -840,7 +863,7 @@ const Documents = () => {
               {errors.upload_document.message}
             </span>
           )}
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );
@@ -874,6 +897,7 @@ export default function HorizontalLinearStepper() {
     // shouldFocusError: true,
     defaultValues: {
       employe_code: "",
+      ssn:"",
       first_name: "",
       last_name: "",
       email: "",
@@ -938,6 +962,7 @@ export default function HorizontalLinearStepper() {
 
         methods.reset({
           employe_code: usercodeDate?.code,
+          ssn:"",
           first_name: "",
           last_name: "",
           email: "",
@@ -1002,7 +1027,8 @@ export default function HorizontalLinearStepper() {
       // console.log(usercodeDate)
       methods.reset({
         employe_code: usercodeDate?.code,
-        first_name: "s",
+        ssn:"",
+        first_name: "",
         last_name: "",
         email: "",
         country: "",

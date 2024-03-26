@@ -21,7 +21,7 @@ import MuiAppBar from "@mui/material/AppBar";
 
 import Grid from "@mui/material/Grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-const drawerWidth = 230;
+const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -164,7 +164,7 @@ export default function Master() {
               overflow: "auto",
             }}
           >
-            <Container maxWidth="lg" sx={{ mt: 10, mb: 4 }}>
+            <Container maxWidth="5px" sx={{ mt: 12, mb: 4 }}>
               <Outlet />
             </Container>
 

@@ -136,7 +136,7 @@ export default function Navbar(props) {
             onClick={handleClick}
             sx={{ padding: 0 }}
           >
-            <Badge
+            {/* <Badge
               badgeContent={4}
               color="secondary"
               sx={{
@@ -152,9 +152,9 @@ export default function Navbar(props) {
               }}
             >
               <NotificationsIcon sx={{ width: "20px", height: "20px" }} />
-            </Badge>
+            </Badge> */}
           </IconButton>
-          <Box sx={{ flexGrow: 0, marginLeft: "15px" }}>
+          <Box sx={{ flexGrow: 0, marginRight: "20px" }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="" />

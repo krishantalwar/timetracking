@@ -103,7 +103,7 @@ export const mainListItems = (
           style={{
             display: 'flex',
             alignItems: 'center', // Align items vertically center
-            margin: "10px 7px 0px 15px" ,
+            margin: "15px 7px 0px 15px" ,
             borderRadius: "7px",
            color:"black",
            textDecoration: "none",

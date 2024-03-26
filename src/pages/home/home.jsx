@@ -36,7 +36,7 @@ export default function Home(props) {
         <Box  
         component={Paper}
         sx={{ flex: 1, display: "flex" }}>
-          <Card sx={{ width: "100%", backgroundColor: "lightgreen" }}>
+          <Card sx={{ width: "100%", backgroundColor: "#5D3FD3" }}>
             <CardContent>
               <Box sx={{ display: "flex", color: "#fff" }}>
                 <img src={stat1} alt="Avatar" className="avatar" />
@@ -49,7 +49,7 @@ export default function Home(props) {
         </Box>
         <Box sx={{ flex: 1, display: "flex" }}>
           <Card 
-            sx={{ width: "100%", backgroundColor: "orange", marginLeft: 5 }}
+            sx={{ width: "100%", backgroundColor: "#228B22", marginLeft: 5 }}
           >
             <CardContent>
               <Box sx={{ display: "flex", color: "#fff" }}>
@@ -62,7 +62,7 @@ export default function Home(props) {
           </Card>
         </Box>
         <Box sx={{ flex: 1, display: "flex" }}>
-          <Card sx={{ width: "100%", backgroundColor: "blue", marginLeft: 5 }}>
+          <Card sx={{ width: "100%", backgroundColor: "#E4D00A", marginLeft: 5 }}>
             <CardContent>
               <Box sx={{ display: "flex", color: "#fff" }}>
                 <img src={stat3} alt="Avatar" className="avatar" />
@@ -75,7 +75,7 @@ export default function Home(props) {
         </Box>
         <Box sx={{ flex: 1, display: "flex" }}>
           <Card
-            sx={{ width: "100%", backgroundColor: "lightpink", marginLeft: 5 }}
+            sx={{ width: "100%", backgroundColor: "#DE3163", marginLeft: 5 }}
           >
             <CardContent>
               <Box sx={{ display: "flex", color: "#fff" }}>

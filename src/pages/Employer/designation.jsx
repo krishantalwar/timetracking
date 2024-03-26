@@ -201,7 +201,6 @@ export default function Designation() {
     try {
       // setIsLoaDing(true); 
       setIsopen(true);
-      setTimeout(async () => {
 
         if(data?.designation_id){
           if (!updateDesignationisLoading) {
@@ -229,8 +228,6 @@ export default function Designation() {
         }
         // setIsLoaDing(false); // Reset loading state
         }
-        
-      }, 2000); // 10 seconds delay
     } catch (error) {
       console.error("Login error:", error);
       // setIsLoaDing(false); // Reset loading state if there's an error

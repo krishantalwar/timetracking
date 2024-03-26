@@ -89,7 +89,7 @@ export default function SignIn() {
   const onSubmit = async (data) => {
     try {
       setIsopen(true);
-      setTimeout(async()=>{
+     
 
         if (!isLoading) {
           await LoginEmail({
@@ -99,7 +99,6 @@ export default function SignIn() {
           setIsopen(false);
         }
 
-      },3000)
      
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
@@ -164,7 +163,7 @@ export default function SignIn() {
             </Avatar> */}
             <img src={Shiftpaylogo} style={{ marginBottom: 20 }} />
             <Typography component="h2" variant="h5">
-              Welcome to Time Tracking & shift Managment System
+              Welcome to Time Tracking & Shift Managment System
             </Typography>
             <Box
               component="form"

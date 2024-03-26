@@ -197,8 +197,6 @@ export default function Designation() {
   const onSubmit = async (data) => {
     try {
       setIsopen(true);
-
-      setTimeout(async()=>{
         if (data?.departmentid) {
 
           if (!updateDepartmentnisLoading) {
@@ -224,11 +222,7 @@ export default function Designation() {
             getDepartmentRefetch();
             reset();
           }
-        }
-
-      },3000)
-
-     
+        }   
     } catch (error) {
       console.error("Login error:", error);
     }
