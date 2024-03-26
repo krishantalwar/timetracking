@@ -21,23 +21,97 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
+import {
+  useGetUserjobQuery,
+} from "../../features/job/jobService";
+import { selectCurrentUser } from "../../features/auth/authSelector";
+import { useSelector, useDispatch } from "react-redux";
+
+
 export default function TimeTracking() {
-
-
-const [startTime, setStartTime] = useState(null);
+  const [startTime, setStartTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
+  const currentUser = useSelector(selectCurrentUser);
+
+
+  // console.log(currentUser?.user);
+  const {
+    data: UserjobData,
+    isLoading: UserjobisLoading,
+    isFetching: UserjobisFetching,
+    isSuccess: UserjobisSuccess,
+    isError: UserjobisError,
+    error: Userjoberror,
+    refetch: Userjobrefetch,
+  } = useGetUserjobQuery(currentUser?.user);
+
+
+  let tablecontent = ""
+
+  if (UserjobisLoading) {
+    tablecontent = (
+      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <TableCell align="right">Loading...</TableCell>
+      </TableRow>
+    );
+  } else if (UserjobisSuccess) {
+    // console.log(shiftmasterDate)
+    console.log(UserjobData);
+    tablecontent = UserjobData.map((datas, index) => {
+      return (
+        <TableRow
+          key={datas?.job?.jobid}
+          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        >
+          <TableCell align="left">{datas?.job?.jobid}</TableCell>
+          <TableCell component="th" scope="row" align="center">
+
+            {datas?.job?.desciption}
+          </TableCell>
+          <TableCell align="center">{datas?.job.job_country?.name}</TableCell>
+          <TableCell align="center">{datas?.job.job_state?.state}</TableCell>
+          <TableCell align="center">{datas?.job?.rating}</TableCell>
+          <TableCell component="th" scope="row" align="center">
+
+            {datas?.job?.desciption}
+          </TableCell>
+          <TableCell component="th" scope="row" align="center">
+
+            {datas?.job?.desciption}
+          </TableCell>
+          <TableCell
+            align="center"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <Button
+              variant="outlined"
+            >
+              Assigned a Job
+            </Button>
+
+          </TableCell>
+        </TableRow>
+      );
+    });
+  } else if (UserjobisError) {
+    tablecontent = (
+      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <TableCell align="right">error</TableCell>
+      </TableRow>
+    );
+  }
+
 
   const { handleSubmit, control, formState } = useForm({
     mode: "onChange",
     defaultValues: {
       empcode: "",
       empname: "",
-      empdepartment:"",
-      designation:"",
-      startdate:"",
-      enddate:"",
-      
+      empdepartment: "",
+      designation: "",
+      startdate: "",
+      enddate: "",
     },
   });
 
@@ -77,7 +151,7 @@ const [startTime, setStartTime] = useState(null);
   };
 
 
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data) => { };
   return (
     <React.Fragment>
       <Box component={Paper}>
@@ -271,7 +345,7 @@ const [startTime, setStartTime] = useState(null);
                   variant: "standard",
                 }}
                 style={{
-                  color:"red"
+                  color: "red"
                 }}
               />
             </Grid>
@@ -287,7 +361,7 @@ const [startTime, setStartTime] = useState(null);
                 border: "3px solid lightblue",
                 width: 120,
                 height: 40,
-                float:"right"
+                float: "right"
               }}
             >
               {timerRunning ? "Stop Time" : "Start Time"}
@@ -308,26 +382,29 @@ const [startTime, setStartTime] = useState(null);
                   <TableCell align="right">Early Out</TableCell>
                 </TableRow>
               </TableHead>
-              {/* <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">
-                      {row.protein.map((item) => {
-                        return item;
-                      })}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody> */}
+              <TableBody>
+                {tablecontent}
+                {/* {
+                  rows.map((row) => (
+                    <TableRow
+                      key={row.name}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell align="right">{row.calories}</TableCell>
+                      <TableCell align="right">{row.fat}</TableCell>
+                      <TableCell align="right">{row.carbs}</TableCell>
+                      <TableCell align="right">
+                        {row.protein.map((item) => {
+                          return item;
+                        })}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                } */}
+              </TableBody>
             </Table>
           </Grid>
         </Box>

@@ -750,8 +750,20 @@ const Documents = () => {
   } = useFormContext();
 
   const handleFileChange = (e) => {
-    const file = setSelectedFile(e.target.files[0]);
-    setValue("upload_document", "file");
+    // console.log(e.target.files)
+    setSelectedFile((pre) => {
+      return e.target.files;
+    });
+    console.log("selectedFile", selectedFile)
+
+    // setValue("upload_document", e.target.files, {
+    //   shouldValidate: true,
+    //   shouldDirty: true
+    // });
+    setValue("upload_documents", e.target.files, {
+      shouldValidate: true,
+      shouldDirty: true
+    });
   };
   // console.log(errors);
 
@@ -833,6 +845,7 @@ const Documents = () => {
             rules={{ required: "Document is required." }}
             render={({ field }) => (
               <TextField
+                // {...field}
                 type="file"
                 InputLabelProps={{ shrink: true }}
                 inputProps={{ multiple: true }}
@@ -911,7 +924,7 @@ export default function HorizontalLinearStepper() {
       shift_allocation: "",
       role_assigned: "",
       upload_documents: [],
-      upload_document: "",
+      upload_document: [],
     },
   });
 
@@ -956,7 +969,21 @@ export default function HorizontalLinearStepper() {
       //     console.log(res);
 
       if (!isLoading) {
-        await saveuser(data).unwrap();
+
+        const formData = new FormData();
+        for (const property in data) {
+          if (property != "upload_document") {
+            formData.append(property, data[property]);
+          } else {
+            // console.log(data[property])
+            for (const propertys in data[property]) {
+              console.log("submit", data[property][propertys])
+              formData.append(property, data[property][propertys]);
+            }
+          }
+        }
+
+        await saveuser(formData).unwrap();
         setActiveStep((pre) => pre + 1);
         await usercodRefetch();
 
@@ -976,8 +1003,8 @@ export default function HorizontalLinearStepper() {
             usercodeDate?.code == "EM1" ? currentUser?.user : currentUser?.user,
           shift_allocation: "",
           role_assigned: "",
-          // upload_documents: [],
-          upload_document: "",
+          upload_documents: [],
+          upload_document: [],
         });
 
         setActiveStep((pre) => {
@@ -1022,7 +1049,7 @@ export default function HorizontalLinearStepper() {
   };
 
   React.useEffect(() => {
-    console.log(currentUser);
+    // console.log(currentUser);
     if (usercodeisSuccess) {
       // console.log(usercodeDate)
       methods.reset({
@@ -1042,7 +1069,7 @@ export default function HorizontalLinearStepper() {
         shift_allocation: "",
         role_assigned: "",
         upload_documents: [],
-        upload_document: "",
+        upload_document: [],
       });
       // console.log("currentUser")
       // console.log(methods.getValues())
