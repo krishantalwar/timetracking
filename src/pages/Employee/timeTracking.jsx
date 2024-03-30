@@ -28,12 +28,20 @@ import { selectCurrentUser } from "../../features/auth/authSelector";
 import { useSelector, useDispatch } from "react-redux";
 
 
-export default function TimeTracking() {
-  const [startTime, setStartTime] = useState(null);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [timerRunning, setTimerRunning] = useState(false);
-  const currentUser = useSelector(selectCurrentUser);
 
+export default function TimeTracking() {
+  const [startTime, setStartTime] = useState({});
+  const [elapsedTime, setElapsedTime] = useState({});
+  const [timerRunning, setTimerRunning] = useState({});
+  const [jobidstart, setjobid] = useState(null);
+
+  const [startTotalTime, setStartTotalTime] = useState(null);
+  const [elapsedTotalTimee, setElapsedTotalTime] = useState(0);
+  const [timerTotalTimeRunning, setTimerTotalTimeRunning] = useState(false);
+  const [totaltime, setTotalTime] = useState(null);
+
+
+  const currentUser = useSelector(selectCurrentUser);
 
   // console.log(currentUser?.user);
   const {
@@ -47,60 +55,72 @@ export default function TimeTracking() {
   } = useGetUserjobQuery(currentUser?.user);
 
 
+  const handleStartTime = (jobid) => {
+    // console.log("handleStartTime")
+    setjobid((pre) => jobid)
+    // let elapsedTimejobid = 0;
+    // if (jobid in elapsedTime) {
+    let elapsedTimejobid = elapsedTime[jobid];
+    // } else {
+    //   setElapsedTime(prev => {
+    //     return { ...prev, [jobid]: 0 }
+    //   })
+    //   elapsedTimejobid = 0;
+    // }
+
+    // console.log("elapsedTime", elapsedTime);
+    // console.log(elapsedTimejobid);
+
+    setStartTime((prev) => {
+      console.log(prev);
+      // if (jobid in prev) {
+      //   return { ...prev, [jobid]: Date.now() - elapsedTimejobid }
+      // } else {
+      // return { ...prev, [jobid]: Date.now() - 0 }
+      return { ...prev, [jobid]: Date.now() - elapsedTimejobid }
+      // }
+      // return [Date.now() - elapsedTime]
+    });
+
+
+    setTimerRunning((prev) => {
+      // if (jobid in prev) {
+      return { ...prev, [jobid]: !prev[jobid] }
+      // } else {
+      //   return { ...prev, [jobid]: true }
+      // }
+    });
+
+    setStartTotalTime((prev) => Date.now() - elapsedTotalTimee);
+    setTimerTotalTimeRunning((prev) => !prev);
+
+  };
+
+  const handleStopTime = (jobid) => {
+    if (startTime[jobid]) {
+      // setTimerRunning((prev) => !prev);
+      setTimerRunning((prev) => {
+        return { ...prev, [jobid]: !prev[jobid] }
+      });
+      setTimerTotalTimeRunning((prev) => !prev);
+      setjobid((pre) => null)
+    }
+  };
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
   let tablecontent = ""
 
-  if (UserjobisLoading) {
-    tablecontent = (
-      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-        <TableCell align="right">Loading...</TableCell>
-      </TableRow>
-    );
-  } else if (UserjobisSuccess) {
-    // console.log(shiftmasterDate)
-    console.log(UserjobData);
-    tablecontent = UserjobData.map((datas, index) => {
-      return (
-        <TableRow
-          key={datas?.job?.jobid}
-          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-        >
-          <TableCell align="left">{datas?.job?.jobid}</TableCell>
-          <TableCell component="th" scope="row" align="center">
 
-            {datas?.job?.desciption}
-          </TableCell>
-          <TableCell align="center">{datas?.job.job_country?.name}</TableCell>
-          <TableCell align="center">{datas?.job.job_state?.state}</TableCell>
-          <TableCell align="center">{datas?.job?.rating}</TableCell>
-          <TableCell component="th" scope="row" align="center">
-
-            {datas?.job?.desciption}
-          </TableCell>
-          <TableCell component="th" scope="row" align="center">
-
-            {datas?.job?.desciption}
-          </TableCell>
-          <TableCell
-            align="center"
-            style={{ display: "flex", justifyContent: "center" }}
-          >
-            <Button
-              variant="outlined"
-            >
-              Assigned a Job
-            </Button>
-
-          </TableCell>
-        </TableRow>
-      );
-    });
-  } else if (UserjobisError) {
-    tablecontent = (
-      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-        <TableCell align="right">error</TableCell>
-      </TableRow>
-    );
-  }
 
 
   const { handleSubmit, control, formState } = useForm({
@@ -116,40 +136,136 @@ export default function TimeTracking() {
   });
 
   useEffect(() => {
+    // console.log(sdasd)
+    // console.log(weqew)
+    // console.log(werwe)
     let interval;
-    if (timerRunning) {
+    let totalinterval;
+    if (timerRunning[jobidstart]) {
       interval = setInterval(() => {
-        setElapsedTime(Date.now() - startTime);
+        setElapsedTime((pre) => {
+          return { ...pre, [jobidstart]: Date.now() - startTime[jobidstart] }
+        });
       }, 1000);
+
+      totalinterval = setInterval(() => {
+        setElapsedTotalTime((pre) => Date.now() - startTotalTime);
+      }, 1000);
+
+      // console.log("startTime", startTime)
+      // console.log("elapsedTime", elapsedTime)
+
+
+      // return () => clearInterval(interval[jobidstart]);
     } else {
       clearInterval(interval);
-    }
+      clearInterval(totalinterval);
+      // return () => {
 
-    return () => clearInterval(interval);
+      // }
+    }
+    return () => {
+      clearInterval(interval);
+      clearInterval(totalinterval);
+    }
+    // return () => clearInterval(interval);
+
   }, [timerRunning, startTime]);
 
-  const handleStartTime = () => {
-    setStartTime(Date.now() - elapsedTime);
-    setTimerRunning(true);
-  };
 
-  const handleStopTime = () => {
-    if (startTime) {
-      setTimerRunning(false);
+  useEffect(() => {
+    // let joibid = UserjobData.map((datas, index) => {
+    //   return datas?.job?.jobid;
+    // });
+    // console.log(UserjobData.length)
+    if (UserjobisSuccess) {
+
+      let ElapsedTime = {};
+      let StartTime = {}
+      let TimerRunning = {}
+      for (let i = 0; i < UserjobData.length; i++) {
+
+        ElapsedTime[UserjobData[i]?.job?.jobid] = 0;
+        StartTime[UserjobData[i]?.job?.jobid] = Date.now() - 0
+        TimerRunning[UserjobData[i]?.job?.jobid] = false
+        // console.log(UserjobData[i]?.job?.jobid)
+      }
+      console.log("joibid  joibid", { ...ElapsedTime })
+      console.log("joibid  joibid", { ...StartTime })
+      console.log("joibid  joibid", { ...TimerRunning })
+
+
+      setElapsedTime(prev => {
+        return { ...prev, ...ElapsedTime }
+      });
+
+      setStartTime((prev) => {
+        return { ...prev, ...StartTime };
+      });
+
+      setTimerRunning((prev) => {
+        return { ...prev, ...TimerRunning }
+      });
     }
-  };
 
-  const formatTime = (milliseconds) => {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
+  }, [UserjobisSuccess])
 
-    return `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  };
+  // formatTime(timerRunning ? Date.now() - startTime : elapsedTime)
+  // console.log("Date", Date.now())
+  // console.log("Date startTime", startTime)
+  // console.log("Date elapsedTime", elapsedTime)
+  // console.log("Date timerRunning", timerRunning)
 
+  if (UserjobisLoading) {
+    tablecontent = (
+      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <TableCell align="right">Loading...</TableCell>
+      </TableRow>
+    );
+  } else if (UserjobisSuccess) {
+    // console.log(shiftmasterDate)
+    // console.log(UserjobData);
+
+
+    tablecontent = UserjobData.map((datas, index) => {
+      return (
+        <TableRow
+          key={datas?.job?.jobid}
+          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        >
+          <TableCell align="left">{datas?.job?.name}</TableCell>
+
+          <TableCell component="th" scope="row" align="center">
+            {
+              formatTime(timerRunning[datas?.job?.jobid] ? Date.now() - startTime[datas?.job?.jobid] : elapsedTime[datas?.job?.jobid])
+            }
+          </TableCell>
+
+          <TableCell
+            align="center"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <Button
+              disabled={(jobidstart == null) ? false : ((jobidstart == datas?.job?.jobid) ? false : true)}
+              variant="outlined"
+              onClick={timerRunning[datas?.job?.jobid] ? () => handleStopTime(datas?.job?.jobid) : () => handleStartTime(datas?.job?.jobid)}
+            // onClick={() => handleStartTime(datas?.job?.jobid)}
+            >
+              {timerRunning[datas?.job?.jobid] ? "Stop Time" : "Start Time"}
+
+            </Button>
+
+          </TableCell>
+        </TableRow>
+      );
+    });
+  } else if (UserjobisError) {
+    tablecontent = (
+      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <TableCell align="right">error</TableCell>
+      </TableRow>
+    );
+  }
 
   const onSubmit = async (data) => { };
   return (
@@ -164,181 +280,26 @@ export default function TimeTracking() {
           method="post"
           sx={{ mt: 1, ml: 2 }}
         >
+
+
           <Grid
             container
             rowSpacing={1}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             mt={0}
           >
-            <Grid item xs={6} mt={2}>
-              <Controller
-                name="empcode"
-                control={control}
-                rules={{ required: "Employee code is required" }}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    margin="none"
-                    disabled
-                    fullWidth
-                    label="Employee Code"
-                    type="text"
-                    formcontrolpops={{
-                      fullWidth: true,
-                      variant: "standard",
-                    }}
-                    error={Boolean(formState?.errors?.empcode)}
-                    helperText={formState?.errors?.empcode?.message}
-                  />
-                )}
-              />
-            </Grid>
 
-            <Grid item xs={6} mt={2}>
-              <Controller
-                name="empname"
-                control={control}
-                rules={{ required: "Employee name is required" }}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    disabled
-                    margin="none"
-                    fullWidth
-                    label="Employee Name"
-                    type="text"
-                    formcontrolpops={{
-                      fullWidth: true,
-                      variant: "standard",
-                    }}
-                    error={Boolean(formState?.errors?.empname)}
-                    helperText={formState?.errors?.empname?.message}
-                  />
-                )}
-              />
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            mt={0}
-          >
-            <Grid item xs={6} mt={2}>
-              <Controller
-                name="empdepartment"
-                control={control}
-                rules={{ required: "Department is required" }}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    margin="none"
-                    disabled
-                    fullWidth
-                    label="Employee Department"
-                    type="text"
-                    formcontrolpops={{
-                      fullWidth: true,
-                      variant: "standard",
-                    }}
-                    error={Boolean(formState?.errors?.empdepartment)}
-                    helperText={formState?.errors?.empdepartment?.message}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={6} mt={2}>
-              <Controller
-                name="designation"
-                control={control}
-                rules={{ required: "Designation is required" }}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    disabled
-                    margin="none"
-                    fullWidth
-                    label="Designation"
-                    type="text"
-                    formcontrolpops={{
-                      fullWidth: true,
-                      variant: "standard",
-                    }}
-                    error={Boolean(formState?.errors?.designation)}
-                    helperText={formState?.errors?.designation?.message}
-                  />
-                )}
-              />
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            mt={0}
-          >
-            <Grid item xs={4} mt={2}>
-              <Controller
-                name="startdate"
-                control={control}
-                rules={{ required: "Date is required" }}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    InputLabelProps={{ shrink: true }}
-                    margin="none"
-                    fullWidth
-                    label="Start Date"
-                    type="date"
-                    formcontrolpops={{
-                      fullWidth: true,
-                      variant: "standard",
-                    }}
-                    error={Boolean(formState?.errors?.startdate)}
-                    helperText={formState?.errors?.startdate?.message}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={4} mt={2}>
-              <Controller
-                name="enddate"
-                control={control}
-                rules={{ required: "Date is required" }}
-                defaultValue=""
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    InputLabelProps={{ shrink: true }}
-                    margin="none"
-                    fullWidth
-                    label="End Date"
-                    type="date"
-                    formcontrolpops={{
-                      fullWidth: true,
-                      variant: "standard",
-                    }}
-                    error={Boolean(formState?.errors?.date)}
-                    helperText={formState?.errors?.date?.message}
-                  />
-                )}
-              />
-            </Grid>
             {/* <Grid container rowSpacing={1} columnSpacing={{ xs: 10, sm: 2, md: 3 }}> */}
             <Grid item xs={4} mt={2}  >
               <TextField
                 margin="none"
-                disabled
+                // disabled
+                readOnly
                 fullWidth
                 label="Total Time"
-                value={formatTime(timerRunning ? Date.now() - startTime : elapsedTime)}
+                value={
+                  formatTime(timerTotalTimeRunning ? Date.now() - startTotalTime : elapsedTotalTimee)
+                }
                 type="text"
                 formcontrolpops={{
                   fullWidth: true,
@@ -349,37 +310,39 @@ export default function TimeTracking() {
                 }}
               />
             </Grid>
+
+            <Grid item xs={4} mt={2}>
+              <Button
+                type="button"
+                // onClick={timerRunning ? handleStopTime : handleStartTime}
+                onClick={() => handleStartTime(1)}
+                style={{
+                  backgroundColor: "lightblue",
+                  marginRight: 50,
+                  marginTop: 30,
+                  border: "3px solid lightblue",
+                  width: 120,
+                  height: 40,
+                  float: "right"
+                }}
+              >
+                {"Start Time"}
+                {/* {timerRunning ? "Stop Time" : "Start Time"} */}
+              </Button>
+            </Grid>
+
           </Grid>
-          <Grid>
-            <Button
-              type="button"
-              onClick={timerRunning ? handleStopTime : handleStartTime}
-              style={{
-                backgroundColor: "lightblue",
-                marginRight: 50,
-                marginTop: 30,
-                border: "3px solid lightblue",
-                width: 120,
-                height: 40,
-                float: "right"
-              }}
-            >
-              {timerRunning ? "Stop Time" : "Start Time"}
-            </Button>
-          </Grid>
+
+
+
           {/* </Grid> */}
           <Grid mt={10}>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Employee Name</TableCell>
                   <TableCell>Job Title</TableCell>
                   <TableCell align="right">Total Time</TableCell>
-                  <TableCell align="right">Time In</TableCell>
-                  <TableCell align="right">Time Out</TableCell>
-                  <TableCell align="right">Break Time</TableCell>
-                  <TableCell align="right">Late In</TableCell>
-                  <TableCell align="right">Early Out</TableCell>
+                  <TableCell align="right">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
