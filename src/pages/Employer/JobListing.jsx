@@ -155,13 +155,13 @@ export default function JobListing() {
       // if (!DeletePostjobisLoading) {
       const PostjobDetail = await getPostjobDetail(row).unwrap();
       const defaultValues = {
-        "job_code":PostjobDetail?.job_code,
+        "job_code": PostjobDetail?.job_code,
         "job_name": PostjobDetail?.name,
         "job_description": PostjobDetail?.desciption,
         "location": PostjobDetail?.country,
         "sub_location": PostjobDetail?.state,
         "rating": PostjobDetail?.rating,
-        "job_rate":PostjobDetail?.job_rate
+        "job_rate": PostjobDetail?.job_rate
       };
       // });
       reset({ ...defaultValues });
@@ -476,34 +476,6 @@ export default function JobListing() {
   //   refetch: coderefetch
   // } = useGetCodejobQuery("getCodejob");
 
-  const handleOpen = async () => {
-    try {
-      const {
-        data: codedata,
-        isLoading: getcodeisLoading,
-        isFetching: codeisFetching,
-        isSuccess: codeisSuccess,
-      } = await getCode();
-      // await coderefetch()
-      if (codeisSuccess) {
-        // console.log(codedata);
-        const defaultValues = {
-          job_code: codedata.code,
-          job_description: "",
-          job_name: "",
-          location: "",
-          sub_location: "",
-          rating: "",
-          job_rate:"",
-        };
-
-        reset(defaultValues);
-      }
-      setIsOpen((prev) => !prev);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleClose = () => {
     setIsOpen((prev) => !prev);
