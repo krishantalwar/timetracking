@@ -311,6 +311,7 @@ export default function JobListing() {
           <TableCell align="center">{datas?.job_country?.name}</TableCell>
           <TableCell align="center">{datas?.job_state?.name}</TableCell>
           <TableCell align="center">{datas?.rating}</TableCell>
+          <TableCell align="center">{datas?.job_rate}</TableCell>
           <TableCell
             align="center"
             style={{ display: "flex", justifyContent: "center" }}
