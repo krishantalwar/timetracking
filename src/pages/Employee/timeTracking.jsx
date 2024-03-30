@@ -107,6 +107,13 @@ export default function TimeTracking() {
     }
   };
 
+  const onSubmit = async (data) => {
+
+    console.log(formatTime(elapsedTotalTimee))
+    console.log(elapsedTime)
+
+
+  };
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const hours = Math.floor(totalSeconds / 3600);
@@ -126,12 +133,9 @@ export default function TimeTracking() {
   const { handleSubmit, control, formState } = useForm({
     mode: "onChange",
     defaultValues: {
-      empcode: "",
-      empname: "",
-      empdepartment: "",
-      designation: "",
-      startdate: "",
-      enddate: "",
+      totaltime: "",
+      // job: "",
+      // time: "",
     },
   });
 
@@ -267,7 +271,7 @@ export default function TimeTracking() {
     );
   }
 
-  const onSubmit = async (data) => { };
+
   return (
     <React.Fragment>
       <Box component={Paper}>
@@ -289,33 +293,45 @@ export default function TimeTracking() {
             mt={0}
           >
 
-            {/* <Grid container rowSpacing={1} columnSpacing={{ xs: 10, sm: 2, md: 3 }}> */}
-            <Grid item xs={4} mt={2}  >
-              <TextField
-                margin="none"
-                // disabled
-                readOnly
-                fullWidth
-                label="Total Time"
-                value={
+            <Grid item xs={6} mt={2}>
+              <Controller
+                name="totaltime"
+                control={control}
+                // rules={{
+                //   required: "totaltime is required",
+
+                // }}
+                defaultValue={
                   formatTime(timerTotalTimeRunning ? Date.now() - startTotalTime : elapsedTotalTimee)
                 }
-                type="text"
-                formcontrolpops={{
-                  fullWidth: true,
-                  variant: "standard",
-                }}
-                style={{
-                  color: "red"
-                }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    margin="none"
+                    fullWidth
+                    value={
+                      formatTime(timerTotalTimeRunning ? Date.now() - startTotalTime : elapsedTotalTimee)
+                    }
+                    // label="totaltime"
+                    formcontrolpops={{
+                      fullWidth: true,
+                      variant: "standard",
+                    }}
+                    error={Boolean(formState?.errors?.totaltime)}
+                    helperText={formState?.errors?.totaltime?.message}
+                  />
+                )}
               />
             </Grid>
 
+            {/* <Grid container rowSpacing={1} columnSpacing={{ xs: 10, sm: 2, md: 3 }}> */}
+
             <Grid item xs={4} mt={2}>
               <Button
-                type="button"
+                type="submit"
                 // onClick={timerRunning ? handleStopTime : handleStartTime}
-                onClick={() => handleStartTime(1)}
+                // onClick={() => handleStartTime(1)}
                 style={{
                   backgroundColor: "lightblue",
                   marginRight: 50,
@@ -326,7 +342,7 @@ export default function TimeTracking() {
                   float: "right"
                 }}
               >
-                {"Start Time"}
+                {"Save Time"}
                 {/* {timerRunning ? "Stop Time" : "Start Time"} */}
               </Button>
             </Grid>
