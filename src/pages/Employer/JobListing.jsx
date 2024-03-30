@@ -274,6 +274,11 @@ export default function JobListing() {
       "job_id": job[0]?.jobid,
       "user_id": "",
       "job_name": job[0]?.name,
+      "job_description":job[0]?.desciption,
+      "location":job[0]?.country,
+      "sub_location":job[0]?.state,
+      "job_rate":job[0]?.job_rate,
+      
     };
     // });
     assignedJobreset({ ...defaultValues });
@@ -298,6 +303,7 @@ export default function JobListing() {
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
           <TableCell align="left">{datas?.jobid}</TableCell>
+          <TableCell align="left">{datas?.name}</TableCell>
           <TableCell component="th" scope="row" align="center">
             {" "}
             {datas?.desciption}
@@ -305,6 +311,7 @@ export default function JobListing() {
           <TableCell align="center">{datas?.job_country?.name}</TableCell>
           <TableCell align="center">{datas?.job_state?.name}</TableCell>
           <TableCell align="center">{datas?.rating}</TableCell>
+          <TableCell align="center">{datas?.job_rate}</TableCell>
           <TableCell
             align="center"
             style={{ display: "flex", justifyContent: "center" }}
@@ -598,6 +605,7 @@ export default function JobListing() {
               <TableHead>
                 <TableRow>
                   <TableCell>Job ID</TableCell>
+                  <TableCell>Job Name</TableCell>
                   <TableCell align="center">Job Description</TableCell>
                   <TableCell align="center">Location</TableCell>
                   <TableCell align="center">Sub Location</TableCell>
@@ -784,6 +792,38 @@ export default function JobListing() {
                           }
                           error={Boolean(formState?.errors?.sub_location)}
                           helperText={formState?.errors?.sub_location?.message}
+                        >
+                          {stateoptions}
+                        </TextField>
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Controller
+                      name="job_rate"
+                      control={control}
+                      rules={{
+                        required: "Job Rate is required",
+                      }}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          margin="normal"
+                          fullWidth
+                          label="Job Rate"
+                          id="job_rate"
+                          formcontrolpops={{
+                            fullWidth: true,
+                            variant: "standard",
+                          }}
+                          SelectProps={
+                            {
+                              // native: true,
+                              // inputProps: {name: 'screen_allocation' }
+                            }
+                          }
+                          error={Boolean(formState?.errors?.job_rate)}
+                          helperText={formState?.errors?.job_rate?.message}
                         >
                           {stateoptions}
                         </TextField>
