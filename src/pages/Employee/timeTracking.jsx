@@ -341,8 +341,8 @@ export default function TimeTracking() {
               <TableHead>
                 <TableRow>
                   <TableCell>Job Title</TableCell>
-                  <TableCell align="right">Total Time</TableCell>
-                  <TableCell align="right">Action</TableCell>
+                  <TableCell align="center">Total Time</TableCell>
+                  <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
