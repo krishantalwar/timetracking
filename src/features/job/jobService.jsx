@@ -283,6 +283,77 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
             invalidatesTags: [{ type: "job", id: "jobLIST" }],
         }),
+        saveTime: builder.mutation({
+            query: (detail) => ({
+                // need to change the endpoint
+                url: "job/savetime",
+                method: "POST",
+                body: detail,
+            }),
+            transformResponse: (responseData) => {
+                console.log(responseData);
+                // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
+                // return authAdapter.setAll(initialState, responseData)
+                return responseData;
+            },
+
+            // onError: (error, _, api) => {
+            //     console.error('Login Error:', error);
+            // },
+            // onSettled: (result, error, variables) => {
+            //     console.log('Mutation Settled:', result, error, variables);
+            // },
+            async onQueryStarted(args, { queryFulfilled }) {
+                // console.log(args);
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log(data);
+                } catch (error) {
+                    console.log("error", error);
+                }
+            },
+        }),
+
+        getJobhistory: builder.query({
+            query: (detail) => ({
+                // need to change the endpoint
+                url: "job/jobhistory",
+                // method: "POST",
+                // body: detail,
+            }),
+            transformResponse: (responseData) => {
+                console.log(responseData);
+                // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
+                // return authAdapter.setAll(initialState, responseData)
+                return responseData;
+            },
+
+            // onError: (error, _, api) => {
+            //     console.error('Login Error:', error);
+            // },
+            // onSettled: (result, error, variables) => {
+            //     console.log('Mutation Settled:', result, error, variables);
+            // },
+            async onQueryStarted(args, { queryFulfilled }) {
+                // console.log(args);
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log(data);
+                } catch (error) {
+                    console.log("error", error);
+                }
+            },
+            providesTags: (result, error, arg) => {
+                console.log(result)
+                // if (result) {
+                return [...result.map(() => ({ type: "jobhistory", id: "jobhistoryLIST" }))];
+                // } else {
+                //     return [{ type: "job", id: "jobLIST" }]
+                // }
+            },
+            // invalidatesTags: [{ type: "job", id: "jobLIST" }],
+        }),
+
     }),
     overrideExisting: false,
 });
@@ -293,7 +364,9 @@ export const {
     useGetJobDetailMutation,
     useDeleteJobMutation,
     useAssignedtJobMutation,
+    useSaveTimeMutation,
 
+    useGetJobhistoryQuery,
     useLazyGetCodejobQuery,
     useGetJobQuery,
     useGetUserjobQuery,

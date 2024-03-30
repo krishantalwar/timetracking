@@ -23,6 +23,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 import {
   useGetUserjobQuery,
+  useSaveTimeMutation
 } from "../../features/job/jobService";
 import { selectCurrentUser } from "../../features/auth/authSelector";
 import { useSelector, useDispatch } from "react-redux";
@@ -107,12 +108,33 @@ export default function TimeTracking() {
     }
   };
 
+  const [
+    saveTime,
+    {
+      // currentData,
+      // isFetching,
+      isLoading,
+      // isSuccess, isError,
+      // error,
+      // status
+    },
+  ] = useSaveTimeMutation();
+
+
   const onSubmit = async (data) => {
 
     console.log(formatTime(elapsedTotalTimee))
     console.log(elapsedTime)
 
 
+    // const data = getValues()
+    await saveTime({
+      total_time: elapsedTotalTimee,
+      jobtime: elapsedTime,
+      user_id: currentUser.user
+    }).unwrap();
+    // reset();
+    // setShowConfirmationDialog(false);
   };
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
