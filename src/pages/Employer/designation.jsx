@@ -29,8 +29,32 @@ import { Delete, Edit } from "@mui/icons-material";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
+import { styled } from '@mui/material/styles';
+
+
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 export default function Designation() {
 
@@ -90,7 +114,7 @@ export default function Designation() {
     refetch: getDesignationRefetch
   } = useGetDesignationQuery("getDesignation");
 
-  
+
 
 
 
@@ -153,7 +177,7 @@ export default function Designation() {
 
       if (!DeleteDesignationisLoading) {
         const asd = await DeleteDesignation(row).unwrap();
-        
+
       }
     } catch (error) {
       console.error("delete error:", error);
@@ -174,38 +198,38 @@ export default function Designation() {
 
     content = designationmasterDate.map((datas, index) => {
       return (
-        <TableRow
+        <StyledTableRow
           key={datas.designationid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="center">{datas?.designation_code}</TableCell>
-          <TableCell component="th" scope="row"align="center" >
+          <StyledTableCell align="center">{datas?.designation_code}</StyledTableCell>
+          <StyledTableCell component="th" scope="row" align="center" >
             {datas?.name}
-          </TableCell>
+          </StyledTableCell>
 
-          <TableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
+          <StyledTableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
             <Edit style={{ marginRight: '8px' }} key={datas.designationid + index.toString()} onClick={() => handleDetail(datas?.designationid)} />
             <DeleteIcon key={datas.designationid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.designationid)} />
-          </TableCell>
+          </StyledTableCell>
 
-        </TableRow>
+        </StyledTableRow>
       );
     });
     content =
-    designationmasterDate.length > 0 ? (
-      content
-    ) : (
+      designationmasterDate.length > 0 ? (
+        content
+      ) : (
+        <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+          <TableCell align="left">Loading...</TableCell>
+        </TableRow>
+      );
+  } else if (designationmasterisError) {
+    content = (
       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-        <TableCell align="left">Loading...</TableCell>
+        <TableCell align="left">{designationmasterisError}</TableCell>
       </TableRow>
     );
-} else if (designationmasterisError) {
-  content = (
-    <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-      <TableCell align="left">{designationmasterisError}</TableCell>
-    </TableRow>
-  );
-}
+  }
 
 
   const onSubmit = async (data) => {
@@ -213,20 +237,20 @@ export default function Designation() {
       // setIsLoaDing(true); 
       setIsopen(true);
 
-        if(data?.designation_id){
-          if (!updateDesignationisLoading) {
-                    await updateDesignationDetails({
-                      "designation_code": data.designation_code,
-                      "name": data.designation_name,
-                      "designationid": data.designation_id,
-                    }).unwrap();
-                    setIsopen(false);
-                    handleClose();
-                    reset();
-                  }
+      if (data?.designation_id) {
+        if (!updateDesignationisLoading) {
+          await updateDesignationDetails({
+            "designation_code": data.designation_code,
+            "name": data.designation_name,
+            "designationid": data.designation_id,
+          }).unwrap();
+          setIsopen(false);
+          handleClose();
+          reset();
+        }
 
-        }else{
-          
+      } else {
+
         if (!isLoading) {
           await CreateDesignationMaster({
             designation_code: data.designation_code,
@@ -238,57 +262,57 @@ export default function Designation() {
           reset();
         }
         // setIsLoaDing(false); // Reset loading state
-        }
+      }
     } catch (error) {
       console.error("Login error:", error);
       // setIsLoaDing(false); // Reset loading state if there's an error
     }
   };
-  
+
 
 
   // const onSubmit = async (data) => {
   //   try {
-    // setIsLoaDing(true); // Set loading to true when API call starts
-  
-    // // Show backdrop
-    // setIsopen(true);
+  // setIsLoaDing(true); // Set loading to true when API call starts
 
-    // // Delay API call by 10 seconds
-    // setTimeout(async () =>{
-    //   if (data?.designation_id) {
+  // // Show backdrop
+  // setIsopen(true);
 
-        //       if (!updateDesignationisLoading) {
-        //         await updateDesignationDetails({
-        //           "designation_code": data.designation_code,
-        //           "name": data.designation_name,
-        //           "designationid": data.designation_id,
-        //         }).unwrap();
-        //         handleClose();
-        //         reset();
-        //       }
-        //     } else {
-      
-        //       if (!isLoading) {
-        //         await CreateDesignationMaster({
-        //           designation_code: data.designation_code,
-        //           name: data.designation_name,
-        //         }).unwrap();
-        //         handleClose();
-        //         getDesignationRefetch();
-        //         reset();
-        //       }
-        //     }
-        //   } 
+  // // Delay API call by 10 seconds
+  // setTimeout(async () =>{
+  //   if (data?.designation_id) {
 
-//     },10000); // 10 seconds delay
-//   } catch (error) {
-//     console.error("Login error:", error);
-//     setIsLoaDing(false); // Reset loading state if there's an error
-//   }
-// };
+  //       if (!updateDesignationisLoading) {
+  //         await updateDesignationDetails({
+  //           "designation_code": data.designation_code,
+  //           "name": data.designation_name,
+  //           "designationid": data.designation_id,
+  //         }).unwrap();
+  //         handleClose();
+  //         reset();
+  //       }
+  //     } else {
 
-  
+  //       if (!isLoading) {
+  //         await CreateDesignationMaster({
+  //           designation_code: data.designation_code,
+  //           name: data.designation_name,
+  //         }).unwrap();
+  //         handleClose();
+  //         getDesignationRefetch();
+  //         reset();
+  //       }
+  //     }
+  //   } 
+
+  //     },10000); // 10 seconds delay
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+  //     setIsLoaDing(false); // Reset loading state if there's an error
+  //   }
+  // };
+
+
 
   //     
 
@@ -326,13 +350,13 @@ export default function Designation() {
     designationServiceApis.endpoints.getCodesdesignation.useLazyQuery();
 
 
-    const handleopen = () => {
-      setIsopen(true);
-    };
-  
-    const handleclose = () => {
-      setIsopen(false);
-    };
+  const handleopen = () => {
+    setIsopen(true);
+  };
+
+  const handleclose = () => {
+    setIsopen(false);
+  };
 
   const handleOpen = async () => {
     // setIsOpen(true);
@@ -410,7 +434,7 @@ export default function Designation() {
                   variant="outlined"
                   startIcon={<Add />}
                   style={{
-                    margin:"0 0 10px"
+                    margin: "0 0 10px"
                   }}
                 >
                   Add New
@@ -419,21 +443,21 @@ export default function Designation() {
             </Grid>
             <Table sx={{ mt: 5 }}>
               <TableHead style={{
-                  border:"1px solid black",
-                
-                }} >
+                border: "1px solid black",
+
+              }} >
                 <TableRow  >
-                  <TableCell align="center"><b>Designation Code</b></TableCell>
-                  <TableCell align="center"><b>Designation Name</b></TableCell>
-                  <TableCell align="center"><b>Action</b></TableCell>
+                  <StyledTableCell align="center"><b>Designation Code</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Designation Name</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Action</b></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody style={{
-                  border:"1px solid black",
-                }}>{content}</TableBody>
+                border: "1px solid black",
+              }}>{content}</TableBody>
             </Table>
 
-            <BasicModal isOpen={isOpen} onClose={handleClose}  isopen={handleopen} onclose={handleclose} >
+            <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose} >
               <Grid
                 container
                 rowSpacing={1}
@@ -524,24 +548,24 @@ export default function Designation() {
                     />
                   </Grid>
                 </Grid>
-               <Grid>
-               <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Add
-                            </Button>
-                            <Backdrop
-                      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                      open={isopen}
-                      onClick={handleclose}
-                    >
-                      <CircularProgress color="inherit" />
-                    </Backdrop>
-               </Grid>
-               
+                <Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Add
+                  </Button>
+                  <Backdrop
+                    sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={isopen}
+                    onClick={handleclose}
+                  >
+                    <CircularProgress color="inherit" />
+                  </Backdrop>
+                </Grid>
+
               </Box>
             </BasicModal>
 
