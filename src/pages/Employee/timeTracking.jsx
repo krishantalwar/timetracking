@@ -357,14 +357,14 @@ export default function TimeTracking() {
                 style={{
                   backgroundColor: "lightblue",
                   marginRight: 50,
-                  marginTop: 30,
+                  marginTop: 5,
                   border: "3px solid lightblue",
                   width: 120,
                   height: 40,
                   float: "right"
                 }}
               >
-                {"Save Time"}
+                {"Submit"}
                 {/* {timerRunning ? "Stop Time" : "Start Time"} */}
               </Button>
             </Grid>

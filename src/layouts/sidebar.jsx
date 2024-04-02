@@ -104,7 +104,7 @@ export const mainListItems = (
             display: 'flex',
             alignItems: 'center', // Align items vertically center
             margin: "15px 7px 0px 15px" ,
-            borderRadius: "7px",
+            // borderRadius: "7px",
            color:"black",
            textDecoration: "none",
            
@@ -138,7 +138,7 @@ export const secondaryListItems = (
       //   isActive ? 'active' : 'ddd'
       // }
       to="/"
-      sx={{ margin: "5px 7px", borderRadius: "7px" }}
+      // sx={{ margin: "5px 7px", borderRadius: "7px" }}
     >
       <ListItemIcon sx={{ color: "#364152" }}>
         <AssignmentIcon />

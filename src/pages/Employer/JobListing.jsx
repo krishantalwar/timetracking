@@ -18,6 +18,7 @@ import TableCell from "@mui/material/TableCell";
 import { TextField } from "@mui/material";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
 import { Delete, Edit } from "@mui/icons-material";
+import CloseIcon from '@mui/icons-material/Close';
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
@@ -205,6 +206,7 @@ export default function JobListing() {
           location: "",
           sub_location: "",
           rating: "",
+          job_rate:"",
         };
 
         reset(defaultValues);
@@ -321,10 +323,10 @@ export default function JobListing() {
               onClick={() => handlAssignedJobOpen(datas?.jobid)}
 
             >
-              Assigned a Job
+              Assigned Job
             </Button>
             <Edit
-              style={{ marginRight: "8px" }}
+              style={{ marginRight: "5px", marginLeft:"20px"}}
               key={datas.jobid + index.toString()}
               onClick={() => handleDetail(datas?.jobid)}
             />
@@ -365,7 +367,6 @@ export default function JobListing() {
       // console.log(!isLoading);
 
       //shiftid  to change
-      setTimeout(async () => {
 
         if (data?.jobid) {
           if (!EditpostjobisLoading) {
@@ -385,7 +386,6 @@ export default function JobListing() {
           }
         }
 
-      }, 3000)
 
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
@@ -588,7 +588,7 @@ export default function JobListing() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item xs={10}>
-                <Typography>Post a Job</Typography>
+                <Typography><b>Post a Job</b></Typography>
               </Grid>
 
               <Grid item xs={2}>
@@ -596,6 +596,9 @@ export default function JobListing() {
                   onClick={handleOpen}
                   variant="outlined"
                   startIcon={<Add />}
+                  style={{
+                    margin:"0 0 10px"
+                  }}
                 >
                   Add New
                 </Button>
@@ -603,18 +606,22 @@ export default function JobListing() {
             </Grid>
             <Table sx={{ mt: 5 }}>
               <TableHead>
-                <TableRow>
-                  <TableCell>Job ID</TableCell>
-                  <TableCell>Job Name</TableCell>
-                  <TableCell align="center">Job Description</TableCell>
-                  <TableCell align="center">Location</TableCell>
-                  <TableCell align="center">Sub Location</TableCell>
-                  <TableCell align="center">Rating</TableCell>
-                  <TableCell align="center">Job Rate</TableCell>
-                  <TableCell align="center">Action</TableCell>
+                <TableRow style={{
+                  border:"1px solid black",
+                }}>
+                  <TableCell><b>Job ID</b></TableCell>
+                  <TableCell><b>Job Name</b></TableCell>
+                  <TableCell align="center"><b>Job Description</b></TableCell>
+                  <TableCell align="center"><b>Location</b></TableCell>
+                  <TableCell align="center"><b>Sub Location</b></TableCell>
+                  <TableCell align="center"><b>Rating</b></TableCell>
+                  <TableCell align="center"><b>Job Rate</b></TableCell>
+                  <TableCell align="center"><b>Action</b></TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>{content}</TableBody>
+              <TableBody style={{
+                  border:"1px solid black",
+                }}>{content}</TableBody>
             </Table>
 
             {/* add modal */}
@@ -632,7 +639,7 @@ export default function JobListing() {
                   <Button
                     onClick={handleClose}
                     variant="outlined"
-                    startIcon={<Add />}
+                    startIcon={<CloseIcon />}
                   >
                     Close
                   </Button>

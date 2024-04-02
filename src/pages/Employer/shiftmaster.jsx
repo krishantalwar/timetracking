@@ -169,10 +169,10 @@ export default function ShiftMaster() {
           key={datas.shiftid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="left">{datas?.shiftid}</TableCell>
-          <TableCell component="th" scope="row"> {datas?.name} </TableCell>
-          <TableCell align="left">{datas?.start_time}</TableCell>
-          <TableCell align="left">{datas?.end_time}</TableCell>
+          <TableCell align="center">{datas?.shiftid}</TableCell>
+          <TableCell align="center" component="th" scope="row"> {datas?.name} </TableCell>
+          <TableCell align="center">{datas?.start_time}</TableCell>
+          <TableCell align="center">{datas?.end_time}</TableCell>
 
           {/* <TableCell align="right">
             <Edit key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
@@ -384,7 +384,7 @@ export default function ShiftMaster() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item xs={10}>
-                <Typography>Shift Master</Typography>
+                <Typography><b>Shift Master</b></Typography>
               </Grid>
 
               <Grid item xs={2}>
@@ -392,22 +392,31 @@ export default function ShiftMaster() {
                   onClick={handleOpen}
                   variant="outlined"
                   startIcon={<Add />}
+                  style={{
+                    margin:"0 0 10px"
+                  }}
                 >
                   Add New
                 </Button>
               </Grid>
             </Grid>
             <Table sx={{ mt: 5 }}>
-              <TableHead>
+              <TableHead style={{
+                  border:"1px solid black",
+                
+                }} >
                 <TableRow>
-                  <TableCell>Shift Code</TableCell>
-                  <TableCell align="left">Shift Name</TableCell>
-                  <TableCell align="left">Start Time</TableCell>
-                  <TableCell align="left">End Time</TableCell>
-                  <TableCell align="center">Action</TableCell>
+                  <TableCell><b>Shift Code</b></TableCell>
+                  <TableCell align="center"><b>Shift Name</b></TableCell>
+                  <TableCell align="center"><b>Start Time</b></TableCell>
+                  <TableCell align="center"><b>End Time</b></TableCell>
+                  <TableCell align="center"><b>Action</b></TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>{content}</TableBody>
+              <TableBody style={{
+                  border:"1px solid black",
+                
+                }}>{content}</TableBody>
             </Table>
 
             <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose}>

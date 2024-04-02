@@ -90,6 +90,8 @@ export default function Designation() {
     refetch: getDesignationRefetch
   } = useGetDesignationQuery("getDesignation");
 
+  
+
 
 
   const [
@@ -176,8 +178,8 @@ export default function Designation() {
           key={datas.designationid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="left">{datas?.designation_code}</TableCell>
-          <TableCell component="th" scope="row">
+          <TableCell align="center">{datas?.designation_code}</TableCell>
+          <TableCell component="th" scope="row"align="center" >
             {datas?.name}
           </TableCell>
 
@@ -189,12 +191,21 @@ export default function Designation() {
         </TableRow>
       );
     });
-  } else if (designationmasterisError) {
-    content = <TableRow
-      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    >
-      <TableCell align="right">{designationmastererror}</TableCell></TableRow>;
-  }
+    content =
+    designationmasterDate.length > 0 ? (
+      content
+    ) : (
+      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <TableCell align="left">Loading...</TableCell>
+      </TableRow>
+    );
+} else if (designationmasterisError) {
+  content = (
+    <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+      <TableCell align="left">{designationmasterisError}</TableCell>
+    </TableRow>
+  );
+}
 
 
   const onSubmit = async (data) => {
@@ -390,7 +401,7 @@ export default function Designation() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item xs={10}>
-                <Typography>Designation</Typography>
+                <Typography><b>Designation</b></Typography>
               </Grid>
 
               <Grid item xs={2}>
@@ -398,20 +409,28 @@ export default function Designation() {
                   onClick={handleOpen}
                   variant="outlined"
                   startIcon={<Add />}
+                  style={{
+                    margin:"0 0 10px"
+                  }}
                 >
                   Add New
                 </Button>
               </Grid>
             </Grid>
             <Table sx={{ mt: 5 }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell><b>Designation Code</b></TableCell>
-                  <TableCell align="left"><b>Designation Name</b></TableCell>
+              <TableHead style={{
+                  border:"1px solid black",
+                
+                }} >
+                <TableRow  >
+                  <TableCell align="center"><b>Designation Code</b></TableCell>
+                  <TableCell align="center"><b>Designation Name</b></TableCell>
                   <TableCell align="center"><b>Action</b></TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>{content}</TableBody>
+              <TableBody style={{
+                  border:"1px solid black",
+                }}>{content}</TableBody>
             </Table>
 
             <BasicModal isOpen={isOpen} onClose={handleClose}  isopen={handleopen} onclose={handleclose} >

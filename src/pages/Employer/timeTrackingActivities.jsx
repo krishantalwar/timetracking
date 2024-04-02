@@ -65,7 +65,7 @@ export default function TimetracTingActivities() {
                     key={datas?.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                    <TableCell align="left">{datas?.job?.name}</TableCell>
+                    <TableCell align="center">{datas?.job?.name}</TableCell>
 
                     <TableCell component="th" scope="row" align="center">
                         {
@@ -74,7 +74,7 @@ export default function TimetracTingActivities() {
                     </TableCell>
                     <TableCell component="th" scope="row" align="center">
                         {
-                            datas?.total_hrs
+                            datas?.time_in
                         }
                     </TableCell>
 
@@ -97,7 +97,7 @@ export default function TimetracTingActivities() {
     return (
 
         <React.Fragment>
-            <Typography mt={2}>  Time Tracking Acitivities </Typography>
+            <Typography mt={2}> <b>Time Tracking Acitivities</b>  </Typography>
             <Box component={Paper}>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} method="post" sx={{ mt: 1, ml: 2 }}>
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
@@ -264,19 +264,23 @@ export default function TimetracTingActivities() {
                             />
                         </Grid>
                     </Grid>
-                    <Button type="submit" style={{ marginLeft: 5, marginTop: 10 }} > Submit </Button>
+                    <Button type="submit" variant='outlined' style={{ marginLeft: 5, marginTop: 20 }} > Submit </Button>
                 </Box>
 
                 <Grid mt={10}>
                     <Table>
                         <TableHead>
-                            <TableRow>
-                                <TableCell>Job Title</TableCell>
-                                <TableCell align="right">User Name</TableCell>
-                                <TableCell align="right">Total Hrs</TableCell>
+                            <TableRow style={{
+                  border:"1px solid black",
+                }}>
+                                <TableCell align="center"> <b>Job Title</b></TableCell>
+                                <TableCell align="center"><b>Employess Name</b></TableCell>
+                                <TableCell align="center"><b>Total Hrs</b></TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody>
+                        <TableBody style={{
+                  border:"1px solid black",
+                }}>
                             {tablecontent}
                         </TableBody>
                     </Table>

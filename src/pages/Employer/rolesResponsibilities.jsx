@@ -190,8 +190,8 @@ export default function RolesandResponsibilities() {
     return (
 
         <React.Fragment>
-            <Box component={Paper}>
-                <Typography mt={2} ml={2}>  Roles & Responsibilities</Typography>
+            <Box component={Paper} padding={'20px'}>
+                <Typography  ml={2}> <b>Roles & Responsibilities</b> </Typography>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} method="post" sx={{ mt: 1, ml: 2 }}>
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
                         <Grid item xs={6} >
@@ -265,17 +265,23 @@ export default function RolesandResponsibilities() {
                         </Grid>
 
                     </Grid>
-                    <Button type="submit" style={{ marginLeft: 5, marginTop: 20 }} > Submit </Button>
+                    <Button type="submit"  variant='outlined' style={{ marginLeft: 5, marginTop: 20, marginBottom:'15px'}} > Submit </Button>
                 </Box>
                 <Table sx={{ mt: 5 }}>
-                    <TableHead>
+                    <TableHead style={{
+                  border:"1px solid black",
+                 
+                }}>
                         <TableRow>
-                            <TableCell align='center'>Role Code</TableCell>
-                            <TableCell align="left">Role Name</TableCell>
-                            <TableCell align="center">Action</TableCell>
+                            <TableCell align='center'><b>Role Code</b></TableCell>
+                            <TableCell align="center"><b>Role Name</b></TableCell>
+                            <TableCell align="center"><b>Action</b></TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>{rolelisting}</TableBody>
+                    <TableBody style={{
+                  border:"1px solid black",
+                 
+                }} >{rolelisting}</TableBody>
                 </Table>
 
 
