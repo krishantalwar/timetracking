@@ -14,7 +14,7 @@ import { Add } from "@mui/icons-material";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { TextField } from "@mui/material";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
 import { Delete, Edit } from "@mui/icons-material";
@@ -38,6 +38,28 @@ import {
 } from "../../features/user/userService";
 import MenuItem from "@mui/material/MenuItem";
 import { useGetCountryQuery } from "../../features/country/countryService";
+import { styled } from '@mui/material/styles';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#318CE7",
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 export default function JobListing() {
   const [isopen, setIsopen] = React.useState(false);
@@ -300,21 +322,21 @@ export default function JobListing() {
     // console.log(shiftmasterDate)
     content = postjobData.map((datas, index) => {
       return (
-        <TableRow
+        <StyledTableRow
           key={datas.jobid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="left">{datas?.jobid}</TableCell>
-          <TableCell align="left">{datas?.name}</TableCell>
-          <TableCell component="th" scope="row" align="center">
+          <StyledTableCell align="left">{datas?.jobid}</StyledTableCell>
+          <StyledTableCell align="left">{datas?.name}</StyledTableCell>
+          <StyledTableCell component="th" scope="row" align="center">
             {" "}
             {datas?.desciption}
-          </TableCell>
-          <TableCell align="center">{datas?.job_country?.name}</TableCell>
-          <TableCell align="center">{datas?.job_state?.name}</TableCell>
-          <TableCell align="center">{datas?.rating}</TableCell>
-          <TableCell align="center">{datas?.job_rate}</TableCell>
-          <TableCell
+          </StyledTableCell>
+          <StyledTableCell align="center">{datas?.job_country?.name}</StyledTableCell>
+          <StyledTableCell align="center">{datas?.job_state?.name}</StyledTableCell>
+          <StyledTableCell align="center">{datas?.rating}</StyledTableCell>
+          <StyledTableCell align="center">{datas?.job_rate}</StyledTableCell>
+          <StyledTableCell
             align="center"
             style={{ display: "flex", justifyContent: "center" }}
           >
@@ -335,8 +357,8 @@ export default function JobListing() {
               key={datas.jobid + index.toString() + index.toString()}
               onDelete={() => handleDelete(datas?.jobid)}
             />
-          </TableCell>
-        </TableRow>
+          </StyledTableCell>
+        </StyledTableRow>
       );
     });
   } else if (postjobisError) {
@@ -588,7 +610,9 @@ export default function JobListing() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item xs={10}>
-                <Typography><b>Post a Job</b></Typography>
+                <Typography style={{
+                  color: "#318CE7",
+                }}><b>Post a Job</b></Typography>
               </Grid>
 
               <Grid item xs={2}>
@@ -609,14 +633,14 @@ export default function JobListing() {
                 <TableRow style={{
                   border:"1px solid black",
                 }}>
-                  <TableCell><b>Job ID</b></TableCell>
-                  <TableCell><b>Job Name</b></TableCell>
-                  <TableCell align="center"><b>Job Description</b></TableCell>
-                  <TableCell align="center"><b>Location</b></TableCell>
-                  <TableCell align="center"><b>Sub Location</b></TableCell>
-                  <TableCell align="center"><b>Rating</b></TableCell>
-                  <TableCell align="center"><b>Job Rate</b></TableCell>
-                  <TableCell align="center"><b>Action</b></TableCell>
+                  <StyledTableCell><b>Job ID</b></StyledTableCell>
+                  <StyledTableCell><b>Job Name</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Job Description</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Location</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Sub Location</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Rating</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Job Rate</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Action</b></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody style={{
@@ -632,10 +656,12 @@ export default function JobListing() {
                 columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               >
                 <Grid item xs={10}>
-                  <Typography>Add a Job</Typography>
+                  <Typography style={{
+                  color: "#318CE7",
+                }}> <b>Add a Job</b></Typography>
                 </Grid>
 
-                <Grid item xs={2}>
+                {/* <Grid item xs={2}>
                   <Button
                     onClick={handleClose}
                     variant="outlined"
@@ -643,7 +669,7 @@ export default function JobListing() {
                   >
                     Close
                   </Button>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Box
                 component="form"
@@ -892,12 +918,21 @@ export default function JobListing() {
                 </Grid>
 
 
-                <Grid>
+                <Grid item xs={12} style={{ textAlign: 'right' }}>
+                
                   <Button
-                    type="submit"
-                    fullWidth
+                    onClick={handleClose}
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
+                  >
+                    Cancel
+                  </Button>
+                
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 , ml:2, width: '90px', minWidth: '10px' }}
+                   
                   >
                     Add
                   </Button>

@@ -19,11 +19,32 @@ import Table from "../../components/ui/table/table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import { styled } from '@mui/material/styles';
+
 
 import {
     useGetJobhistoryQuery,
 } from "../../features/job/jobService";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: "#318CE7",
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
 
 export default function TimetracTingActivities() {
 
@@ -61,24 +82,24 @@ export default function TimetracTingActivities() {
 
         tablecontent = userdata.map((datas, index) => {
             return (
-                <TableRow
+                <StyledTableRow
                     key={datas?.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                    <TableCell align="center">{datas?.job?.name}</TableCell>
+                    <StyledTableCell align="center">{datas?.job?.name}</StyledTableCell>
 
-                    <TableCell component="th" scope="row" align="center">
+                    <StyledTableCell component="th" scope="row" align="center">
                         {
                             datas?.user?.first_name
                         }
-                    </TableCell>
-                    <TableCell component="th" scope="row" align="center">
+                    </StyledTableCell>
+                    <StyledTableCell component="th" scope="row" align="center">
                         {
                             datas?.time_in
                         }
-                    </TableCell>
+                    </StyledTableCell>
 
-                </TableRow>
+                </StyledTableRow>
             );
         });
     } else if (getusererror) {
@@ -97,8 +118,11 @@ export default function TimetracTingActivities() {
     return (
 
         <React.Fragment>
-            <Typography mt={2}> <b>Time Tracking Acitivities</b>  </Typography>
-            <Box component={Paper}>
+            
+            <Box component={Paper} padding={'20px'}>
+            <Typography ml={2} style={{
+                  color: "#318CE7",
+                }}> <b>Time Tracking Acitivities</b>  </Typography>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} method="post" sx={{ mt: 1, ml: 2 }}>
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
                         <Grid item xs={6} >
@@ -273,9 +297,9 @@ export default function TimetracTingActivities() {
                             <TableRow style={{
                   border:"1px solid black",
                 }}>
-                                <TableCell align="center"> <b>Job Title</b></TableCell>
-                                <TableCell align="center"><b>Employess Name</b></TableCell>
-                                <TableCell align="center"><b>Total Hrs</b></TableCell>
+                                <StyledTableCell align="center"> <b>Job Title</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Employess Name</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Total Hrs</b></StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody style={{

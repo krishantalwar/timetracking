@@ -1089,7 +1089,9 @@ export default function HorizontalLinearStepper() {
             //   alignItems: 'center',
           }}
         >
-          <Box>Add Employee</Box>
+          <Box style={{
+                  color: "#318CE7",
+                }}> <b>Add Employee</b></Box>
           <Typography
             sx={{
               my: 2,

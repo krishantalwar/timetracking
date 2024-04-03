@@ -27,8 +27,30 @@ import { Delete, Edit } from "@mui/icons-material";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
+import { styled } from '@mui/material/styles';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#318CE7",
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 export default function Designation() {
   const [isopen, setIsopen] = React.useState(false);
@@ -158,20 +180,20 @@ export default function Designation() {
 
     content = DepartmentmasterDate.map((datas, index) => {
       return (
-        <TableRow
+        <StyledTableRow
           key={datas.departmentid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="center">{datas?.department_code}</TableCell>
-          <TableCell component="th" scope="row"align="center">
+          <StyledTableCell align="center">{datas?.department_code}</StyledTableCell>
+          <StyledTableCell component="th" scope="row"align="center">
             {datas?.name}
-          </TableCell>
+          </StyledTableCell>
 
-          <TableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
+          <StyledTableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
   <Edit  style={{ marginRight: '8px' }} key={datas.departmentid + index.toString()} onClick={() => handleDetail(datas?.departmentid)} />
   <DeleteIcon   key={datas.departmentid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.departmentid)} />
-</TableCell>
-        </TableRow>
+</StyledTableCell>
+        </StyledTableRow>
       );
     });
 
@@ -304,7 +326,9 @@ export default function Designation() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item xs={10}>
-                <Typography><b>Department</b></Typography>
+                <Typography style={{
+                  color: "#318CE7",
+                }}><b>Department</b></Typography>
               </Grid>
 
               <Grid item xs={2}>
@@ -327,9 +351,9 @@ export default function Designation() {
                 }}
               >
                 <TableRow>
-                  <TableCell  align="center"><b>Department Code</b></TableCell>
-                  <TableCell align="center"><b>Department Name</b></TableCell>
-                  <TableCell align="center"><b>Action</b></TableCell>
+                  <StyledTableCell  align="center"><b>Department Code</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Department Name</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Action</b></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody
@@ -346,10 +370,12 @@ export default function Designation() {
                 columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               >
                 <Grid item xs={10}>
-                  <Typography>Add Department</Typography>
+                  <Typography style={{
+                  color: "#318CE7",
+                }}><b>Add Department</b></Typography>
                 </Grid>
 
-                <Grid item xs={2}>
+                {/* <Grid item xs={2}>
                   <Button
                     onClick={handleClose}
                     variant="outlined"
@@ -357,7 +383,7 @@ export default function Designation() {
                   >
                     Close
                   </Button>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Box
                 component="form"
@@ -431,14 +457,23 @@ export default function Designation() {
                   </Grid>
                 </Grid>
 
-<Grid>
-<Button
-                  type="submit"
-                  fullWidth
+                <Grid item xs={12} style={{ textAlign: 'right' }}>
+                
+                <Button
+                  onClick={handleClose}
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  ADD
+                  Cancel
+                </Button>
+              
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 , ml:2, width: '90px', minWidth: '10px' }}
+                 
+                >
+                  Add
                 </Button>
                 
                             <Backdrop

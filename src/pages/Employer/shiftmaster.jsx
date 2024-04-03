@@ -34,11 +34,32 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 import { TextField } from "@mui/material";
 
 import DeleteIcon from "../../components/ui/Delete/deletePopUp";
+import { styled } from '@mui/material/styles';
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#318CE7",
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 export default function ShiftMaster() {
   const [isopen, setIsopen] = React.useState(false);
@@ -165,14 +186,14 @@ export default function ShiftMaster() {
     // console.log(shiftmasterDate)
     content = shiftmasterDate.map((datas, index) => {
       return (
-        <TableRow
+        <StyledTableRow
           key={datas.shiftid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="center">{datas?.shiftid}</TableCell>
-          <TableCell align="center" component="th" scope="row"> {datas?.name} </TableCell>
-          <TableCell align="center">{datas?.start_time}</TableCell>
-          <TableCell align="center">{datas?.end_time}</TableCell>
+          <StyledTableCell align="center">{datas?.shiftid}</StyledTableCell>
+          <StyledTableCell align="center" component="th" scope="row"> {datas?.name} </StyledTableCell>
+          <StyledTableCell align="center">{datas?.start_time}</StyledTableCell>
+          <StyledTableCell align="center">{datas?.end_time}</StyledTableCell>
 
           {/* <TableCell align="right">
             <Edit key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
@@ -182,18 +203,18 @@ export default function ShiftMaster() {
             />
           </TableCell> */}
 
-          <TableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
+          <StyledTableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
             <Edit style={{ marginRight: '8px' }} key={datas.shiftid + index.toString()} onClick={() => handleDetail(datas?.shiftid)} />
             <DeleteIcon key={datas.shiftid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.shiftid)} />
-          </TableCell>
-        </TableRow>
+          </StyledTableCell>
+        </StyledTableRow>
       );
     });
   } else if (shiftmasterisError) {
     content = (
-      <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-        <TableCell align="right">{shiftmastererror}</TableCell>
-      </TableRow>
+      <StyledTableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+        <StyledTableCell align="right">{shiftmastererror}</StyledTableCell>
+      </StyledTableRow>
     );
   }
   // console.log(content)
@@ -384,7 +405,9 @@ export default function ShiftMaster() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item xs={10}>
-                <Typography><b>Shift Master</b></Typography>
+                <Typography style={{
+                  color: "#318CE7",
+                }}><b>Shift Master</b></Typography>
               </Grid>
 
               <Grid item xs={2}>
@@ -406,11 +429,11 @@ export default function ShiftMaster() {
                 
                 }} >
                 <TableRow>
-                  <TableCell><b>Shift Code</b></TableCell>
-                  <TableCell align="center"><b>Shift Name</b></TableCell>
-                  <TableCell align="center"><b>Start Time</b></TableCell>
-                  <TableCell align="center"><b>End Time</b></TableCell>
-                  <TableCell align="center"><b>Action</b></TableCell>
+                  <StyledTableCell><b>Shift Code</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Shift Name</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Start Time</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>End Time</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Action</b></StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody style={{
@@ -426,10 +449,12 @@ export default function ShiftMaster() {
                 columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               >
                 <Grid item xs={10}>
-                  <Typography>Add Shift</Typography>
+                  <Typography style={{
+                  color: "#318CE7",
+                }}><b>Add Shift</b></Typography>
                 </Grid>
 
-                <Grid item xs={2}>
+                {/* <Grid item xs={2}>
                   <Button
                     onClick={handleClose}
                     variant="outlined"
@@ -437,7 +462,7 @@ export default function ShiftMaster() {
                   >
                     Close
                   </Button>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Box
                 component="form"
@@ -680,15 +705,24 @@ export default function ShiftMaster() {
                     />
                   </Grid>
                 </Grid>
-                <Grid>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                  >
-                    Add
-                  </Button>
+                <Grid item xs={12} style={{ textAlign: 'right' }}>
+                
+                <Button
+                  onClick={handleClose}
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Cancel
+                </Button>
+              
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 , ml:2, width: '90px', minWidth: '10px' }}
+                 
+                >
+                  Add
+                </Button>
                   <Backdrop
                     sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={isopen}

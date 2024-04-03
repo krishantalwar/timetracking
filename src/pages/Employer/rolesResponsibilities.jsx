@@ -12,12 +12,13 @@ import Table from "../../components/ui/table/table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import BasicModal from "../../components/ui/modal/modal";
 import { Add } from "@mui/icons-material";
+import CloseIcon from '@mui/icons-material/Close';
 import {
     useGetRoleQuery,
 } from "../../features/roles/roles";
@@ -29,6 +30,28 @@ import {
 import {
     useSavePermissionsMutation,
 } from "../../features/permission/permissions";
+import { styled } from '@mui/material/styles';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: "#318CE7",
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+  
+  
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
 
 
 export default function RolesandResponsibilities() {
@@ -107,21 +130,21 @@ export default function RolesandResponsibilities() {
         });
         rolelisting = roleDate.map((datas, index) => {
             return (
-                <TableRow
+                <StyledTableRow
                     key={datas.roleid}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                    <TableCell align="center">{datas?.role_code}</TableCell>
-                    <TableCell component="th" scope="row">
+                    <StyledTableCell align="center">{datas?.role_code}</StyledTableCell>
+                    <StyledTableCell align="center" component="th" scope="row">
                         {datas?.name}
-                    </TableCell>
+                    </StyledTableCell>
 
-                    <TableCell align="center">
+                    <StyledTableCell align="center">
                         {/* shiftid need to change */}
                         <VisibilityIcon key={datas.roleid + index.toString()} onClick={() => handleDetail(datas?.roleid)} />
 
-                    </TableCell>
-                </TableRow>
+                    </StyledTableCell>
+                </StyledTableRow>
             );
         });
 
@@ -191,7 +214,9 @@ export default function RolesandResponsibilities() {
 
         <React.Fragment>
             <Box component={Paper} padding={'20px'}>
-                <Typography  ml={2}> <b>Roles & Responsibilities</b> </Typography>
+                <Typography  ml={2} style={{
+                  color: "#318CE7",
+                }}> <b>Roles & Responsibilities</b> </Typography>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} method="post" sx={{ mt: 1, ml: 2 }}>
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
                         <Grid item xs={6} >
@@ -273,9 +298,9 @@ export default function RolesandResponsibilities() {
                  
                 }}>
                         <TableRow>
-                            <TableCell align='center'><b>Role Code</b></TableCell>
-                            <TableCell align="center"><b>Role Name</b></TableCell>
-                            <TableCell align="center"><b>Action</b></TableCell>
+                            <StyledTableCell align='center'><b>Role Code</b></StyledTableCell>
+                            <StyledTableCell align="center"><b>Role Name</b></StyledTableCell>
+                            <StyledTableCell align="center"><b>Action</b></StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody style={{
@@ -298,8 +323,8 @@ export default function RolesandResponsibilities() {
                         <Grid item xs={2}>
                             <Button
                                 onClick={handleClose}
-                                variant="outlined"
-                                startIcon={<Add />}
+                                variant="contained"
+                                startIcon={<CloseIcon />}
                             >
                                 Close
                             </Button>

@@ -37,7 +37,7 @@ import { styled } from '@mui/material/styles';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#318CE7",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -425,7 +425,9 @@ export default function Designation() {
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
               <Grid item xs={10}>
-                <Typography><b>Designation</b></Typography>
+                <Typography style={{
+                  color: "#318CE7",
+                }}><b>Designation</b></Typography>
               </Grid>
 
               <Grid item xs={2}>
@@ -464,10 +466,12 @@ export default function Designation() {
                 columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               >
                 <Grid item xs={10}>
-                  <Typography>Add Designation</Typography>
+                  <Typography style={{
+                  color: "#318CE7",
+                }} > <b>Add Designation</b></Typography>
                 </Grid>
 
-                <Grid item xs={2}>
+                {/* <Grid item xs={2}>
                   <Button
                     onClick={handleClose}
                     variant="outlined"
@@ -475,7 +479,7 @@ export default function Designation() {
                   >
                     Close
                   </Button>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Box
                 component="form"
@@ -548,12 +552,22 @@ export default function Designation() {
                     />
                   </Grid>
                 </Grid>
-                <Grid>
+               
+                <Grid item xs={12} style={{ textAlign: 'right' }}>
+                
                   <Button
-                    type="submit"
-                    fullWidth
+                    onClick={handleClose}
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
+                  >
+                    Cancel
+                  </Button>
+                
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 , ml:2, width: '90px', minWidth: '10px' }}
+                   
                   >
                     Add
                   </Button>

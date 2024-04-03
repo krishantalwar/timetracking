@@ -25,10 +25,9 @@ const NavLinks = React.forwardRef((props, ref) => {
     <NavLink
       ref={ref}
       {...props}
-      className={({ isActive }) =>
-        isActive ? elementClasses + " activeLink" : elementClasses
-      }
-    // className='MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-a16wff-MuiButtonBase-root-MuiListItemButton-root'
+      // className={({ isActive }) =>
+      //   isActive ? elementClasses + " activeLink" : elementClasses
+      // }
     />
   );
 });
@@ -103,8 +102,6 @@ export const mainListItems = (
           style={{
             display: 'flex',
             alignItems: 'center', // Align items vertically center
-            margin: "15px 7px 0px 15px" ,
-            // borderRadius: "7px",
            color:"black",
            textDecoration: "none",
            
@@ -113,7 +110,7 @@ export const mainListItems = (
             component={NavLinks}
             to={item.path}
           >
-            <ListItemIcon sx={{ color: "#364152", minWidth: "40px", margin:" 10px"}}>
+            <ListItemIcon sx={{  minWidth: "40px", margin:" 10px"}}>
               {IconComponent}
             </ListItemIcon>
             <ListItemText
@@ -134,11 +131,11 @@ export const secondaryListItems = (
     </ListSubheader>
     <ListItemButton
       component={NavLinks}
-      // activeclassname={({ isActive }) =>
-      //   isActive ? 'active' : 'ddd'
-      // }
+      activeclassname={({ isActive }) =>
+        isActive ? 'active' : 'ddd'
+      }
       to="/"
-      // sx={{ margin: "5px 7px", borderRadius: "7px" }}
+      sx={{ margin: "5px 7px", borderRadius: "7px" }}
     >
       <ListItemIcon sx={{ color: "#364152" }}>
         <AssignmentIcon />

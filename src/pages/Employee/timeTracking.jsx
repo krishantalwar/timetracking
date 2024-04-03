@@ -15,7 +15,7 @@ import Table from "../../components/ui/table/table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -27,6 +27,27 @@ import {
 } from "../../features/job/jobService";
 import { selectCurrentUser } from "../../features/auth/authSelector";
 import { useSelector, useDispatch } from "react-redux";
+import { styled } from '@mui/material/styles';
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#318CE7",
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 
 
@@ -255,25 +276,29 @@ export default function TimeTracking() {
 
     tablecontent = UserjobData.map((datas, index) => {
       return (
-        <TableRow
+        <StyledTableRow
           key={datas?.job?.jobid}
           sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         >
-          <TableCell align="left">{datas?.job?.name}</TableCell>
+          <StyledTableCell align="left">{datas?.job?.name}</StyledTableCell>
 
-          <TableCell component="th" scope="row" align="center">
+          <StyledTableCell component="th" scope="row" align="center">
             {
               formatTime(timerRunning[datas?.job?.jobid] ? Date.now() - startTime[datas?.job?.jobid] : elapsedTime[datas?.job?.jobid])
             }
-          </TableCell>
+          </StyledTableCell>
 
-          <TableCell
+          <StyledTableCell
             align="center"
             style={{ display: "flex", justifyContent: "center" }}
           >
             <Button
               disabled={(jobidstart == null) ? false : ((jobidstart == datas?.job?.jobid) ? false : true)}
               variant="outlined"
+              style={{
+                backgroundColor:'#318CE7',
+                color:"white"
+              }}
               onClick={timerRunning[datas?.job?.jobid] ? () => handleStopTime(datas?.job?.jobid) : () => handleStartTime(datas?.job?.jobid)}
             // onClick={() => handleStartTime(datas?.job?.jobid)}
             >
@@ -281,14 +306,14 @@ export default function TimeTracking() {
 
             </Button>
 
-          </TableCell>
-        </TableRow>
+          </StyledTableCell>
+        </StyledTableRow>
       );
     });
   } else if (UserjobisError) {
     tablecontent = (
       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-        <TableCell align="right">error</TableCell>
+        <StyledTableCell align="right">error</StyledTableCell>
       </TableRow>
     );
   }
@@ -352,13 +377,13 @@ export default function TimeTracking() {
             <Grid item xs={4} mt={2}>
               <Button
                 type="submit"
-                // onClick={timerRunning ? handleStopTime : handleStartTime}
-                // onClick={() => handleStartTime(1)}
+                // variant="contained"
                 style={{
-                  backgroundColor: "lightblue",
-                  marginRight: 50,
+                  backgroundColor: "#318CE7",
+                  color:"white",
+                  marginRight: 15,
                   marginTop: 5,
-                  border: "3px solid lightblue",
+                  // border: "3px solid lightblue",
                   width: 120,
                   height: 40,
                   float: "right"
@@ -378,9 +403,9 @@ export default function TimeTracking() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Job Title</TableCell>
-                  <TableCell align="center">Total Time</TableCell>
-                  <TableCell align="center">Action</TableCell>
+                  <StyledTableCell>Job Title</StyledTableCell>
+                  <StyledTableCell align="center">Total Time</StyledTableCell>
+                  <StyledTableCell align="center">Action</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
