@@ -21,7 +21,7 @@ import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from '@mui/material/styles';
-
+import BasicModal from "../../components/ui/modal/modal";
 
 import {
     useGetJobhistoryQuery,
@@ -29,25 +29,27 @@ import {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: "#318CE7",
-      color: theme.palette.common.white,
+        backgroundColor: "#318CE7",
+        color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
+        fontSize: 14,
     },
-  }));
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+}));
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
+        backgroundColor: theme.palette.action.hover,
     },
     // hide last border
     '&:last-child td, &:last-child th': {
-      border: 0,
+        border: 0,
     },
-  }));
+}));
+
 
 export default function TimetracTingActivities() {
-
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [isopen, setIsopen] = React.useState(false);
     const { handleSubmit, control,
         formState
     } = useForm(
@@ -68,6 +70,73 @@ export default function TimetracTingActivities() {
         // refetch: postjobrefetch,
     } = useGetJobhistoryQuery("getJobhistory");
 
+    const handleClose = () => {
+        // setIsOpen(false);
+        setIsOpen((prev) => !prev);
+    };
+
+
+    const handleopen = () => {
+        setIsopen(true);
+    };
+
+    const handleclose = () => {
+        setIsopen(false);
+    };
+
+    const handleOpen = async () => {
+        // setIsOpen(true);
+        console.log("s");
+        try {
+            // const {
+            //     data: codedata,
+            //     isLoading: getcodeisLoading,
+            //     isFetching: codeisFetching,
+            //     isSuccess: codeisSuccess,
+            // } = await getCodess();
+
+
+            // if (codeisSuccess) {
+            //     // console.log(codedata);
+            //     const defaultValues = {
+            //         // department_code: codedata.code,
+            //         // department_name: "",
+
+            //         designation_code: codedata.code,
+            //         designation_name: "",
+            //         designation_id: "",
+            //     }
+
+            //     reset({ ...defaultValues });
+            //     setIsOpen((prev) => !prev);
+            // }
+            setIsOpen((prev) => !prev);
+            // console.log(queryStateResults);
+            // console.log(info);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+
+    const MakePayment = (data) => {
+
+    };
+
+    const CancelPayment = (data) => {
+
+    };
+
+    const ViewInvoice = (data) => {
+        handleOpen();
+    };
+
+    const DownloadInvoice = (data) => {
+
+    };
+
+
     let tablecontent = "";
     if (getuserisLoading) {
         tablecontent = (
@@ -81,23 +150,103 @@ export default function TimetracTingActivities() {
 
 
         tablecontent = userdata.map((datas, index) => {
+
+            let hrs = datas?.time_in.split(":");
+            hrs = (hrs[0] + hrs[1] + hrs[2]) / (3600 / 1);
+            // let payamount = (hrs) * (datas?.job_rate * 1)
+            let payamount = (hrs) * (80 * 1)
+            datas.paid = 55;
+
+            let action = (<div>
+                {
+                    datas.paid ?
+                        (<div>
+                            <Button
+                                variant='contained'
+                                // className={classes.button}
+                                // disabled={activeStep === 0}
+                                onClick={() => CancelPayment(datas?.id)}
+                            >
+                                Cancel Payment
+                            </Button>
+                            <Button
+                                variant='contained'
+                                // className={classes.button}
+                                // disabled={activeStep === 0}
+                                onClick={() => ViewInvoice(datas?.id)}
+                            >
+                                View Invoice
+                            </Button>
+                            <Button
+                                variant='contained'
+                                // className={classes.button}
+                                // disabled={activeStep === 0}
+                                onClick={() => DownloadInvoice(datas?.id)}
+                            >
+                                Download Invoice
+                            </Button>
+                        </div>)
+
+                        :
+
+                        <Button
+                            variant='contained'
+                            // className={classes.button}
+                            // disabled={activeStep === 0}
+                            onClick={() => MakePayment(datas?.id)}
+                        >
+                            Make Payment
+                        </Button>
+                }
+            </div>);
+
             return (
                 <StyledTableRow
                     key={datas?.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
+                    <StyledTableCell align="center">{datas?.job?.job_code}</StyledTableCell>
+
                     <StyledTableCell align="center">{datas?.job?.name}</StyledTableCell>
 
                     <StyledTableCell component="th" scope="row" align="center">
-                        {
-                            datas?.user?.first_name
-                        }
+                        {datas?.user?.first_name}
+                    </StyledTableCell>
+
+                    <StyledTableCell component="th" scope="row" align="center">
+                        {datas?.user?.user_code}
+                    </StyledTableCell>
+
+                    <StyledTableCell component="th" scope="row" align="center">
+                        {"date"}
+                    </StyledTableCell>
+
+                    <StyledTableCell component="th" scope="row" align="center">
+                        {datas?.job_rate}
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row" align="center">
-                        {
-                            datas?.time_in
-                        }
+                        {datas?.time_in}
                     </StyledTableCell>
+
+                    <StyledTableCell component="th" scope="row" align="center">
+                        {parseFloat(payamount.toFixed(3))}
+                    </StyledTableCell>
+
+                    <StyledTableCell component="th" scope="row" align="center">
+                        <Button
+                            variant='outlined'
+                        >
+                            {"Paid"}
+                        </Button>
+
+                    </StyledTableCell>
+
+                    <StyledTableCell component="th" scope="row" align="center">
+
+                        {action}
+
+                    </StyledTableCell>
+
 
                 </StyledTableRow>
             );
@@ -118,15 +267,14 @@ export default function TimetracTingActivities() {
     return (
 
         <React.Fragment>
-            
+
             <Box component={Paper} padding={'20px'}>
-            <Typography ml={2} style={{
-                  color: "#318CE7",
+                <Typography ml={2} style={{
+                    color: "#318CE7",
                 }}> <b>Time Tracking Acitivities</b>  </Typography>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} method="post" sx={{ mt: 1, ml: 2 }}>
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
                         <Grid item xs={6} >
-
                             <Controller
                                 name="role"
                                 control={control}
@@ -162,7 +310,6 @@ export default function TimetracTingActivities() {
                             />
                         </Grid>
 
-
                         <Grid item xs={6} >
                             <Controller
                                 name="employee_name"
@@ -194,11 +341,12 @@ export default function TimetracTingActivities() {
                             />
 
                         </Grid>
-                        <Grid item xs={6} mt={2}>
+
+                        <Grid item xs={6} >
                             <Controller
-                                name="employee_department"
+                                name="job_code"
                                 control={control}
-                                rules={{ required: 'Employee department is required' }}
+                                rules={{ required: 'Job code is required' }}
                                 defaultValue=""
                                 render={({ field }) => (
                                     <TextField
@@ -206,8 +354,7 @@ export default function TimetracTingActivities() {
                                         // select
                                         margin="none"
                                         fullWidth
-                                        label="Employee Department"
-
+                                        label="Job Code"
                                         SelectProps={{
                                             // native: true,
                                             // inputProps: {name: 'screen_allocation' }
@@ -218,19 +365,19 @@ export default function TimetracTingActivities() {
                                             "fullWidth": true,
                                             "variant": "standard",
                                         }}
-                                        error={Boolean(formState?.errors?.employee_department)}
-                                        helperText={formState?.errors?.employee_department?.message}
+                                        error={Boolean(formState?.errors?.job_code)}
+                                        helperText={formState?.errors?.job_code?.message}
                                     >
                                     </TextField>
                                 )}
                             />
 
                         </Grid>
-                        <Grid item xs={6} mt={2}>
+                        <Grid item xs={6} >
                             <Controller
-                                name="employee_designation"
+                                name="job_name"
                                 control={control}
-                                rules={{ required: 'Employee designation is required' }}
+                                rules={{ required: 'Job name is required' }}
                                 defaultValue=""
                                 render={({ field }) => (
                                     <TextField
@@ -238,8 +385,7 @@ export default function TimetracTingActivities() {
                                         // select
                                         margin="none"
                                         fullWidth
-                                        label="Employee Designation"
-
+                                        label="Job Name"
                                         SelectProps={{
                                             // native: true,
                                             // inputProps: {name: 'screen_allocation' }
@@ -250,14 +396,15 @@ export default function TimetracTingActivities() {
                                             "fullWidth": true,
                                             "variant": "standard",
                                         }}
-                                        error={Boolean(formState?.errors?.employee_designation)}
-                                        helperText={formState?.errors?.employee_designation?.message}
+                                        error={Boolean(formState?.errors?.job_name)}
+                                        helperText={formState?.errors?.job_name?.message}
                                     >
                                     </TextField>
                                 )}
                             />
 
                         </Grid>
+
                         <Grid item xs={4} mt={2}>
                             <Controller
                                 name="date"
@@ -295,21 +442,85 @@ export default function TimetracTingActivities() {
                     <Table>
                         <TableHead>
                             <TableRow style={{
-                  border:"1px solid black",
-                }}>
+                                border: "1px solid black",
+                            }}>
+                                <StyledTableCell align="center"> <b>Job Code</b></StyledTableCell>
                                 <StyledTableCell align="center"> <b>Job Title</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Employess Name</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Employess Code</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Date</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Job Rate</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Total Hrs</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Pay Amount</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Paid Status</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Action</b></StyledTableCell>
+
                             </TableRow>
                         </TableHead>
                         <TableBody style={{
-                  border:"1px solid black",
-                }}>
+                            border: "1px solid black",
+                        }}>
                             {tablecontent}
                         </TableBody>
                     </Table>
                 </Grid>
             </Box>
+
+            <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose} >
+                <Grid
+                    container
+                    rowSpacing={1}
+                    columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                >
+                    <Grid item xs={10}>
+                        <Typography style={{
+                            color: "#318CE7",
+                        }} > <b>Add Designation</b></Typography>
+                    </Grid>
+
+                </Grid>
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit(onSubmit)}
+                    method="post"
+                    id="modal-modal-description"
+                    sx={{ mt: 1 }}
+                >
+                    <Grid
+                        container
+                        rowSpacing={1}
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                    >
+
+                        Container
+                    </Grid>
+
+                    <Grid item xs={12} style={{ textAlign: 'right' }}>
+
+                        <Button
+                            // onClick={handleClose}
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Cancel
+                        </Button>
+
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, ml: 2, width: '90px', minWidth: '10px' }}
+
+                        >
+                            Add
+                        </Button>
+
+                    </Grid>
+
+                </Box>
+            </BasicModal>
+
         </React.Fragment>
     )
 };
