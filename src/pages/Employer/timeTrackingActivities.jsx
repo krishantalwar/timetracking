@@ -22,6 +22,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from '@mui/material/styles';
 import BasicModal from "../../components/ui/modal/modal";
+import ShiftnpayLogo from '../../assets/Time-management-icons/shiftnpay.png'
 
 import {
     useGetJobhistoryQuery,
@@ -222,7 +223,7 @@ export default function TimetracTingActivities() {
                     </StyledTableCell>
 
                     <StyledTableCell component="th" scope="row" align="center">
-                        {datas?.job_rate}
+                        ${datas?.job_rate}
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row" align="center">
                         {datas?.time_in}
@@ -446,8 +447,8 @@ export default function TimetracTingActivities() {
                             }}>
                                 <StyledTableCell align="center"> <b>Job Code</b></StyledTableCell>
                                 <StyledTableCell align="center"> <b>Job Title</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Employess Name</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Employess Code</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Employee Name</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Employee Code</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Date</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Job Rate</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Total Hrs</b></StyledTableCell>
@@ -467,58 +468,56 @@ export default function TimetracTingActivities() {
             </Box>
 
             <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose} >
-                <Grid
-                    container
-                    rowSpacing={1}
-                    columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                >
-                    <Grid item xs={10}>
-                        <Typography style={{
-                            color: "#318CE7",
-                        }} > <b>Add Designation</b></Typography>
-                    </Grid>
-
-                </Grid>
                 <Box
-                    component="form"
-                    onSubmit={handleSubmit(onSubmit)}
-                    method="post"
-                    id="modal-modal-description"
-                    sx={{ mt: 1 }}
-                >
-                    <Grid
-                        container
-                        rowSpacing={1}
-                        spacing={{ xs: 2, md: 3 }}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                    >
+    component="form"
+    onSubmit={handleSubmit(onSubmit)}
+    method="post"
+    id="modal-modal-description"
+    sx={{ mt: 1 }}
+>
+    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid container alignItems="center">
+            <Grid item xs={4} ml={5}>
+                <Typography style={{ color: "#318CE7", fontSize: "40px" }}> <b>INVOICE</b></Typography>
+            </Grid>
+            <Grid item xs={2}>
+                <img src={ShiftnpayLogo} alt="Shiftnpay Logo" />
+            </Grid>
+        </Grid>
+    </Grid>
+    <Table>
+        <TableHead>
+            <TableRow>
+                <StyledTableCell><b>Job ID</b></StyledTableCell>
+                <StyledTableCell><b>Description</b></StyledTableCell>
+                <StyledTableCell><b>Total Time</b></StyledTableCell>
+                <StyledTableCell><b>Job Rate</b></StyledTableCell>
+                <StyledTableCell><b>Total</b></StyledTableCell>
+            </TableRow>
+        </TableHead>
+        <TableBody>
+            <TableRow>
+                {/* {invoiceContent} */}
+            </TableRow>
 
-                        Container
-                    </Grid>
+           
+        </TableBody>
+        
+    </Table>
+    <Typography variant="h6" align="right" mr={10} mt={2}>
+                    <b>TOTAL $</b>
+                </Typography>
+    <Grid item xs={12} style={{ textAlign: 'right' }}>
+        <Button
+            onClick={handleClose}
+            variant="contained"
+            sx={{ mt: 3, mb: 2, mr: 2 }}
+        >
+            OK
+        </Button>
+    </Grid>
+</Box>
 
-                    <Grid item xs={12} style={{ textAlign: 'right' }}>
-
-                        <Button
-                            // onClick={handleClose}
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Cancel
-                        </Button>
-
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2, ml: 2, width: '90px', minWidth: '10px' }}
-
-                        >
-                            Add
-                        </Button>
-
-                    </Grid>
-
-                </Box>
             </BasicModal>
 
         </React.Fragment>
