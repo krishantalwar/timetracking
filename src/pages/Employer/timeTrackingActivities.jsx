@@ -23,6 +23,12 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from '@mui/material/styles';
 import BasicModal from "../../components/ui/modal/modal";
 import ShiftnpayLogo from '../../assets/Time-management-icons/shiftnpay.png'
+// import Invoice from './invoice'
+
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf'
+
+// import pdf from 'html-pdf'
 
 import {
     useGetJobhistoryQuery,
@@ -51,6 +57,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function TimetracTingActivities() {
     const [isOpen, setIsOpen] = React.useState(false);
     const [isopen, setIsopen] = React.useState(false);
+
+    const [invoiceContents, setinvoiceContents] = React.useState("");
+    const [invoicetotal, setinvoiceTotal] = React.useState("");
+    const [invoicedownload, setinvoiceDownload] = React.useState(false);
+
     const { handleSubmit, control,
         formState
     } = useForm(
@@ -71,6 +82,7 @@ export default function TimetracTingActivities() {
         // refetch: postjobrefetch,
     } = useGetJobhistoryQuery("getJobhistory");
 
+    let invoiceContent = "";
     const handleClose = () => {
         // setIsOpen(false);
         setIsOpen((prev) => !prev);
@@ -111,6 +123,7 @@ export default function TimetracTingActivities() {
             //     reset({ ...defaultValues });
             //     setIsOpen((prev) => !prev);
             // }
+
             setIsOpen((prev) => !prev);
             // console.log(queryStateResults);
             // console.log(info);
@@ -130,10 +143,137 @@ export default function TimetracTingActivities() {
     };
 
     const ViewInvoice = (data) => {
+        // console.log(userdata)
+        // console.log(data)
+        const job = userdata.find((element, index, array) => {
+            console.log(element.id)
+            return element.id == data
+        });
+
+        let hrs = job?.time_in.split(":");
+        hrs = (hrs[0] + hrs[1] + hrs[2]) / (3600 / 1);
+        // let payamount = (hrs) * (datas?.job_rate * 1)
+        let payamount = (hrs) * (80 * 1)
+        job.paid = 55;
+
+        invoiceContent = (
+            <StyledTableRow
+                key={job?.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+                <StyledTableCell align="center">{job?.job?.job_code}</StyledTableCell>
+                <StyledTableCell align="center">{job?.job?.name}</StyledTableCell>
+                <StyledTableCell align="center">{job?.time_in}</StyledTableCell>
+                <StyledTableCell align="center">{job?.job?.job_rate}</StyledTableCell>
+                <StyledTableCell align="center">{parseFloat(payamount.toFixed(3))}</StyledTableCell>
+            </StyledTableRow>
+        )
+        setinvoiceContents((pre) => invoiceContent)
+        setinvoiceTotal((pre) => parseFloat(payamount.toFixed(3)))
+        // console.log(invoiceContent);
         handleOpen();
     };
 
     const DownloadInvoice = (data) => {
+        const job = userdata.find((element, index, array) => {
+            // console.log(element.id)
+            return element.id == data
+        });
+
+        let hrs = job?.time_in.split(":");
+        hrs = (hrs[0] + hrs[1] + hrs[2]) / (3600 / 1);
+        // let payamount = (hrs) * (datas?.job_rate * 1)
+        let payamount = (hrs) * (80 * 1)
+        job.paid = 55;
+
+        // const container = document.createElement('div');
+
+        let content =
+            `
+            <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice</title>
+  <style>
+    / Add your CSS styles here /
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .invoice-heading {
+      color: #318CE7;
+      font-size: 40px;
+    }
+    .logo {
+      width: 100px;
+      height: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .total {
+      text-align: right;
+      margin-right: 73px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="invoiceCapture" >
+  <div>
+      <div class="invoice-heading"><b>INVOICE</b></div>
+      <div><img src=${ShiftnpayLogo} alt="Shiftnpay Logo" class="logo"></div>
+    </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Job ID</th>
+                            <th>Description</th>
+                            <th>Total Time</th>
+                            <th>Job Rate</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                        >
+                            <td align="center">${job?.job?.job_code}</td>
+                            <td align="center">${job?.job?.name}</td>
+                            <td align="center">${job?.time_in}</td>
+                            <td align="center">${job?.job?.job_rate}</td>
+                            <td align="center">${parseFloat(payamount.toFixed(3))}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                    <div class="total"><b>TOTAL $ ${payamount}</b></div>
+            </div>
+            </body>
+            </html>`;
+
+
+        const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'pt',
+            format: [612, 792]
+        });
+
+        pdf.html(content, {
+            callback: function (pdf) {
+                // Save the PDF file
+                pdf.save('hello_world.pdf');
+            }
+        });
 
     };
 
@@ -162,14 +302,6 @@ export default function TimetracTingActivities() {
                 {
                     datas.paid ?
                         (<div>
-                            <Button
-                                variant='contained'
-                                // className={classes.button}
-                                // disabled={activeStep === 0}
-                                onClick={() => CancelPayment(datas?.id)}
-                            >
-                                Cancel Payment
-                            </Button>
                             <Button
                                 variant='contained'
                                 // className={classes.button}
@@ -468,59 +600,68 @@ export default function TimetracTingActivities() {
             </Box>
 
             <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose} >
-                <Box
-    component="form"
-    onSubmit={handleSubmit(onSubmit)}
-    method="post"
-    id="modal-modal-description"
-    sx={{ mt: 1 }}
->
-    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        <Grid container alignItems="center">
-            <Grid item xs={4} ml={5}>
-                <Typography style={{ color: "#318CE7", fontSize: "40px" }}> <b>INVOICE</b></Typography>
-            </Grid>
-            <Grid item xs={2}>
-                <img src={ShiftnpayLogo} alt="Shiftnpay Logo" />
-            </Grid>
-        </Grid>
-    </Grid>
-    <Table>
-        <TableHead>
-            <TableRow>
-                <StyledTableCell><b>Job ID</b></StyledTableCell>
-                <StyledTableCell><b>Description</b></StyledTableCell>
-                <StyledTableCell><b>Total Time</b></StyledTableCell>
-                <StyledTableCell><b>Job Rate</b></StyledTableCell>
-                <StyledTableCell><b>Total</b></StyledTableCell>
-            </TableRow>
-        </TableHead>
-        <TableBody>
-            <TableRow>
-                {/* {invoiceContent} */}
-            </TableRow>
 
-           
-        </TableBody>
-        
-    </Table>
-    <Typography variant="h6" align="right" mr={10} mt={2}>
-                    <b>TOTAL $</b>
-                </Typography>
-    <Grid item xs={12} style={{ textAlign: 'right' }}>
-        <Button
-            onClick={handleClose}
-            variant="contained"
-            sx={{ mt: 3, mb: 2, mr: 2 }}
-        >
-            OK
-        </Button>
-    </Grid>
-</Box>
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit(onSubmit)}
+                    method="post"
+                    id="modal-modal-description"
+                    sx={{ mt: 1 }}
+
+                >
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                        <Grid container alignItems="center">
+                            <Grid item xs={4} ml={5}>
+                                <Typography style={{ color: "#318CE7", fontSize: "40px" }}> <b>INVOICE</b></Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <img src={ShiftnpayLogo} alt="Shiftnpay Logo" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <StyledTableCell><b>Job ID</b></StyledTableCell>
+                                <StyledTableCell><b>Description</b></StyledTableCell>
+                                <StyledTableCell><b>Total Time</b></StyledTableCell>
+                                <StyledTableCell><b>Job Rate</b></StyledTableCell>
+                                <StyledTableCell><b>Total</b></StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {invoiceContents}
+                            {/* <StyledTableRow
+                                // key={job?.id}
+                                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                            >
+                                <StyledTableCell align="center">asd</StyledTableCell>
+                                <StyledTableCell align="center">asd</StyledTableCell>
+                                <StyledTableCell align="center">wer</StyledTableCell>
+                                <StyledTableCell align="center">dsf</StyledTableCell>
+                                <StyledTableCell align="center">sdfsf</StyledTableCell>
+                            </StyledTableRow> */}
+                        </TableBody>
+
+                    </Table>
+                    <Typography variant="h6" align="right" mr={10} mt={2}>
+                        <b>TOTAL $ {invoicetotal}</b>
+                    </Typography>
+                    <Grid item xs={12} style={{ textAlign: 'right' }}>
+                        <Button
+                            onClick={handleClose}
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, mr: 2 }}
+                        >
+                            OK
+                        </Button>
+                    </Grid>
+
+                </Box>
 
             </BasicModal>
 
-        </React.Fragment>
+        </React.Fragment >
     )
 };
 
