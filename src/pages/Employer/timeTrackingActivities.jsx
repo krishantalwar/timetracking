@@ -271,7 +271,12 @@ export default function TimetracTingActivities() {
         pdf.html(content, {
             callback: function (pdf) {
                 // Save the PDF file
-                pdf.save('hello_world.pdf');
+                const dataUri = pdf.output('datauristring');
+                const pdfViewer = document.getElementById('pdfViewer');
+
+                pdfViewer.src = dataUri;
+
+                // pdf.save('hello_world.pdf');
             }
         });
 
@@ -598,6 +603,8 @@ export default function TimetracTingActivities() {
                     </Table>
                 </Grid>
             </Box>
+
+            <iframe id={"pdfViewer"} style={{ width: "100%", height: "500px", border: "none" }}></iframe>
 
             <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose} >
 
