@@ -315,12 +315,22 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
 
         getJobhistory: builder.query({
-            query: (detail) => ({
-                // need to change the endpoint
-                url: "job/jobhistory",
-                // method: "POST",
-                // body: detail,
-            }),
+            query: (detail) => {
+                // console.log("detail", detail)
+                let urls = "job/jobhistory/?"
+                for (const asd in detail) {
+                    if (detail[asd]) {
+                        urls = urls + asd + "=" + detail[asd] + "&"
+                    }
+                    // console.log(urls = urls + asd + "=" + detail[asd]); 
+                }
+                return ({
+                    // need to change the endpoint
+                    url: urls,
+                    // method: "POST",
+                    // body: detail,
+                })
+            },
             transformResponse: (responseData) => {
                 console.log(responseData);
                 // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
@@ -334,11 +344,11 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             // onSettled: (result, error, variables) => {
             //     console.log('Mutation Settled:', result, error, variables);
             // },
-            async onQueryStarted(args, { queryFulfilled }) {
+            async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 // console.log(args);
                 try {
                     const { data } = await queryFulfilled;
-                    console.log(data);
+                    // console.log(data);
                 } catch (error) {
                     console.log("error", error);
                 }

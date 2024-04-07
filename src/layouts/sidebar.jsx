@@ -25,9 +25,9 @@ const NavLinks = React.forwardRef((props, ref) => {
     <NavLink
       ref={ref}
       {...props}
-      // className={({ isActive }) =>
-      //   isActive ? elementClasses + " activeLink" : elementClasses
-      // }
+    // className={({ isActive }) =>
+    //   isActive ? elementClasses + " activeLink" : elementClasses
+    // }
     />
   );
 });
@@ -84,7 +84,7 @@ const iconMapping = {
   Employee: <img src={Profile} alt="" />,
   Shift: <img src={Profile2} alt="" />,
   Roles: <img src={RoleIcon} alt="" />,
-  department:  <img src={Tabler} alt="" />,
+  department: <img src={Tabler} alt="" />,
   designation: <img src={DesignationIcon} alt="" />,
   TimeTracking: <img src={Time} alt="" />,
   DataUpload: <img src={Dataimg} alt="" />,
@@ -99,18 +99,18 @@ export const mainListItems = (
       return (
         <React.Suspense key={index} fallback={<div>Loading...</div>}>
           <ListItemButton
-          style={{
-            display: 'flex',
-            alignItems: 'center', // Align items vertically center
-           color:"black",
-           textDecoration: "none",
-           
-          //  fontWeight:"500"
-          }}
+            style={{
+              display: 'flex',
+              alignItems: 'center', // Align items vertically center
+              color: "black",
+              textDecoration: "none",
+
+              //  fontWeight:"500"
+            }}
             component={NavLinks}
             to={item.path}
           >
-            <ListItemIcon sx={{  minWidth: "40px", margin:" 10px"}}>
+            <ListItemIcon sx={{ minWidth: "40px", margin: " 10px" }}>
               {IconComponent}
             </ListItemIcon>
             <ListItemText
@@ -123,6 +123,60 @@ export const mainListItems = (
     })}
   </React.Fragment>
 );
+
+
+export const userMenueItems = (
+  <React.Fragment>
+
+
+    <React.Suspense key={1} fallback={<div>Loading...</div>}>
+
+
+      <ListItemButton
+        style={{
+          display: 'flex',
+          alignItems: 'center', // Align items vertically center
+          color: "black",
+          textDecoration: "none",
+
+          //  fontWeight:"500"
+        }}
+        component={NavLinks}
+        to={""}
+      >
+        <ListItemIcon sx={{ minWidth: "40px", margin: " 10px" }}>
+          <img src={DashboardIcon} alt="" />
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "14px" }}
+          primary={"DashBoard"}
+        />
+      </ListItemButton>
+
+      <ListItemButton
+        style={{
+          display: 'flex',
+          alignItems: 'center', // Align items vertically center
+          color: "black",
+          textDecoration: "none",
+
+          //  fontWeight:"500"
+        }}
+        component={NavLinks}
+        to={"timetracking"}
+      >
+        <ListItemIcon sx={{ minWidth: "40px", margin: " 10px" }}>
+          <img src={Time} alt="" />,
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "14px" }}
+          primary={"Time Tracking"}
+        />
+      </ListItemButton>
+    </React.Suspense>
+
+  </React.Fragment>
+)
 
 export const secondaryListItems = (
   <React.Fragment>

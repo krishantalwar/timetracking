@@ -10,9 +10,9 @@ import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ShimmerNavigation from "../components/ui/shimmer/shimmerNavigation";
-import { useState ,useEffect } from "react";
+import { useState, useEffect } from "react";
 
-import { mainListItems, secondaryListItems } from "./sidebar";
+import { mainListItems, secondaryListItems, userMenueItems } from "./sidebar";
 import { Outlet } from "react-router-dom";
 import Navbar from "./navbar";
 
@@ -21,6 +21,10 @@ import MuiAppBar from "@mui/material/AppBar";
 
 import Grid from "@mui/material/Grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+import { selectCurrentUser } from '../features/auth/authSelector';
+import { useSelector, useDispatch } from "react-redux";
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -75,10 +79,12 @@ export default function Master() {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const currentUser = useSelector(selectCurrentUser);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000); 
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -97,7 +103,7 @@ export default function Master() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
+  // console.log(currentUser?.user);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -109,71 +115,75 @@ export default function Master() {
   const defaultTheme = createTheme();
   return (
     <>
-    {isLoading ? (<ShimmerNavigation/>):(<Fragment>
-      <ThemeProvider theme={defaultTheme}>
-        <Box sx={{ display: "flex" }}>
-          <CssBaseline />
-          <Navbar
-            id={id}
-            handleClic={handleClick}
-            handleOpenUserMenu={handleOpenUserMenu}
-            anchorElUser={anchorElUser}
-            AppBar={AppBar}
-            toggleDrawer={toggleDrawer}
-            open={open}
-            drawerWidth={drawerWidth}
-            handleCloseUserMenu={handleCloseUserMenu}
-          />
+      {isLoading ? (<ShimmerNavigation />) : (<Fragment>
+        <ThemeProvider theme={defaultTheme}>
+          <Box sx={{ display: "flex" }}>
+            <CssBaseline />
+            <Navbar
+              id={id}
+              handleClic={handleClick}
+              handleOpenUserMenu={handleOpenUserMenu}
+              anchorElUser={anchorElUser}
+              AppBar={AppBar}
+              toggleDrawer={toggleDrawer}
+              open={open}
+              drawerWidth={drawerWidth}
+              handleCloseUserMenu={handleCloseUserMenu}
+            />
 
-          <Drawer
-            id="Dashnav"
-            variant="permanent"
-            open={open}
-            sx={{ border: "none" }}
-          >
-            <Toolbar
+            <Drawer
+              id="Dashnav"
+              variant="permanent"
+              open={open}
+              sx={{ border: "none" }}
+            >
+              <Toolbar
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  px: [1],
+                }}
+              >
+                <IconButton onClick={toggleDrawer}>
+                  <ChevronLeftIcon />
+                </IconButton>
+              </Toolbar>
+              <Divider />
+
+              <List component="nav">
+                {
+                  currentUser?.user == 1 ?
+                    mainListItems :
+                    userMenueItems
+                }
+                <Divider sx={{ my: 1 }} />
+                {/* {secondaryListItems} */}
+              </List>
+            </Drawer>
+
+            <Box
+              component="main"
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                px: [1],
+                backgroundColor: (theme) =>
+                  theme.palette.mode === "light"
+                    ? theme.palette.grey[100]
+                    : theme.palette.grey[900],
+                flexGrow: 1,
+                height: "100vh",
+                overflow: "auto",
               }}
             >
-              <IconButton onClick={toggleDrawer}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </Toolbar>
-            <Divider />
+              <Container maxWidth="5px" sx={{ mt: 12, mb: 4 }}>
+                <Outlet />
+              </Container>
 
-            <List component="nav">
-              {mainListItems}
-              <Divider sx={{ my: 1 }} />
-              {/* {secondaryListItems} */}
-            </List>
-          </Drawer>
-
-          <Box
-            component="main"
-            sx={{
-              backgroundColor: (theme) =>
-                theme.palette.mode === "light"
-                  ? theme.palette.grey[100]
-                  : theme.palette.grey[900],
-              flexGrow: 1,
-              height: "100vh",
-              overflow: "auto",
-            }}
-          >
-            <Container maxWidth="5px" sx={{ mt: 12, mb: 4 }}>
-              <Outlet />
-            </Container>
-
-            <Copyright sx={{ pt: 4 }} />
+              <Copyright sx={{ pt: 4 }} />
+            </Box>
           </Box>
-        </Box>
-      </ThemeProvider>
-    </Fragment>)}
+        </ThemeProvider>
+      </Fragment>)}
     </>
-    
+
   );
 }

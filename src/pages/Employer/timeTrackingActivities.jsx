@@ -33,6 +33,7 @@ import jsPDF from 'jspdf'
 import {
     useGetJobhistoryQuery,
 } from "../../features/job/jobService";
+import APIjobService from "../../features/job/jobService";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -63,24 +64,43 @@ export default function TimetracTingActivities() {
     const [invoicedownload, setinvoiceDownload] = React.useState(false);
 
     const { handleSubmit, control,
-        formState
+        formState,
+        getValues,
+        // errors,
+        // touched,
+        // isDirty,
+        // isValid
+
     } = useForm(
         {
             mode: 'onChange',
             defaultValues: {
-                role: "",
-                screen_allocation: "",
+                user_code: "",
+                first_name: "",
+                job_code: "",
+                job_name: "",
+                date: "",
+            },
+            resetOptions: {
+                keepDirtyValues: true, // user-interacted input will be retained
+                keepErrors: true, // input errors will be retained with value update
             },
         }
     );
+    // console.log("getValues", formState);
+
+    // console.log(getValues())
     // console.log(formState?.errors?.role?.message)
+
     const {
         data: userdata,
         isLoading: getuserisLoading,
         isSuccess: getuserisSuccess,
-        error: getusererror
-        // refetch: postjobrefetch,
-    } = useGetJobhistoryQuery("getJobhistory");
+        error: getusererror,
+        refetch: postjobrefetch,
+        updateQueryData,
+        setQueryData
+    } = useGetJobhistoryQuery({ ...getValues() });
 
     let invoiceContent = "";
     const handleClose = () => {
@@ -154,7 +174,7 @@ export default function TimetracTingActivities() {
         hrs = (hrs[0] + hrs[1] + hrs[2]) / (3600 / 1);
         // let payamount = (hrs) * (datas?.job_rate * 1)
         let payamount = (hrs) * (80 * 1)
-        job.paid = 55;
+        // job.paid = 55;
 
         invoiceContent = (
             <StyledTableRow
@@ -184,7 +204,7 @@ export default function TimetracTingActivities() {
         hrs = (hrs[0] + hrs[1] + hrs[2]) / (3600 / 1);
         // let payamount = (hrs) * (datas?.job_rate * 1)
         let payamount = (hrs) * (80 * 1)
-        job.paid = 55;
+        // job.paid = 55;
 
         // const container = document.createElement('div');
 
@@ -301,7 +321,7 @@ export default function TimetracTingActivities() {
             hrs = (hrs[0] + hrs[1] + hrs[2]) / (3600 / 1);
             // let payamount = (hrs) * (datas?.job_rate * 1)
             let payamount = (hrs) * (80 * 1)
-            datas.paid = 55;
+            // datas.paid = 55;
 
             let action = (<div>
                 {
@@ -400,6 +420,27 @@ export default function TimetracTingActivities() {
 
     const onSubmit = async (data) => {
 
+        // if (formState.isDirty) {
+        // await updateQueryData({ ...getValues() });
+        // updateQueryData('GetJobhistory', (prevData) => ({
+        //     ...prevData,
+        //     // Update query parameters based on form values
+        //     // Example: Assuming form fields are user_code, first_name, etc.
+        //     // Update query parameters accordingly
+        //     user_code: getValues('user_code'),
+        //     first_name: getValues('first_name'),
+        //     job_code: getValues('job_code'),
+        //     job_name: getValues('job_name'),
+        //     date: getValues('date'),
+        // }));
+        await postjobrefetch({
+            user_code: getValues('user_code'),
+            first_name: getValues('first_name'),
+            job_code: getValues('job_code'),
+            job_name: getValues('job_name'),
+            date: getValues('date'),
+        }); // Assuming postjobrefetch accepts the form data directly
+        // }
     }
 
     return (
@@ -414,10 +455,9 @@ export default function TimetracTingActivities() {
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={4}>
                         <Grid item xs={6} >
                             <Controller
-                                name="role"
+                                name="user_code"
                                 control={control}
-                                rules={{ required: 'Employee code is required' }}
-                                defaultValue=""
+                                // rules={{ required: 'Employee code is required' }}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
@@ -425,18 +465,13 @@ export default function TimetracTingActivities() {
                                         fullWidth
                                         label="Employee Code"
 
-                                        SelectProps={{
-                                            native: true,
-                                            inputProps: { name: 'screen_allocation' }
-                                        }}
 
-                                        defaultValue=""
                                         formcontrolpops={{
                                             "fullWidth": true,
                                             "variant": "standard",
                                         }}
-                                        error={Boolean(formState?.errors?.role)}
-                                        helperText={formState?.errors?.role?.message}
+                                        error={Boolean(formState?.errors?.user_code)}
+                                        helperText={formState?.errors?.user_code?.message}
                                     >
 
                                         {/* <MenuItem key={1} value={1}>
@@ -450,10 +485,9 @@ export default function TimetracTingActivities() {
 
                         <Grid item xs={6} >
                             <Controller
-                                name="employee_name"
+                                name="first_name"
                                 control={control}
-                                rules={{ required: 'Employee name is required' }}
-                                defaultValue=""
+                                // rules={{ required: 'Employee name is required' }}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
@@ -461,18 +495,14 @@ export default function TimetracTingActivities() {
                                         margin="none"
                                         fullWidth
                                         label="Employee Name"
-                                        SelectProps={{
-                                            // native: true,
-                                            // inputProps: {name: 'screen_allocation' }
-                                        }}
 
-                                        defaultValue=""
+
                                         formcontrolpops={{
                                             "fullWidth": true,
                                             "variant": "standard",
                                         }}
-                                        error={Boolean(formState?.errors?.employee_name)}
-                                        helperText={formState?.errors?.employee_name?.message}
+                                        error={Boolean(formState?.errors?.first_name)}
+                                        helperText={formState?.errors?.first_name?.message}
                                     >
                                     </TextField>
                                 )}
@@ -484,8 +514,8 @@ export default function TimetracTingActivities() {
                             <Controller
                                 name="job_code"
                                 control={control}
-                                rules={{ required: 'Job code is required' }}
-                                defaultValue=""
+                                // rules={{ required: 'Job code is required' }}
+
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
@@ -493,12 +523,6 @@ export default function TimetracTingActivities() {
                                         margin="none"
                                         fullWidth
                                         label="Job Code"
-                                        SelectProps={{
-                                            // native: true,
-                                            // inputProps: {name: 'screen_allocation' }
-                                        }}
-
-                                        defaultValue=""
                                         formcontrolpops={{
                                             "fullWidth": true,
                                             "variant": "standard",
@@ -515,8 +539,8 @@ export default function TimetracTingActivities() {
                             <Controller
                                 name="job_name"
                                 control={control}
-                                rules={{ required: 'Job name is required' }}
-                                defaultValue=""
+                                // rules={{ required: 'Job name is required' }}
+
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
@@ -524,12 +548,7 @@ export default function TimetracTingActivities() {
                                         margin="none"
                                         fullWidth
                                         label="Job Name"
-                                        SelectProps={{
-                                            // native: true,
-                                            // inputProps: {name: 'screen_allocation' }
-                                        }}
 
-                                        defaultValue=""
                                         formcontrolpops={{
                                             "fullWidth": true,
                                             "variant": "standard",
@@ -547,8 +566,8 @@ export default function TimetracTingActivities() {
                             <Controller
                                 name="date"
                                 control={control}
-                                rules={{ required: 'Date is required' }}
-                                defaultValue=""
+                                // rules={{ required: 'Date is required' }}
+                                // defaultValue=""
                                 render={({ field }) => (
                                     <Input
                                         {...field}
@@ -560,11 +579,6 @@ export default function TimetracTingActivities() {
                                         formcontrolpops={{
                                             "fullWidth": true,
                                             "variant": "standard",
-                                        }}
-
-                                        DateProps={{
-                                            native: false,
-                                            // inputProps: {name: 'screen_allocation' }
                                         }}
                                         error={Boolean(formState?.errors?.date)}
                                         helperText={formState?.errors?.date?.message}
