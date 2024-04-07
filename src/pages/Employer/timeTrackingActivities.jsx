@@ -58,6 +58,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function TimetracTingActivities() {
     const [isOpen, setIsOpen] = React.useState(false);
     const [isopen, setIsopen] = React.useState(false);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = React.useState(false);
 
     const [invoiceContents, setinvoiceContents] = React.useState("");
     const [invoicetotal, setinvoiceTotal] = React.useState("");
@@ -152,6 +153,13 @@ export default function TimetracTingActivities() {
         }
     };
 
+    const handleOpenPaymentModal = () => {
+        setIsPaymentModalOpen(true);
+    };
+
+    const handleClosePaymentModal = () => {
+        setIsPaymentModalOpen(false);
+    };
 
 
     const MakePayment = (data) => {
@@ -323,6 +331,7 @@ export default function TimetracTingActivities() {
             let payamount = (hrs) * (80 * 1)
             // datas.paid = 55;
 
+
             let action = (<div>
                 {
                     datas.paid ?
@@ -348,10 +357,11 @@ export default function TimetracTingActivities() {
                         :
 
                         <Button
+                            // onClick={handleOpen}
                             variant='contained'
                             // className={classes.button}
                             // disabled={activeStep === 0}
-                            onClick={() => MakePayment(datas?.id)}
+                            onClick={handleOpenPaymentModal}
                         >
                             Make Payment
                         </Button>
@@ -416,7 +426,6 @@ export default function TimetracTingActivities() {
             </TableRow>
         );
     }
-
 
     const onSubmit = async (data) => {
 
@@ -659,31 +668,51 @@ export default function TimetracTingActivities() {
                                 <StyledTableCell align="center">asd</StyledTableCell>
                                 <StyledTableCell align="center">asd</StyledTableCell>
                                 <StyledTableCell align="center">wer</StyledTableCell>
-                                <StyledTableCell align="center">dsf</StyledTableCell>
-                                <StyledTableCell align="center">sdfsf</StyledTableCell>
+                                <StyledTableCell align="center">gfh</StyledTableCell>
+                                <StyledTableCell align="center">23</StyledTableCell>
                             </StyledTableRow> */}
                         </TableBody>
-
                     </Table>
-                    <Typography variant="h6" align="right" mr={10} mt={2}>
-                        <b>TOTAL $ {invoicetotal}</b>
-                    </Typography>
-                    <Grid item xs={12} style={{ textAlign: 'right' }}>
-                        <Button
-                            onClick={handleClose}
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2, mr: 2 }}
-                        >
-                            OK
-                        </Button>
+
+                    <Typography className="total" >Total $ {invoicetotal} </Typography>
+
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={3} >
+                        <Grid item xs={4} mt={2} mb={2} >
+                            <Button variant='outlined' fullWidth onClick={() => setinvoiceDownload(true)}>Download</Button>
+                        </Grid>
+
+                        <Grid item xs={4} mt={2} mb={2}>
+                            <Button variant='outlined' fullWidth onClick={handleClose}>Cancel</Button>
+                        </Grid>
                     </Grid>
-
                 </Box>
-
             </BasicModal>
+            <BasicModal
+                isOpen={isPaymentModalOpen}
+                onClose={handleClosePaymentModal}
+                title="Make Payment"
+                
+            >
+                 <Box p={2} style={{
+                    width: "fitcontent"
+                }}>
+        <Typography variant="h6" gutterBottom>
+            Confirm Payment
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+            Are you sure you want to make payment?
+        </Typography>
+    </Box>
+                <Grid container justifyContent="flex-end" p={2} >
+                    <Button onClick={handleClosePaymentModal} variant='contained' >
+                        Cancel
+                    </Button>
+                    <Button onClick={MakePayment} color="primary" variant="contained" sx={{ml:3}}>
+                        Make Payment
+                    </Button>
+                </Grid>
+            </BasicModal>
+        </React.Fragment>
 
-        </React.Fragment >
-    )
-};
-
-
+    );
+}
