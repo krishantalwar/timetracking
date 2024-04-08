@@ -32,8 +32,11 @@ import jsPDF from 'jspdf'
 
 import {
     useGetJobhistoryQuery,
+    usePaidJobMutation
 } from "../../features/job/jobService";
 import APIjobService from "../../features/job/jobService";
+
+import DeleteIcon from "../../components/ui/Delete/deletePopUp";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -103,6 +106,18 @@ export default function TimetracTingActivities() {
         setQueryData
     } = useGetJobhistoryQuery({ ...getValues() });
 
+    const [
+        PaidJob,
+        {
+            // currentData,
+            // isFetching,
+            isLoading: PaidJobLoading,
+            // isSuccess, isError,
+            // error,
+            // status
+        },
+    ] = usePaidJobMutation();
+
     let invoiceContent = "";
     const handleClose = () => {
         // setIsOpen(false);
@@ -120,7 +135,7 @@ export default function TimetracTingActivities() {
 
     const handleOpen = async () => {
         // setIsOpen(true);
-        console.log("s");
+        // console.log("s");
         try {
             // const {
             //     data: codedata,
@@ -154,16 +169,31 @@ export default function TimetracTingActivities() {
     };
 
     const handleOpenPaymentModal = () => {
-        setIsPaymentModalOpen(true);
+        // setIsPaymentModalOpen(true);
     };
 
     const handleClosePaymentModal = () => {
-        setIsPaymentModalOpen(false);
+        // setIsPaymentModalOpen(false);
     };
 
 
-    const MakePayment = (data) => {
+    const MakePayment = async (data) => {
+        try {
+            if (!PaidJobLoading) {
 
+                await PaidJob({ "id": data }).unwrap();
+                // console.log(asd);
+                await postjobrefetch({
+                    user_code: getValues('user_code'),
+                    first_name: getValues('first_name'),
+                    job_code: getValues('job_code'),
+                    job_name: getValues('job_name'),
+                    date: getValues('date'),
+                });
+            }
+        } catch (error) {
+            console.error("delete error:", error);
+        }
     };
 
     const CancelPayment = (data) => {
@@ -299,12 +329,12 @@ export default function TimetracTingActivities() {
         pdf.html(content, {
             callback: function (pdf) {
                 // Save the PDF file
-                const dataUri = pdf.output('datauristring');
-                const pdfViewer = document.getElementById('pdfViewer');
+                // const dataUri = pdf.output('datauristring');
+                // const pdfViewer = document.getElementById('pdfViewer');
 
-                pdfViewer.src = dataUri;
+                // pdfViewer.src = dataUri;
 
-                // pdf.save('hello_world.pdf');
+                pdf.save('invoice.pdf');
             }
         });
 
@@ -356,15 +386,17 @@ export default function TimetracTingActivities() {
 
                         :
 
-                        <Button
-                            // onClick={handleOpen}
-                            variant='contained'
-                            // className={classes.button}
-                            // disabled={activeStep === 0}
-                            onClick={handleOpenPaymentModal}
-                        >
-                            Make Payment
-                        </Button>
+                        // <Button
+                        //     // onClick={handleOpen}
+                        //     variant='contained'
+                        //     // className={classes.button}
+                        //     // disabled={activeStep === 0}
+                        //     onClick={() => MakePayment(datas?.id)}
+                        // >
+                        //     Make Payment
+                        // </Button>
+                        (<DeleteIcon title={"Confirm Payment"} button="Make Payment" desc={"Are you sure you want to make payment?"} key={datas?.id + index.toString() + index.toString()} onDelete={() => MakePayment(datas?.id)} />)
+
                 }
             </div>);
 
@@ -400,14 +432,6 @@ export default function TimetracTingActivities() {
                         {parseFloat(payamount.toFixed(3))}
                     </StyledTableCell>
 
-                    <StyledTableCell component="th" scope="row" align="center">
-                        <Button
-                            variant='outlined'
-                        >
-                            {"Paid"}
-                        </Button>
-
-                    </StyledTableCell>
 
                     <StyledTableCell component="th" scope="row" align="center">
 
@@ -613,7 +637,6 @@ export default function TimetracTingActivities() {
                                 <StyledTableCell align="center"><b>Job Rate</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Total Hrs</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Pay Amount</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Paid Status</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Action</b></StyledTableCell>
 
                             </TableRow>
@@ -627,7 +650,6 @@ export default function TimetracTingActivities() {
                 </Grid>
             </Box>
 
-            <iframe id={"pdfViewer"} style={{ width: "100%", height: "500px", border: "none" }}></iframe>
 
             <BasicModal isOpen={isOpen} onClose={handleClose} isopen={handleopen} onclose={handleclose} >
 
@@ -661,16 +683,6 @@ export default function TimetracTingActivities() {
                         </TableHead>
                         <TableBody>
                             {invoiceContents}
-                            {/* <StyledTableRow
-                                // key={job?.id}
-                                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                            >
-                                <StyledTableCell align="center">asd</StyledTableCell>
-                                <StyledTableCell align="center">asd</StyledTableCell>
-                                <StyledTableCell align="center">wer</StyledTableCell>
-                                <StyledTableCell align="center">gfh</StyledTableCell>
-                                <StyledTableCell align="center">23</StyledTableCell>
-                            </StyledTableRow> */}
                         </TableBody>
                     </Table>
 
@@ -687,27 +699,27 @@ export default function TimetracTingActivities() {
                     </Grid>
                 </Box>
             </BasicModal>
+
             <BasicModal
                 isOpen={isPaymentModalOpen}
                 onClose={handleClosePaymentModal}
                 title="Make Payment"
-                
             >
-                 <Box p={2} style={{
+                <Box p={2} style={{
                     width: "fitcontent"
                 }}>
-        <Typography variant="h6" gutterBottom>
-            Confirm Payment
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-            Are you sure you want to make payment?
-        </Typography>
-    </Box>
+                    <Typography variant="h6" gutterBottom>
+                        Confirm Payment
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                        Are you sure you want to make payment?
+                    </Typography>
+                </Box>
                 <Grid container justifyContent="flex-end" p={2} >
                     <Button onClick={handleClosePaymentModal} variant='contained' >
                         Cancel
                     </Button>
-                    <Button onClick={MakePayment} color="primary" variant="contained" sx={{ml:3}}>
+                    <Button onClick={MakePayment} color="primary" variant="contained" sx={{ ml: 3 }}>
                         Make Payment
                     </Button>
                 </Grid>

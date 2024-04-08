@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box } from '@mui/material';
-import { Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit, PaidOutlined } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
-
-const DeleteConfirmation = ({ open, onClose, onConfirm }) => {
+// import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
+// import PaymentsIcon from '@mui/icons-material/Payments';
+const DeleteConfirmation = ({ title = "Confirm Delete", button = "Delete", desc = "Are you sure you want to delete this item?", open, onClose, onConfirm }) => {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Confirm Delete</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <p>Are you sure you want to delete this item?</p>
+        <p>{desc}</p>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">
           Cancel
         </Button>
         <Button onClick={onConfirm} color="secondary">
-          Delete
+          {button}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-const DeleteIcon = ({ onDelete }) => {
+const DeleteIcon = ({ title, button, desc, onDelete }) => {
   const [confirmationOpen, setConfirmationOpen] = useState(false);
 
   const handleDeleteClick = () => {
@@ -40,10 +41,17 @@ const DeleteIcon = ({ onDelete }) => {
 
   return (
     <Grid  >
-      <Box className="delete-icon"  onClick={handleDeleteClick} >
-        <Button startIcon={<Delete/>}  ></Button>
+      <Box className="delete-icon" onClick={handleDeleteClick} >
+        {
+          (button ? (<Button startIcon={<PaidOutlined />}  ></Button>) : (<Button startIcon={<Delete />}  ></Button>))
+        }
+
+
       </Box>
       <DeleteConfirmation
+        title={title}
+        desc={desc}
+        button={button}
         open={confirmationOpen}
         onClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}

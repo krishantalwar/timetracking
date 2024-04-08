@@ -364,6 +364,38 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             // invalidatesTags: [{ type: "job", id: "jobLIST" }],
         }),
 
+
+        paidJob: builder.mutation({
+            query: (detail) => ({
+                // need to change the endpoint
+                url: "job/payjob",
+                method: "POST",
+                body: detail,
+            }),
+            transformResponse: (responseData) => {
+                console.log(responseData);
+                // setAuth("asdsa",{ isAuthenticated: true, user: responseData });
+                // return authAdapter.setAll(initialState, responseData)
+                return responseData;
+            },
+
+            // onError: (error, _, api) => {
+            //     console.error('Login Error:', error);
+            // },
+            // onSettled: (result, error, variables) => {
+            //     console.log('Mutation Settled:', result, error, variables);
+            // },
+            async onQueryStarted(args, { queryFulfilled }) {
+                // console.log(args);
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log(data);
+                } catch (error) {
+                    console.log("error", error);
+                }
+            },
+        }),
+
     }),
     overrideExisting: false,
 });
@@ -375,6 +407,8 @@ export const {
     useDeleteJobMutation,
     useAssignedtJobMutation,
     useSaveTimeMutation,
+    usePaidJobMutation,
+
 
     useGetJobhistoryQuery,
     useLazyGetCodejobQuery,
