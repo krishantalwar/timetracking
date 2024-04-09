@@ -374,16 +374,16 @@ export default function TimetracTingActivities() {
                                 // className={classes.button}
                                 // disabled={activeStep === 0}
                                 onClick={() => ViewInvoice(datas?.id)}
-                                sx={{mr:2}}
+                                sx={{ mr: 2 }}
                             >
-                                 Invoice
+                                Invoice
                             </Button>
                             <Button
                                 variant='contained'
                                 // className={classes.button}
                                 // disabled={activeStep === 0}
                                 onClick={() => DownloadInvoice(datas?.id)}
-                                
+
                             >
                                 Download Invoice
                             </Button>
@@ -634,7 +634,7 @@ export default function TimetracTingActivities() {
                             <TableRow style={{
                                 border: "1px solid black",
                             }}>
-                                <StyledTableCell align="center"> <b>Job Code</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Job Code</b></StyledTableCell>
                                 <StyledTableCell align="center"> <b>Job Title</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Employee Name</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Employee Code</b></StyledTableCell>
@@ -678,6 +678,7 @@ export default function TimetracTingActivities() {
                             </Grid>
                         </Grid>
                     </Grid>
+
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -693,7 +694,7 @@ export default function TimetracTingActivities() {
                         </TableBody>
                     </Table>
 
-                    <Typography className="total" sx={{textAlign:'end', mr:6}} ><b>Total $</b> {invoicetotal} </Typography>
+                    <Typography className="total" sx={{ textAlign: 'end', mr: 6 }} ><b>Total $</b> {invoicetotal} </Typography>
 
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={3} >
                         <Grid item xs={4} mt={2} mb={2} >

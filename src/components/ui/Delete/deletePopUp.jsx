@@ -43,7 +43,7 @@ const DeleteIcon = ({ title, button, desc, onDelete }) => {
     <Grid  >
       <Box className="delete-icon" onClick={handleDeleteClick} >
         {
-          (button ? (<Button startIcon={<PaidOutlined />}  ></Button>) : (<Button startIcon={<Delete />}  ></Button>))
+          (button ? (<Button variant='contained' style={{ marginLeft: 5, marginTop: 20 }} > MAKE Payment</Button>) : (<Button startIcon={<Delete />}  ></Button>))
         }
 
 
