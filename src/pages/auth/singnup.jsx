@@ -280,11 +280,11 @@ export default function SignIn() {
                       <CircularProgress color="inherit" />
                     </Backdrop>
               <Grid container>
-                <Grid item xs>
+                {/* <Grid item xs>
                   <Link to="/forgot" variant="body2">
                     Forgot password?
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={{alignItems:'right'}}>
                 <Link to='/login' variant="body2">
                     Login

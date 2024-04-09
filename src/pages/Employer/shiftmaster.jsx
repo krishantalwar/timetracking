@@ -429,7 +429,7 @@ export default function ShiftMaster() {
                 
                 }} >
                 <TableRow>
-                  <StyledTableCell><b>Shift Code</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Shift Code</b></StyledTableCell>
                   <StyledTableCell align="center"><b>Shift Name</b></StyledTableCell>
                   <StyledTableCell align="center"><b>Start Time</b></StyledTableCell>
                   <StyledTableCell align="center"><b>End Time</b></StyledTableCell>
