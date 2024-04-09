@@ -223,11 +223,11 @@ export default function TimetracTingActivities() {
                 <StyledTableCell align="center">{job?.job?.name}</StyledTableCell>
                 <StyledTableCell align="center">{job?.time_in}</StyledTableCell>
                 <StyledTableCell align="center">{job?.job?.job_rate}</StyledTableCell>
-                <StyledTableCell align="center">{parseFloat(payamount.toFixed(3))}</StyledTableCell>
+                <StyledTableCell align="center">{parseFloat(payamount.toFixed(2))}</StyledTableCell>
             </StyledTableRow>
         )
         setinvoiceContents((pre) => invoiceContent)
-        setinvoiceTotal((pre) => parseFloat(payamount.toFixed(3)))
+        setinvoiceTotal((pre) => parseFloat(payamount.toFixed(2)))
         // console.log(invoiceContent);
         handleOpen();
     };
@@ -292,6 +292,7 @@ export default function TimetracTingActivities() {
 <div class="flex-container" style="display: flex; align-items: center;">
 <div><img src=${ShiftnpayLogo} alt="Shiftnpay Logo" class="logo" style="width:300px"></div>
 <div class="invoice-heading" style="color: #318CE7;font-size: 40px;"><b>INVOICE</b></div>
+
 </div>
 
                 <table style="border: 1px solid black; Width:610px;">
@@ -313,7 +314,7 @@ export default function TimetracTingActivities() {
                             <td align="center">${job?.time_in}</td>
                             <td align="center">${job?.job?.job_rate}</td>
                             <td align="center">${0}</td>
-                            <td align="center">${parseFloat(payamount.toFixed(3))}</td>
+                            <td align="center">${parseFloat(payamount.toFixed(2))}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -423,18 +424,18 @@ export default function TimetracTingActivities() {
                     </StyledTableCell>
 
                     <StyledTableCell component="th" scope="row" align="center">
-                        {"date"}
+                        {new Date().toLocaleDateString()}
                     </StyledTableCell>
 
                     <StyledTableCell component="th" scope="row" align="center">
-                        ${datas?.job_rate}
+                        {"$ " + datas?.job?.job_rate}
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row" align="center">
                         {datas?.time_in}
                     </StyledTableCell>
 
                     <StyledTableCell component="th" scope="row" align="center">
-                        {parseFloat(payamount.toFixed(3))}
+                        {parseFloat(payamount.toFixed(2))}
                     </StyledTableCell>
 
 
