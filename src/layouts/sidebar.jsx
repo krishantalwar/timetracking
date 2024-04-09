@@ -166,7 +166,7 @@ export const userMenueItems = (
         to={"timetracking"}
       >
         <ListItemIcon sx={{ minWidth: "40px", margin: " 10px" }}>
-          <img src={Time} alt="" />,
+          <img src={Time} alt="" />
         </ListItemIcon>
         <ListItemText
           primaryTypographyProps={{ fontSize: "14px" }}

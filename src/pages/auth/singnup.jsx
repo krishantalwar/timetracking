@@ -158,9 +158,6 @@ export default function SignIn() {
               alignItems: "center",
             }}
           >
-            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              
-            </Avatar> */}
             <img src={Shiftpaylogo} style={{ marginBottom: 20 }} />
             <Typography component="h2" variant="h5">
               Welcome to Time Tracking & Shift Managment System
@@ -171,6 +168,52 @@ export default function SignIn() {
               method="post"
               sx={{ mt: 1 }}
             >
+                <Controller
+                name="firstname"
+                control={control}
+                rules={{ required: "First name is required", pattern: /^\S+@\S+$/i }}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    margin="normal"
+                    fullWidth
+                    id="firstname"
+                    label="First Name"
+                    type="firstname"
+                    autoComplete="firstname"
+                    autoFocus
+                    formcontrolpops={{
+                      fullWidth: true,
+                      variant: "standard",
+                    }}
+                    error={Boolean(formState?.errors?.firstname)}
+                    helperText={formState?.errors?.firstname?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="lastname"
+                control={control}
+                rules={{ required: "Last Name is required", pattern: /^\S+@\S+$/i }}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    margin="normal"
+                    fullWidth
+                    id="lastname"
+                    label="Last Name"
+                    type="lastname"
+                    autoComplete="lastname"
+                    autoFocus
+                    formcontrolpops={{
+                      fullWidth: true,
+                      variant: "standard",
+                    }}
+                    error={Boolean(formState?.errors?.lastname)}
+                    helperText={formState?.errors?.lastname?.message}
+                  />
+                )}
+              />
               <Controller
                 name="email"
                 control={control}
@@ -217,17 +260,17 @@ export default function SignIn() {
                   />
                 )}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Sign Up
               </Button>
                             <Backdrop
                       sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -238,15 +281,15 @@ export default function SignIn() {
                     </Backdrop>
               <Grid container>
                 <Grid item xs>
-                <Link to='/forgot' variant="body2">
+                  <Link to="/forgot" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item xs={{alignItems:'right'}}>
-                <Link to='/signup' variant="body2">
-                    Sign Up
+                <Link to='/login' variant="body2">
+                    Login
                   </Link>
-                </Grid>
+                  </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>

@@ -410,26 +410,6 @@ export default function TimeTracking() {
               </TableHead>
               <TableBody>
                 {tablecontent}
-                {/* {
-                  rows.map((row) => (
-                    <TableRow
-                      key={row.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">
-                        {row.protein.map((item) => {
-                          return item;
-                        })}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                } */}
               </TableBody>
             </Table>
           </Grid>

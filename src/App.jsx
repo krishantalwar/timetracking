@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Navigation from "./privateroutes/navigation.component";
 import Home from "./pages/home/home";
 import Forget from "./pages/auth/forgot";
@@ -15,7 +15,8 @@ import Profile from "./pages/Employer/profile";
 import Password from "./pages/Employer/changePassword";
 import TimeTracking from "./pages/Employee/timeTracking";
 import Designation from './pages/Employer/designation'
-import Department from './pages/Employer/department'
+import Department from './pages/Employer/department';
+import Signup from './pages/auth/singnup'
 
 function App() {
   return (
@@ -43,11 +44,15 @@ function App() {
           <Route path="/employeedashboard" element={<Home emp='Total Job Assigned' present='Numbers of hours worked' absent='Absent' late='Late Coming' />} />
         </Route>
       </Route>
-
-      <Route element={<OldMaster />}>
+         
+       
+        <Route element={<OldMaster />}>
         <Route path='login' element={<SignIn />} />
         <Route path='forgot' element={<Forget />} />
+        <Route path='signup' element={<Signup />} />
       </Route>
+       
+      
 
 
     </Routes>

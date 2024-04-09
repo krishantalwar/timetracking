@@ -9,6 +9,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Copyright from '../../layouts/copyright';
+import Shiftpaylogo from "../../assets/Time-management-icons/shiftnpay.png";
 
 import {
     useLoginEmailMutation,
@@ -144,9 +145,7 @@ export default function Forget() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
+                    <img src={Shiftpaylogo} style={{ marginBottom: 20 }} />
                     <Typography component="h1" variant="h5">
                         Forgot Password
                     </Typography>
