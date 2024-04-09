@@ -379,7 +379,7 @@ export default function TimetracTingActivities() {
                             >
                                 Invoice
                             </Button>
-                            <Button
+                            {/* <Button
                                 variant='contained'
                                 // className={classes.button}
                                 // disabled={activeStep === 0}
@@ -387,7 +387,7 @@ export default function TimetracTingActivities() {
 
                             >
                                 Download Invoice
-                            </Button>
+                            </Button> */}
                         </div>)
 
                         :
