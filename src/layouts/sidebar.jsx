@@ -16,7 +16,8 @@ import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlin
 import DashboardIcon from '../assets/Time-management-icons/Dashboard.png';
 import DesignationIcon from '../assets/Time-management-icons/Desigantion.png';
 import RoleIcon from '../assets/Time-management-icons/roles.png';
-import PostjobIcon from '../assets/Time-management-icons/job-post.png'
+import PostjobIcon from '../assets/Time-management-icons/job-post.png';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 
 const NavLinks = React.forwardRef((props, ref) => {
   const elementClasses =
@@ -74,6 +75,11 @@ const menu = [
     path: "timetrackingactivities",
   },
   {
+    icon: "Calendar",
+    name: "Calendar",
+    path: "calendar",
+  },
+  {
     icon: "Reports",
     name: "Reports",
   },
@@ -89,6 +95,7 @@ const iconMapping = {
   TimeTracking: <img src={Time} alt="" />,
   DataUpload: <img src={Dataimg} alt="" />,
   postjob: <img src={PostjobIcon} alt="" />,
+  Calendar: <CalendarMonthOutlinedIcon/>,
   Reports: <img src={Reportsimg} alt="" />,
 };
 

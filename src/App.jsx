@@ -16,7 +16,8 @@ import Password from "./pages/Employer/changePassword";
 import TimeTracking from "./pages/Employee/timeTracking";
 import Designation from './pages/Employer/designation'
 import Department from './pages/Employer/department';
-import Signup from './pages/auth/singnup'
+import Signup from './pages/auth/singnup';
+import Calendar from "./layouts/calendar";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/timetracking" element={<TimeTracking />} />
           <Route path="/designation" element={<Designation />} />
           <Route path="/department" element={<Department />} />
+          <Route path="/calendar" element={<Calendar/>} />
           <Route path="/employeedashboard" element={<Home emp='Total Job Assigned' present='Numbers of hours worked' absent='Absent' late='Late Coming' />} />
         </Route>
       </Route>

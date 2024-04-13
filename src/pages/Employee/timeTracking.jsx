@@ -20,6 +20,8 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import ReactClock from "../../layouts/clock";
+import Clock1 from "../../layouts/clock1";
 
 import {
   useGetUserjobQuery,
@@ -28,6 +30,7 @@ import {
 import { selectCurrentUser } from "../../features/auth/authSelector";
 import { useSelector, useDispatch } from "react-redux";
 import { styled } from '@mui/material/styles';
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#318CE7",
@@ -322,7 +325,7 @@ export default function TimeTracking() {
   return (
     <React.Fragment>
       <Box component={Paper}>
-        <Typography paddingTop={2} align={"center"}>
+        <Typography paddingTop={2} color={'#318CE7'} align={"left"}>
           <b>Time Trackking Activities</b>
         </Typography>
         <Box
@@ -344,10 +347,6 @@ export default function TimeTracking() {
               <Controller
                 name="totaltime"
                 control={control}
-                // rules={{
-                //   required: "totaltime is required",
-
-                // }}
                 defaultValue={
                   formatTime(timerTotalTimeRunning ? Date.now() - startTotalTime : elapsedTotalTimee)
                 }
@@ -372,8 +371,6 @@ export default function TimeTracking() {
               />
             </Grid>
 
-            {/* <Grid container rowSpacing={1} columnSpacing={{ xs: 10, sm: 2, md: 3 }}> */}
-
             <Grid item xs={4} mt={2}>
               <Button
                 type="submit"
@@ -381,18 +378,21 @@ export default function TimeTracking() {
                 style={{
                   backgroundColor: "#318CE7",
                   color:"white",
-                  marginRight: 15,
-                  marginTop: 5,
+                  // marginRight: 15,
+                  // marginTop: 5,
                   // border: "3px solid lightblue",
                   width: 120,
                   height: 40,
-                  float: "right"
+                  
                 }}
               >
                 {"Submit"}
                 {/* {timerRunning ? "Stop Time" : "Start Time"} */}
               </Button>
             </Grid>
+
+            <Grid style={{
+            }}><Clock1/></Grid>
 
           </Grid>
 

@@ -223,6 +223,7 @@ export default function TimetracTingActivities() {
                 <StyledTableCell align="center">{job?.job?.name}</StyledTableCell>
                 <StyledTableCell align="center">{job?.time_in}</StyledTableCell>
                 <StyledTableCell align="center">{job?.job?.job_rate}</StyledTableCell>
+                {/* <StyledTableCell align="center">{job?.job?.tax_rate}</StyledTableCell> */}
                 <StyledTableCell align="center">{parseFloat(payamount.toFixed(2))}</StyledTableCell>
             </StyledTableRow>
         )
@@ -298,18 +299,21 @@ export default function TimetracTingActivities() {
                 <table style="border: 1px solid black; Width:610px;">
                     <thead>
                         <tr>
-                            <th>Job ID</th>
-                            <th>Description</th>
-                            <th>Total Time</th>
+                            <th>Job Code</th>
+                            <th>Job Title</th>
+                            <th>Employee Code</th>
+                            <th>Employee Name</th>
                             <th>Job Rate</th>
                             <th>Tax</th>
-                            <th>Total</th>
+                            <th>Pay Amount</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         <tr
                         >
                             <td align="center">${job?.job?.job_code}</td>
+                            <td align="center">${job?.job?.name}</td>
                             <td align="center">${job?.job?.name}</td>
                             <td align="center">${job?.time_in}</td>
                             <td align="center">${job?.job?.job_rate}</td>
@@ -372,14 +376,12 @@ export default function TimetracTingActivities() {
                         (<div>
                             <Button
                                 variant='contained'
-                                // className={classes.button}
-                                // disabled={activeStep === 0}
                                 onClick={() => ViewInvoice(datas?.id)}
                                 sx={{ mr: 2 }}
                             >
-                                Invoice
+                                View Invoice
                             </Button>
-                            {/* <Button
+                            <Button
                                 variant='contained'
                                 // className={classes.button}
                                 // disabled={activeStep === 0}
@@ -387,7 +389,7 @@ export default function TimetracTingActivities() {
 
                             >
                                 Download Invoice
-                            </Button> */}
+                            </Button>
                         </div>)
 
                         :
@@ -432,6 +434,9 @@ export default function TimetracTingActivities() {
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row" align="center">
                         {datas?.time_in}
+                    </StyledTableCell>
+                    <StyledTableCell component="th" scope="row" align="center">
+                    {parseFloat(payamount.toFixed(2))}
                     </StyledTableCell>
 
                     <StyledTableCell component="th" scope="row" align="center">
@@ -642,6 +647,7 @@ export default function TimetracTingActivities() {
                                 <StyledTableCell align="center"><b>Date</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Job Rate</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Total Hrs</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Tax Rate</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Pay Amount</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Action</b></StyledTableCell>
 
@@ -671,23 +677,26 @@ export default function TimetracTingActivities() {
                 >
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                         <Grid container alignItems="center">
-                            <Grid item xs={4} ml={5}>
-                                <Typography style={{ color: "#318CE7", fontSize: "40px" }}> <b>INVOICE</b></Typography>
-                            </Grid>
-                            <Grid item xs={2}>
+                        <Grid tem xs={{display:'flex'}}>
                                 <img src={ShiftnpayLogo} alt="Shiftnpay Logo" />
                             </Grid>
+                            <Grid >
+                                <Typography style={{ color: "#318CE7", fontSize: "40px" }}> <b>INVOICE</b></Typography>
+                            </Grid>
+                           
                         </Grid>
                     </Grid>
 
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell align="center"><b>Job ID</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Description</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Total Time</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Job Code</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Job Title</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Employee Code</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Employee Name</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Job Rate</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Total</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Tax</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Pay Amount</b></StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -695,7 +704,7 @@ export default function TimetracTingActivities() {
                         </TableBody>
                     </Table>
 
-                    <Typography className="total" sx={{ textAlign: 'end', mr: 6 }} ><b>Total $</b> {invoicetotal} </Typography>
+                    <Typography className="total" sx={{ textAlign: 'end', mr: 4 }} ><b>Total $</b> {invoicetotal} </Typography>
 
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={3} >
                         <Grid item xs={4} mt={2} mb={2} >

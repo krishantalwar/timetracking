@@ -239,24 +239,24 @@ export default function SignIn() {
               />
 
               <Controller
-                name="password"
+                name="PhoneNumber"
                 control={control}
-                rules={{ required: "Password is required" }}
+                rules={{ required: "Phone Number is required" }}
                 render={({ field }) => (
                   <Input
                     {...field}
                     margin="normal"
                     fullWidth
-                    label="Password"
-                    type="password"
-                    id="password"
+                    label="PhoneNumber"
+                    type="PhoneNumber"
+                    id="PhoneNumber"
                     autoComplete="current-password"
                     formcontrolpops={{
                       fullWidth: true,
                       variant: "standard",
                     }}
-                    error={Boolean(formState?.errors?.password)}
-                    helperText={formState?.errors?.password?.message}
+                    error={Boolean(formState?.errors?.PhoneNumber)}
+                    helperText={formState?.errors?.PhoneNumber?.message}
                   />
                 )}
               />
