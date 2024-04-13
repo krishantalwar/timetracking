@@ -221,9 +221,10 @@ export default function TimetracTingActivities() {
             >
                 <StyledTableCell align="center">{job?.job?.job_code}</StyledTableCell>
                 <StyledTableCell align="center">{job?.job?.name}</StyledTableCell>
+                <StyledTableCell align="center"> {data?.user?.user_code}</StyledTableCell>
+                <StyledTableCell align="center"> {job?.user_code}</StyledTableCell>
                 <StyledTableCell align="center">{job?.time_in}</StyledTableCell>
                 <StyledTableCell align="center">{job?.job?.job_rate}</StyledTableCell>
-                {/* <StyledTableCell align="center">{job?.job?.tax_rate}</StyledTableCell> */}
                 <StyledTableCell align="center">{parseFloat(payamount.toFixed(2))}</StyledTableCell>
             </StyledTableRow>
         )
@@ -289,40 +290,44 @@ export default function TimetracTingActivities() {
 </head>
 <body>
 
-<div id="invoiceCapture" >
-<div class="flex-container" style="display: flex; align-items: center;">
-<div><img src=${ShiftnpayLogo} alt="Shiftnpay Logo" class="logo" style="width:300px"></div>
-<div class="invoice-heading" style="color: #318CE7;font-size: 40px;"><b>INVOICE</b></div>
-
+<div id="invoiceCapture">
+    <div class="flex-container" style="display: flex; align-items: center; width:550px">
+        <div style="margin-right: auto;"><img src=${ShiftnpayLogo} alt="Shiftnpay Logo" class="logo" style="width: 200px;"></div>
+        <div style="text-align: right;">
+            <div class="invoice-heading" style="color: #318CE7; font-size: 40px;"><b>INVOICE</b></div>
+            <div class="invoice-details" style="color: #318CE7; font-size: 10px;"><b>Name: Shubham Kumar</b></div>
+            <div class="invoice-details" style="color: #318CE7; font-size: 10px;"><b>Address: #1146, Sector 71, Mohali, Punjab</b></div>
+        </div>
+    </div>
 </div>
 
                 <table style="border: 1px solid black; Width:610px;">
                     <thead>
                         <tr>
-                            <th>Job Code</th>
-                            <th>Job Title</th>
-                            <th>Employee Code</th>
-                            <th>Employee Name</th>
-                            <th>Job Rate</th>
-                            <th>Tax</th>
-                            <th>Pay Amount</th>
+                            <th style="font-size: 10px;">Job Code</th>
+                            <th style="font-size: 10px;">Job Title</th>
+                            <th style="font-size: 10px;">Employee Code</th>
+                            <th style="font-size: 10px;">Employee Name</th>
+                            <th style="font-size: 10px;">Job Rate</th>
+                            <th style="font-size: 10px;">Tax</th>
+                            <th style="font-size: 10px;">Pay Amount</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <tr
                         >
-                            <td align="center">${job?.job?.job_code}</td>
-                            <td align="center">${job?.job?.name}</td>
-                            <td align="center">${job?.job?.name}</td>
-                            <td align="center">${job?.time_in}</td>
-                            <td align="center">${job?.job?.job_rate}</td>
-                            <td align="center">${0}</td>
-                            <td align="center">${parseFloat(payamount.toFixed(2))}</td>
+                            <td align="center" style="font-size: 10px;">${job?.job?.job_code}</td>
+                            <td align="center" style="font-size: 10px;">${job?.job?.name}</td>
+                            <td align="center" style="font-size: 10px;">${job?.job?.name}</td>
+                            <td align="center" style="font-size: 10px;">${job?.time_in}</td>
+                            <td align="center"  style="font-size: 10px;">${job?.job?.job_rate}</td>
+                            <td align="center" style="font-size: 10px;">${0}</td>
+                            <td align="center" style="font-size: 10px;">${parseFloat(payamount.toFixed(2))}</td>
                         </tr>
                     </tbody>
                 </table>
-                    <div class="total" style="border: 1px solid black; Width:610px; margin-left:495px"><b>TOTAL $ ${payamount}</b></div>
+                    <div class="total" style="border: 1px solid black; Width:610px; margin-left:485px"><b>TOTAL $ ${parseFloat(payamount.toFixed(2))}</b></div>
             </div>
             </body>
             </html>`;
@@ -342,7 +347,7 @@ export default function TimetracTingActivities() {
 
                 // pdfViewer.src = dataUri;
 
-                pdf.save('invoice.pdf');
+                // pdf.save('invoice.pdf');
             }
         });
 
@@ -372,25 +377,26 @@ export default function TimetracTingActivities() {
 
             let action = (<div>
                 {
-                    datas.paid ?
-                        (<div>
-                            <Button
-                                variant='contained'
-                                onClick={() => ViewInvoice(datas?.id)}
-                                sx={{ mr: 2 }}
-                            >
-                                View Invoice
-                            </Button>
-                            <Button
-                                variant='contained'
-                                // className={classes.button}
-                                // disabled={activeStep === 0}
-                                onClick={() => DownloadInvoice(datas?.id)}
-
-                            >
-                                Download Invoice
-                            </Button>
-                        </div>)
+                    datas.paid ?(
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                        <Button
+                            variant='contained'
+                            onClick={() => ViewInvoice(datas?.id)}
+                            style={{ fontSize: '10px' }}
+                        >
+                            View Invoice
+                        </Button>
+                        <Button
+                            variant='contained'
+                            onClick={() => DownloadInvoice(datas?.id)}
+                            style={{ fontSize: '10px' }}
+                        >
+                            Download Invoice
+                        </Button>
+                    </div>
+                    )
+                   
+                
 
                         :
 
@@ -676,15 +682,18 @@ export default function TimetracTingActivities() {
 
                 >
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                        <Grid container alignItems="center">
-                        <Grid tem xs={{display:'flex'}}>
-                                <img src={ShiftnpayLogo} alt="Shiftnpay Logo" />
-                            </Grid>
-                            <Grid >
-                                <Typography style={{ color: "#318CE7", fontSize: "40px" }}> <b>INVOICE</b></Typography>
-                            </Grid>
-                           
-                        </Grid>
+                    <Grid container alignItems="center">
+    <Grid item xs={6} display="flex" justifyContent="flex-end">
+        <img src={ShiftnpayLogo} style={{height:"120px"}} alt="Shiftnpay Logo" />
+    </Grid>
+    <Grid item xs={6}>
+        <div>
+            <Typography style={{ color: "#318CE7", fontSize: "40px",textAlign: "right"  }}> <b>INVOICE</b></Typography>
+            <Typography style={{ color: "#318CE7", fontSize: "15px", textAlign: "right" }}> <b>Name: Shubham Kumar</b></Typography>
+            <Typography style={{ color: "#318CE7", fontSize: "15px", textAlign: "right" }}> <b>Address: #1146, Sector 71, Mohali, Punjab</b></Typography>
+        </div>
+    </Grid>
+</Grid>
                     </Grid>
 
                     <Table>
@@ -694,6 +703,7 @@ export default function TimetracTingActivities() {
                                 <StyledTableCell align="center"><b>Job Title</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Employee Code</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Employee Name</b></StyledTableCell>
+                                <StyledTableCell align="center"><b>Total Time</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Job Rate</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Tax</b></StyledTableCell>
                                 <StyledTableCell align="center"><b>Pay Amount</b></StyledTableCell>
