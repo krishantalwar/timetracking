@@ -218,7 +218,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         }),
         editUserMaster: builder.mutation({
             query: (detail) => ({
-                url: 'user/edit/' + detail.shiftid,
+                url: 'users/edit/' + detail.userid,
                 method: 'POST',
                 body: detail
             }),
@@ -260,7 +260,7 @@ export const {
     useCreateSignupUserMutation,
     // useDeleteUserMasterMutation,
     // useGetUserMasterDetailMutation,
-    // useEditUserMasterMutation,
+    useEditUserMasterMutation,
 
 } = extendedApiSlice;
 

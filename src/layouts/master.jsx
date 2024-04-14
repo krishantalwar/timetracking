@@ -12,7 +12,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ShimmerNavigation from "../components/ui/shimmer/shimmerNavigation";
 import { useState, useEffect } from "react";
 
-import { mainListItems, secondaryListItems, userMenueItems } from "./sidebar";
+import { mainListItems, secondaryListItems, userMenueItems, adminMenueItems } from "./sidebar";
 import { Outlet } from "react-router-dom";
 import Navbar from "./navbar";
 
@@ -155,7 +155,8 @@ export default function Master() {
                 {
                   currentUser?.user == 1 ?
                     mainListItems :
-                    userMenueItems
+                    (currentUser?.user == 2 ? adminMenueItems :
+                      userMenueItems)
                 }
                 <Divider sx={{ my: 1 }} />
                 {/* {secondaryListItems} */}

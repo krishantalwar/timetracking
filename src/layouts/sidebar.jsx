@@ -84,7 +84,7 @@ const menu = [
     name: "Tax",
     path: "tax",
   },
-  
+
   {
     icon: "Reports",
     name: "Reports",
@@ -101,7 +101,7 @@ const iconMapping = {
   TimeTracking: <img src={Time} alt="" />,
   DataUpload: <img src={Dataimg} alt="" />,
   postjob: <img src={PostjobIcon} alt="" />,
-  Calendar: <CalendarMonthOutlinedIcon/>,
+  Calendar: <CalendarMonthOutlinedIcon />,
   Reports: <img src={Reportsimg} alt="" />,
 };
 
@@ -190,6 +190,61 @@ export const userMenueItems = (
 
   </React.Fragment>
 )
+
+
+export const adminMenueItems = (
+  <React.Fragment>
+
+
+    <React.Suspense key={1} fallback={<div>Loading...</div>}>
+
+
+      <ListItemButton
+        style={{
+          display: 'flex',
+          alignItems: 'center', // Align items vertically center
+          color: "black",
+          textDecoration: "none",
+
+          //  fontWeight:"500"
+        }}
+        component={NavLinks}
+        to={""}
+      >
+        <ListItemIcon sx={{ minWidth: "40px", margin: " 10px" }}>
+          <img src={DashboardIcon} alt="" />
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "14px" }}
+          primary={"DashBoard"}
+        />
+      </ListItemButton>
+
+      <ListItemButton
+        style={{
+          display: 'flex',
+          alignItems: 'center', // Align items vertically center
+          color: "black",
+          textDecoration: "none",
+
+          //  fontWeight:"500"
+        }}
+        component={NavLinks}
+        to={"adminuser"}
+      >
+        <ListItemIcon sx={{ minWidth: "40px", margin: " 10px" }}>
+          <img src={Profile} alt="" />
+        </ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ fontSize: "14px" }}
+          primary={"users"}
+        />
+      </ListItemButton>
+    </React.Suspense>
+
+  </React.Fragment>
+)
+
 
 export const secondaryListItems = (
   <React.Fragment>
