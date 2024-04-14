@@ -89,17 +89,17 @@ export default function SignIn() {
   const onSubmit = async (data) => {
     try {
       setIsopen(true);
-     
 
-        if (!isLoading) {
-          await LoginEmail({
-            email: data.email,
-            password: data.password,
-          }).unwrap();
-          setIsopen(false);
-        }
 
-     
+      if (!isLoading) {
+        await LoginEmail({
+          email: data.email,
+          password: data.password,
+        }).unwrap();
+        setIsopen(false);
+      }
+
+
 
       // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
 
@@ -148,7 +148,7 @@ export default function SignIn() {
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
 
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid item sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
               my: 8,
@@ -229,21 +229,21 @@ export default function SignIn() {
               >
                 Sign In
               </Button>
-                            <Backdrop
-                      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                      open={isopen}
-                      onClick={handleclose}
-                    >
-                      <CircularProgress color="inherit" />
-                    </Backdrop>
+              <Backdrop
+                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isopen}
+                onClick={handleclose}
+              >
+                <CircularProgress color="inherit" />
+              </Backdrop>
               <Grid container>
-                <Grid item xs>
-                <Link to='/forgot' variant="body2">
+                <Grid item >
+                  <Link to='/forgot' variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>
-                <Grid item xs={{alignItems:'right'}}>
-                <Link to='/signup' variant="body2">
+                <Grid item sx={{ alignItems: 'right' }}>
+                  <Link to='/signup' variant="body2">
                     Sign Up
                   </Link>
                 </Grid>
@@ -255,7 +255,7 @@ export default function SignIn() {
 
         <Grid
           item
-          xs={false}
+
           sm={4}
           md={7}
           sx={{
@@ -269,7 +269,7 @@ export default function SignIn() {
             backgroundPosition: "center",
           }}
         />
-      </Grid> 
+      </Grid>
     </React.Fragment>
   );
 }

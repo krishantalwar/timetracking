@@ -141,7 +141,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     }),
     editTax: builder.mutation({
       query: (detail) => ({
-        url: "tax/edit/" + detail.designationid,
+        url: "tax/edit/" + detail.taxid,
         method: "POST",
         body: detail,
       }),
@@ -170,7 +170,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
       invalidatesTags: [{ type: "tax", id: "taxLIST" }],
     }),
-    getTaxes: builder.query({
+    getCodestax: builder.query({
       // query: () => '/shiftmaster/',
       query: () => ({
         url: "tax/code",
@@ -209,12 +209,13 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-    useGetTaxQuery,
-    useCreateTaxMasterMutation,
-    useDeleteTaxMutation,
-    useGetTaxDetailMutation,
-    useEditTaxMutation,
-    useGetTaxesQuery,
+  useGetTaxQuery,
+  useCreateTaxMasterMutation,
+  useDeleteTaxMutation,
+  useGetTaxDetailMutation,
+  useEditTaxMutation,
+  useGetTaxesQuery,
+  useLazyGetCodestaxQuery,
 } = extendedApiSlice;
 
 export default extendedApiSlice;

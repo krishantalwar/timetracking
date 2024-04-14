@@ -8,15 +8,18 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Copyright from "../layouts/copyright";
 import Paper from "@mui/material/Paper";
-import {useGetTaxQuery,
-    useCreateTaxMasterMutation,
-    useDeleteTaxMutation,
-    useGetTaxDetailMutation,
-    useEditTaxMutation,
-    useGetTaxesQuery} from '../features/tax/taxService'
-import designationServiceApis from "../features/designation/designationService";
+import {
+  useGetTaxQuery,
+  useCreateTaxMasterMutation,
+  useDeleteTaxMutation,
+  useGetTaxDetailMutation,
+  useEditTaxMutation,
+
+} from '../features/tax/taxService'
+import taxServiceApis from "../features/tax/taxService";
 import Input from "../components/ui/forminputs/input"
-import BasicModal from "../components/ui/forminputs/input";
+// import TextField from '@mui/material/TextField';
+import BasicModal from "../components/ui/modal/modal";
 import Table from "../components/ui/table/table";
 import { useForm, Controller } from "react-hook-form";
 import { Add } from "@mui/icons-material";
@@ -50,6 +53,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function Designation() {
 
+  const [isOpen, setIsOpen] = React.useState(false);
   const [isopen, setIsopen] = React.useState(false);
   // const [isLoaDing, setIsLoaDing] = React.useState(false); 
 
@@ -64,9 +68,11 @@ export default function Designation() {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-        company_id: "",
-        name: "",
-        tax_rate: "",
+      tax_code: "",
+      company_id: "",
+      name: "",
+      tax_rate: "",
+      taxid: "",
 
     },
   });
@@ -104,7 +110,7 @@ export default function Designation() {
     isError: taxmastererror,
     error: taxdataerror,
     refetch: getTaxesrefetch
-  } = useGetTaxesQuery("getTaxes");
+  } = useGetTaxQuery("getTax");
 
 
   const [
@@ -142,7 +148,8 @@ export default function Designation() {
         // console.log(DesignationDetail);
         const defaultValues = {
           //field name need to change as per backend
-          "company_id": TaxDetail?.company_id,
+          "taxid": TaxDetail?.taxid,
+          "tax_code": "asd",
           "name": TaxDetail?.name,
           "tax_rate": TaxDetail?.tax_rate,
         }
@@ -185,31 +192,31 @@ export default function Designation() {
   } else if (taxdataisSuccess) {
     // console.log(designationmasterDate)
 
-    if( taxdata.length > 0 ){
-        content = taxdata.map((datas, index) => {
-            return (
-              <StyledTableRow
-                key={datas.company_id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <StyledTableCell align="center">{datas?.name}</StyledTableCell>
-                <StyledTableCell component="th" scope="row" align="center" >
-                  {datas?.tax_rate}
-                </StyledTableCell>
-      
-                <StyledTableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
-                  <Edit style={{ marginRight: '8px' }} key={datas.Taxid + index.toString()} onClick={() => handleDetail(datas?.Taxid)} />
-                  <DeleteIcon key={datas.Taxid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.Taxid)} />
-                </StyledTableCell>
-      
-              </StyledTableRow>
-            );
-          });
+    if (taxdata.length > 0) {
+      content = taxdata.map((datas, index) => {
+        return (
+          <StyledTableRow
+            key={datas.taxid}
+            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+          >
+            <StyledTableCell align="center">{datas?.name}</StyledTableCell>
+            <StyledTableCell component="th" scope="row" align="center" >
+              {datas?.tax_rate}
+            </StyledTableCell>
+
+            <StyledTableCell align="center" style={{ display: 'flex', justifyContent: 'center' }}>
+              <Edit style={{ marginRight: '8px' }} key={datas.Taxid + index.toString()} onClick={() => handleDetail(datas?.taxid)} />
+              <DeleteIcon key={datas.Taxid + index.toString() + index.toString()} onDelete={() => handleDelete(datas?.taxid)} />
+            </StyledTableCell>
+
+          </StyledTableRow>
+        );
+      });
     }
-   
-    
+
+
     content =
-    taxdata.length > 0 ? (
+      taxdata.length > 0 ? (
         content
       ) : (
         <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
@@ -230,12 +237,12 @@ export default function Designation() {
       // setIsLoaDing(true); 
       setIsopen(true);
 
-      if (data?.Taxid) {
+      if (data?.taxid) {
         if (!updateTaxisLoading) {
           await updateTaxDetails({
-            "company_id": data.company_id,
-            "name": data.name,
-            "tax_rate": data.tax_rate,
+            // "name": data.name,
+            // "tax_rate": data.tax_rate,
+            ...data
           }).unwrap();
           setIsopen(false);
           handleClose();
@@ -246,9 +253,9 @@ export default function Designation() {
 
         if (!isLoading) {
           await CreateTax({
-            company_id: data.company_id,
-            name: data.name,
-            tax_rate: data.tax_rate,
+            ...data
+            // name: data.name,
+            // tax_rate: data.tax_rate,
           }).unwrap();
           setIsopen(false); // Close backdrop after API call is complete
           handleClose();
@@ -264,10 +271,10 @@ export default function Designation() {
   };
 
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  // const [isOpen, setIsOpen] = React.useState(false);
 
-//   const [getCodess, { data: codedata, isLoading: getcodeisLoading, refetch }] =
-//     designationServiceApis.endpoints.getCodesdesignation.useLazyQuery();
+  const [getCodess, { data: codedata, isLoading: getcodeisLoading, refetch }] =
+    taxServiceApis.endpoints.getCodestax.useLazyQuery();
 
 
   const handleopen = () => {
@@ -279,7 +286,7 @@ export default function Designation() {
   };
 
   const handleOpen = async () => {
-    console.log("s");
+    // console.log("s");
     try {
       const {
         data: codedata,
@@ -295,7 +302,7 @@ export default function Designation() {
           // department_code: codedata.code,
           // department_name: "",
 
-          company_id: codedata.code,
+          tax_code: codedata.code,
           name: "",
           tax_rate: "",
         }
@@ -368,8 +375,7 @@ export default function Designation() {
 
               }} >
                 <TableRow  >
-                  <StyledTableCell align="center"><b>Company Id</b></StyledTableCell>
-                  <StyledTableCell align="center"><b>Company  Name</b></StyledTableCell>
+                  <StyledTableCell align="center"><b>Tax  Name</b></StyledTableCell>
                   <StyledTableCell align="center"><b>Tax Rate</b></StyledTableCell>
                   <StyledTableCell align="center"><b>Action</b></StyledTableCell>
                 </TableRow>
@@ -387,8 +393,8 @@ export default function Designation() {
               >
                 <Grid item xs={10}>
                   <Typography style={{
-                  color: "#318CE7",
-                }} > <b>Tax Rates</b></Typography>
+                    color: "#318CE7",
+                  }} > <b>Tax Rates</b></Typography>
                 </Grid>
               </Grid>
               <Box
@@ -405,18 +411,18 @@ export default function Designation() {
                   columns={{ xs: 4, sm: 8, md: 12 }}
                   columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                 >
-                    <Grid item xs={6}>
+                  <Grid item xs={6}>
                     <Controller
-                      name="company_id"
+                      name="tax_code"
                       control={control}
-                      rules={{ required: "Company ID is required" }}
+                      rules={{ required: "tax code is required" }}
                       render={({ field }) => (
                         <Input
                           {...field}
                           margin="normal"
                           fullWidth
-                          id="company_id"
-                          label="Company ID"
+                          id="tax_code"
+                          label="Tax Code"
                           type="text"
                           // readOnly
                           disabled
@@ -424,9 +430,9 @@ export default function Designation() {
                             fullWidth: true,
                             variant: "standard",
                           }}
-                          error={Boolean(formState?.errors?.company_id)}
+                          error={Boolean(formState?.errors?.tax_code)}
                           helperText={
-                            formState?.errors?.company_id?.message
+                            formState?.errors?.tax_code?.message
                           }
                         />
                       )}
@@ -436,17 +442,16 @@ export default function Designation() {
                     <Controller
                       name="name"
                       control={control}
-                      rules={{ required: "Company Name is required" }}
+                      rules={{ required: "Tax Name is required" }}
                       render={({ field }) => (
                         <Input
                           {...field}
                           margin="normal"
                           fullWidth
                           id="name"
-                          label="Company Name"
+                          label="Tax Name"
                           type="text"
-                          // readOnly
-                          disabled
+
                           formcontrolpops={{
                             fullWidth: true,
                             variant: "standard",
@@ -489,9 +494,9 @@ export default function Designation() {
                     />
                   </Grid>
                 </Grid>
-               
+
                 <Grid item xs={12} style={{ textAlign: 'right' }}>
-                
+
                   <Button
                     onClick={handleClose}
                     variant="contained"
@@ -499,12 +504,12 @@ export default function Designation() {
                   >
                     Cancel
                   </Button>
-                
+
                   <Button
                     type="submit"
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 , ml:2, width: '90px', minWidth: '10px' }}
-                   
+                    sx={{ mt: 3, mb: 2, ml: 2, width: '90px', minWidth: '10px' }}
+
                   >
                     Add
                   </Button>
