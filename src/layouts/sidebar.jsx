@@ -80,6 +80,12 @@ const menu = [
     path: "calendar",
   },
   {
+    icon: "Tax",
+    name: "Tax",
+    path: "tax",
+  },
+  
+  {
     icon: "Reports",
     name: "Reports",
   },

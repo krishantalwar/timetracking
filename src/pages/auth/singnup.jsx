@@ -19,54 +19,34 @@ import logo from "../../assets/Time-management-icons/logo.png";
 import Shiftpaylogo from "../../assets/Time-management-icons/shiftnpay.png";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-
-import {
-  useLoginEmailMutation,
-  // useLoginGoogleMutation
-} from "../../features/auth/authService";
-
-// import Input  from '../../components/ui/forminputs/input';
 import Input from "../../components/ui/forminputs/input";
-
-// import { useDispatch } from 'react-redux';
-
-// import { setAuth } from '../../features/auth/authSlice';
-// import { GoogleLogin } from '@react-oauth/google';
-
 import { useForm, Controller } from "react-hook-form";
-
-// const defaultFormFields = {
-//   email: '',
-//   password: '',
-// };
+import { useCreateSignupUserMutation } from "../../features/user/userService";
+// import { useHistory } from "react-router-dom";
 
 export default function SignIn() {
 
   const [isopen, setIsopen] = React.useState(false);
+  // const history = useHistory();
 
   const {
     handleSubmit,
     control,
-    // errors,
-    // getValues, getFieldState,
+  
     formState,
-    // reset, watch,
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      email: "",
-      password: "",
+      firstname: "",
+      lastname: "",
+      email:"",
+      Phonenumber:""
+
     },
   });
-  // console.log(errors)
-  // console.log(formState);
-  // const [Login, { currentData,isUninitialized,isFetching,isLoading
-  //     , isError,
-  //       isSuccess,
-  //       error}] = useLoginMutation()
 
   const [
-    LoginEmail,
+    createSignupUser,
     {
       // currentData,
       // isFetching,
@@ -75,48 +55,27 @@ export default function SignIn() {
       // error,
       // status
     },
-  ] = useLoginEmailMutation();
-  // const [LoginGoogle, { isLoadings }] = useLoginGoogleMutation();
+  ] = useCreateSignupUserMutation();
 
-  // const [APIError, setAPIError] = React.useState('');
-  // const { email, password } = formFields;
-
-  // const dispatch = useDispatch();
-  const resetFormFields = () => {
-    // setFormFields(defaultFormFields);
-  };
 
   const onSubmit = async (data) => {
     try {
       setIsopen(true);
-     
-
         if (!isLoading) {
-          await LoginEmail({
+          await createSignupUser({
             email: data.email,
-            password: data.password,
+            first_name: data.first_name,
+            last_name:data.last_name,
+            Phonenumber:data.Phonenumber,
+            "status":"0",
+            "user_type":"2"
           }).unwrap();
           setIsopen(false);
+          reset();  
+          
+          
         }
-
-     
-
-      // dispatch(setAuth({ isAuthenticated: true, user: { 'asdas': 'das' } }));
-
-      // resetFormFields()
-      // Redirect to the dashboard page after successful login
-      // history.push('/dashboard');
     } catch (error) {
-      // console.error('Login error:');
-      // console.log(isFetching);
-      // console.log(status);
-      // console.log(isLoading);
-      // console.log(isSuccess);
-      // console.log(isError);
-      // console.log(error);
-      // console.log(!isLoading);
-      // Handle login error
-      // setAPIError(error.data)
       console.error("Login error:", error);
     }
   };
@@ -128,21 +87,6 @@ export default function SignIn() {
   const handleclose = () => {
     setIsopen(false);
   };
-
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormFields({ ...formFields, [name]: value });
-  // };
-
-  const responseMessage = async (response) => {
-    // console.log(response);
-    // console.log(response.clientId);
-    // await LoginGoogle(response).unwrap()
-  };
-  const errorMessage = (error) => {
-    console.log(error);
-  };
-
   return (
     <React.Fragment>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -169,9 +113,9 @@ export default function SignIn() {
               sx={{ mt: 1 }}
             >
                 <Controller
-                name="firstname"
+                name="first_name"
                 control={control}
-                rules={{ required: "First name is required", pattern: /^\S+@\S+$/i }}
+                rules={{ required: "First name is required"}}
                 render={({ field }) => (
                   <Input
                     {...field}
@@ -192,9 +136,9 @@ export default function SignIn() {
                 )}
               />
               <Controller
-                name="lastname"
+                name="last_name"
                 control={control}
-                rules={{ required: "Last Name is required", pattern: /^\S+@\S+$/i }}
+                rules={{ required: "Last Name is required" }}
                 render={({ field }) => (
                   <Input
                     {...field}
@@ -217,7 +161,7 @@ export default function SignIn() {
               <Controller
                 name="email"
                 control={control}
-                rules={{ required: "Email is required", pattern: /^\S+@\S+$/i }}
+                rules={{ required: "Email is required" }}
                 render={({ field }) => (
                   <Input
                     {...field}
@@ -239,7 +183,7 @@ export default function SignIn() {
               />
 
               <Controller
-                name="PhoneNumber"
+                name="Phonenumber"
                 control={control}
                 rules={{ required: "Phone Number is required" }}
                 render={({ field }) => (
@@ -247,23 +191,19 @@ export default function SignIn() {
                     {...field}
                     margin="normal"
                     fullWidth
-                    label="PhoneNumber"
-                    type="PhoneNumber"
-                    id="PhoneNumber"
+                    label="Phone Number "
+                    type="Phonenumber"
+                    id="Phonenumber"
                     autoComplete="current-password"
                     formcontrolpops={{
                       fullWidth: true,
                       variant: "standard",
                     }}
-                    error={Boolean(formState?.errors?.PhoneNumber)}
-                    helperText={formState?.errors?.PhoneNumber?.message}
+                    error={Boolean(formState?.errors?.Phonenumber)}
+                    helperText={formState?.errors?.Phonenumber?.message}
                   />
                 )}
               />
-              {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -280,11 +220,6 @@ export default function SignIn() {
                       <CircularProgress color="inherit" />
                     </Backdrop>
               <Grid container>
-                {/* <Grid item xs>
-                  <Link to="/forgot" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid> */}
                 <Grid item xs={{alignItems:'right'}}>
                 <Link to='/login' variant="body2">
                     Login

@@ -89,6 +89,35 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 { type: 'userMaster', id: "userMasterLIST" }
             ],
         }),
+        createSignupUser: builder.mutation({
+            query: (detail) => ({
+                url: "users/signup",
+                method: "POST",
+                // headers: {
+                //     'Content-Type': 'multipart/form-data;'
+                // },
+                body: detail,
+                formData: true,
+            }),
+            transformResponse: (responseData) => {
+                console.log(responseData);
+                return responseData;
+            },
+
+            async onQueryStarted(args, { queryFulfilled }) {
+                console.log(args);
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log(data);
+                } catch (error) {
+                    console.log("error", error);
+                }
+            },
+
+            invalidatesTags: [
+                { type: 'userMaster', id: "userMasterLIST" }
+            ],
+        }),
         getCodeusers: builder.query({
             // query: () => '/user/',
             query: () => ({
@@ -228,6 +257,7 @@ export const {
     useCreateUserMasterMutation,
     useGetUsersQuery,
     useGetCodeusersQuery,
+    useCreateSignupUserMutation,
     // useDeleteUserMasterMutation,
     // useGetUserMasterDetailMutation,
     // useEditUserMasterMutation,
