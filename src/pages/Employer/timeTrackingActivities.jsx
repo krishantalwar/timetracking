@@ -207,7 +207,7 @@ export default function TimetracTingActivities() {
             console.log(element.id)
             return element.id == data
         });
-
+        // console.log(job);
         let hrs = job?.time_in.split(":");
         hrs = (hrs[0] + hrs[1] + hrs[2]) / (3600 / 1);
         // let payamount = (hrs) * (datas?.job_rate * 1)
@@ -215,21 +215,62 @@ export default function TimetracTingActivities() {
         // job.paid = 55;
 
         invoiceContent = (
-            <StyledTableRow
-                key={job?.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-                <StyledTableCell align="center">{job?.job?.job_code}</StyledTableCell>
-                <StyledTableCell align="center">{job?.job?.name}</StyledTableCell>
-                <StyledTableCell align="center"> {data?.user?.user_code}</StyledTableCell>
-                <StyledTableCell align="center"> {job?.user_code}</StyledTableCell>
-                <StyledTableCell align="center">{job?.time_in}</StyledTableCell>
-                <StyledTableCell align="center">{job?.job?.job_rate}</StyledTableCell>
-                <StyledTableCell align="center">{parseFloat(payamount.toFixed(2))}</StyledTableCell>
-            </StyledTableRow>
+            <div>
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                    <Grid container alignItems="center">
+                        <Grid item xs={6} display="flex" justifyContent="flex-end">
+                            <img src={ShiftnpayLogo} style={{ height: "120px" }} alt="Shiftnpay Logo" />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <div>
+                                <Typography style={{ color: "#318CE7", fontSize: "40px", textAlign: "right" }}> <b>INVOICE</b></Typography>
+                                <Typography style={{ color: "#318CE7", fontSize: "15px", textAlign: "right" }}> <b>Name:  {job?.user?.first_name + " " + job?.user?.last_name}</b></Typography>
+                                <Typography style={{ color: "#318CE7", fontSize: "15px", textAlign: "right" }}> <b>Address: {job?.user?.userDetail?.address}</b></Typography>
+
+                            </div>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <Table sx={{ marginTop: "50px" }}>
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell align="center"><b>Job Code</b></StyledTableCell>
+                            <StyledTableCell align="center"><b>Job Title</b></StyledTableCell>
+                            <StyledTableCell align="center"><b>Employee Code</b></StyledTableCell>
+                            <StyledTableCell align="center"><b>Employee Name</b></StyledTableCell>
+                            <StyledTableCell align="center"><b>Total Time</b></StyledTableCell>
+                            <StyledTableCell align="center"><b>Job Rate</b></StyledTableCell>
+                            <StyledTableCell align="center"><b>Tax</b></StyledTableCell>
+                            <StyledTableCell align="center"><b>Pay Amount</b></StyledTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+
+                        <StyledTableRow
+                            key={job?.id}
+                            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                        >
+                            <StyledTableCell align="center">{job?.job?.job_code}</StyledTableCell>
+                            <StyledTableCell align="center">{job?.job?.name}</StyledTableCell>
+                            <StyledTableCell align="center"> {data?.user?.user_code}</StyledTableCell>
+                            <StyledTableCell align="center"> {job?.user?.first_name + " " + job?.user?.last_name}</StyledTableCell>
+                            <StyledTableCell align="center">{job?.time_in}</StyledTableCell>
+                            <StyledTableCell align="center">{job?.job?.job_rate}</StyledTableCell>
+                            <StyledTableCell align="center">{0}</StyledTableCell>
+                            <StyledTableCell align="center">{parseFloat(payamount.toFixed(2))}</StyledTableCell>
+
+                        </StyledTableRow>
+                    </TableBody>
+                </Table>
+
+                <Typography className="total" sx={{ textAlign: 'end', mr: 4 }} ><b>Total $</b> {parseFloat(payamount.toFixed(2))} </Typography>
+            </div>
+
         )
+        // console.log(invoiceContent)
         setinvoiceContents((pre) => invoiceContent)
-        setinvoiceTotal((pre) => parseFloat(payamount.toFixed(2)))
+        // setinvoiceTotal((pre) => parseFloat(payamount.toFixed(2)))
         // console.log(invoiceContent);
         handleOpen();
     };
@@ -240,6 +281,7 @@ export default function TimetracTingActivities() {
             return element.id == data
         });
 
+        console.log(job);
         let hrs = job?.time_in.split(":");
         hrs = (hrs[0] + hrs[1] + hrs[2]) / (3600 / 1);
         // let payamount = (hrs) * (datas?.job_rate * 1)
@@ -295,19 +337,20 @@ export default function TimetracTingActivities() {
         <div style="margin-right: auto;"><img src=${ShiftnpayLogo} alt="Shiftnpay Logo" class="logo" style="width: 200px;"></div>
         <div style="text-align: right;">
             <div class="invoice-heading" style="color: #318CE7; font-size: 40px;"><b>INVOICE</b></div>
-            <div class="invoice-details" style="color: #318CE7; font-size: 10px;"><b>Name: Shubham Kumar</b></div>
-            <div class="invoice-details" style="color: #318CE7; font-size: 10px;"><b>Address: #1146, Sector 71, Mohali, Punjab</b></div>
+            <div class="invoice-details" style="color: #318CE7; font-size: 10px;"><b>Name: ${job?.user?.first_name + " " + job?.user?.last_name}</b></div>
+            <div class="invoice-details" style="color: #318CE7; font-size: 10px;"><b>Address: ${job?.user?.userDetail?.address}</b></div>
         </div>
     </div>
 </div>
 
-                <table style="border: 1px solid black; Width:610px;">
+                <table style="border: 1px solid black; Width:610px; margin-top:30px">
                     <thead>
                         <tr>
                             <th style="font-size: 10px;">Job Code</th>
                             <th style="font-size: 10px;">Job Title</th>
                             <th style="font-size: 10px;">Employee Code</th>
                             <th style="font-size: 10px;">Employee Name</th>
+                            <th style="font-size: 10px;">Total HRS</th>
                             <th style="font-size: 10px;">Job Rate</th>
                             <th style="font-size: 10px;">Tax</th>
                             <th style="font-size: 10px;">Pay Amount</th>
@@ -319,7 +362,8 @@ export default function TimetracTingActivities() {
                         >
                             <td align="center" style="font-size: 10px;">${job?.job?.job_code}</td>
                             <td align="center" style="font-size: 10px;">${job?.job?.name}</td>
-                            <td align="center" style="font-size: 10px;">${job?.job?.name}</td>
+                                <td align="center" style="font-size: 10px;">${job?.user?.user_code}</td>
+                            <td align="center" style="font-size: 10px;">${job?.user?.first_name + " " + job?.user?.last_name}</td>
                             <td align="center" style="font-size: 10px;">${job?.time_in}</td>
                             <td align="center"  style="font-size: 10px;">${job?.job?.job_rate}</td>
                             <td align="center" style="font-size: 10px;">${0}</td>
@@ -347,7 +391,7 @@ export default function TimetracTingActivities() {
 
                 // pdfViewer.src = dataUri;
 
-                // pdf.save('invoice.pdf');
+                pdf.save('invoice.pdf');
             }
         });
 
@@ -377,26 +421,26 @@ export default function TimetracTingActivities() {
 
             let action = (<div>
                 {
-                    datas.paid ?(
+                    datas.paid ? (
                         <div style={{ display: 'flex', gap: '10px' }}>
-                        <Button
-                            variant='contained'
-                            onClick={() => ViewInvoice(datas?.id)}
-                            style={{ fontSize: '10px' }}
-                        >
-                            View Invoice
-                        </Button>
-                        <Button
-                            variant='contained'
-                            onClick={() => DownloadInvoice(datas?.id)}
-                            style={{ fontSize: '10px' }}
-                        >
-                            Download Invoice
-                        </Button>
-                    </div>
+                            <Button
+                                variant='contained'
+                                onClick={() => ViewInvoice(datas?.id)}
+                                style={{ fontSize: '10px' }}
+                            >
+                                View Invoice
+                            </Button>
+                            <Button
+                                variant='contained'
+                                onClick={() => DownloadInvoice(datas?.id)}
+                                style={{ fontSize: '10px' }}
+                            >
+                                Download Invoice
+                            </Button>
+                        </div>
                     )
-                   
-                
+
+
 
                         :
 
@@ -442,7 +486,7 @@ export default function TimetracTingActivities() {
                         {datas?.time_in}
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row" align="center">
-                    {parseFloat(payamount.toFixed(2))}
+                        {parseFloat(payamount.toFixed(2))}
                     </StyledTableCell>
 
                     <StyledTableCell component="th" scope="row" align="center">
@@ -681,50 +725,8 @@ export default function TimetracTingActivities() {
                     sx={{ mt: 1 }}
 
                 >
-                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                    <Grid container alignItems="center">
-    <Grid item xs={6} display="flex" justifyContent="flex-end">
-        <img src={ShiftnpayLogo} style={{height:"120px"}} alt="Shiftnpay Logo" />
-    </Grid>
-    <Grid item xs={6}>
-        <div>
-            <Typography style={{ color: "#318CE7", fontSize: "40px",textAlign: "right"  }}> <b>INVOICE</b></Typography>
-            <Typography style={{ color: "#318CE7", fontSize: "15px", textAlign: "right" }}> <b>Name: Shubham Kumar</b></Typography>
-            <Typography style={{ color: "#318CE7", fontSize: "15px", textAlign: "right" }}> <b>Address: #1146, Sector 71, Mohali, Punjab</b></Typography>
-        </div>
-    </Grid>
-</Grid>
-                    </Grid>
+                    {invoiceContents}
 
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <StyledTableCell align="center"><b>Job Code</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Job Title</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Employee Code</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Employee Name</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Total Time</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Job Rate</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Tax</b></StyledTableCell>
-                                <StyledTableCell align="center"><b>Pay Amount</b></StyledTableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {invoiceContents}
-                        </TableBody>
-                    </Table>
-
-                    <Typography className="total" sx={{ textAlign: 'end', mr: 4 }} ><b>Total $</b> {invoicetotal} </Typography>
-
-                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} mt={3} >
-                        <Grid item xs={4} mt={2} mb={2} >
-                            <Button variant='outlined' fullWidth onClick={() => setinvoiceDownload(true)}>Download</Button>
-                        </Grid>
-
-                        <Grid item xs={4} mt={2} mb={2}>
-                            <Button variant='outlined' fullWidth onClick={handleClose}>Cancel</Button>
-                        </Grid>
-                    </Grid>
                 </Box>
             </BasicModal>
 
